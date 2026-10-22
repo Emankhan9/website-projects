@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="user/dashboard/profile.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpNest | My Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/user-dashboard.css">
+    <link rel="stylesheet" href="../css/profile.css">
+    <style>
+        .profile-pic {
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #7C9473;
+        }
+        .profile-pic img  { width: 100%; height: 100%; object-fit: cover; }
+        .camera-icon {
+            position: absolute; bottom: 5px; right: 5px;
+            background: #7C9473; color: white;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            border: 2px solid white;
+            font-size: 16px; z-index: 10;
+        }
+        .edit-input  { display: none; width: 100%; border: 1px solid #7C9473; border-radius: 5px; padding: 8px; margin-top: 5px; }
+        .save-btn, .cancel-btn { display: none; }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    
+<style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('mobNavOverlay').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="mobNavOverlay"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('mobNavOverlay').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="user-dashboard.html">
+                    <span><i class="fa-solid fa-house" style="width:18px"></i> Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="bookings.html">
+                    <span><i class="fa-solid fa-calendar-check" style="width:18px"></i> My Bookings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="payments.html">
+                    <span><i class="fa-solid fa-wallet" style="width:18px"></i> Payments</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <span><i class="fa-solid fa-star" style="width:18px"></i> My Reviews</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="disputes.html">
+                    <span><i class="fa-solid fa-scale-balanced" style="width:18px"></i> Disputes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="messages.html">
+                    <span><i class="fa-solid fa-message" style="width:18px"></i> Messages</span>
+                                            
+                        <span class="badge-count" id="mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <span><i class="fa-solid fa-bell" style="width:18px"></i> Notifications</span>
+                                            <span class="badge-count" id="mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="active">
+                <a href="profile.html">
+                    <span><i class="fa-solid fa-user" style="width:18px"></i> Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <span><i class="fa-solid fa-gear" style="width:18px"></i> Settings</span>
+                </a>
+            </li>
+            <li style="margin-top:20px;">
+                <a href="../../index.html" class="logout-link">
+                    <span><i class="fa-solid fa-right-from-bracket" style="width:18px"></i> Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="user-dashboard.html">
+                <i class="fa-solid fa-house"></i>
+                <span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="bookings.html">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span class="nav-label">My Bookings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="payments.html">
+                <i class="fa-solid fa-wallet"></i>
+                <span class="nav-label">Payments</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i>
+                <span class="nav-label">My Reviews</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i>
+                <span class="nav-label">Messages</span>
+                                    
+                    <span class="badge-count" id="desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i>
+                <span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="active">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i>
+                <span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // ✅ Don't poll on notifications page itself — user is already reading them
+    const curPage = 'profile.html';
+    if (curPage === 'notifications.html') return;
+
+    function updateBadge(desktopId, mobileId, count) {
+        const desk = document.getElementById(desktopId);
+        const mob  = document.getElementById(mobileId);
+        [desk, mob].forEach(el => {
+            if (!el) return;
+            if (count > 0) {
+                el.textContent    = count;
+                el.style.display  = 'inline-flex';
+            } else {
+                el.style.display  = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(res => {
+                if (!res.ok) return null;
+                return res.json();
+            })
+            .then(data => {
+                if (!data) return;
+                updateBadge('desk-badge-notifs', 'mob-badge-notifs', data.notifs || 0);
+                updateBadge('desk-badge-msgs',   'mob-badge-msgs',   data.msgs   || 0);
+            })
+            .catch(() => {}); // Silent fail — don't break page
+    }
+
+    // ✅ Only poll when tab is visible — saves battery + server load
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) {
+            pollTimer = setInterval(refreshBadges, 30000); // 30 seconds
+        }
+    }
+
+    function stopPolling() {
+        if (pollTimer) {
+            clearInterval(pollTimer);
+            pollTimer = null;
+        }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') {
+            refreshBadges(); // Immediate refresh on tab focus
+            startPolling();
+        } else {
+            stopPolling();
+        }
+    });
+
+    // Immediate fetch on page load — don't wait 30s for first badge update
+    refreshBadges();
+    startPolling();
+})();
+</script>
+    <main class="main-content">
+        <form action="profile.html" method="POST" enctype="multipart/form-data" id="mainForm">
+
+            <input type="hidden" name="csrf_token" value="static-demo-token">
+            <div class="profile-header">
+                <div class="profile-pic" onclick="triggerUpload()">
+                    <img src="../../Uploads/profiles/ayesha.svg" alt="Profile" id="preview">
+                    <span class="camera-icon">✎</span>
+                    <input type="file" name="profile_pic" id="fileInput" style="display:none;"
+                           accept="image/jpeg,image/png,image/webp"
+                           onchange="previewImg(this)">
+                </div>
+                <div>
+                    <h1>Hello, <span>Ayesha Khan!</span></h1>
+                    <p>Role: User | Manage your account settings</p>
+                </div>
+            </div>
+
+            <section class="profile-details">
+                <h2 style="color:#5B4636; margin-bottom:20px;">Personal Information</h2>
+
+                
+                <div class="info-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+
+                    <div class="info-box">
+                        <h4 style="color:#7C9473;">Full Name</h4>
+                        <p class="text-data">Ayesha Khan</p>
+                        <input type="text" name="fullname" class="edit-input" maxlength="100"
+                               value="Ayesha Khan">
+                    </div>
+
+                    <div class="info-box">
+                        <h4 style="color:#7C9473;">Email Address</h4>
+                        <p>ayesha.khan@example.com</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4 style="color:#7C9473;">Phone</h4>
+                        <p class="text-data">0300-1234567</p>
+                        <input type="text" name="phone" class="edit-input" maxlength="20"
+                               value="0300-1234567">
+                    </div>
+
+                    <div class="info-box">
+                        <h4 style="color:#7C9473;">Full Address</h4>
+                        <p class="text-data">House 12, Block 5, Gulshan-e-Iqbal, Karachi</p>
+                        <textarea name="address" class="edit-input" maxlength="300">House 12, Block 5, Gulshan-e-Iqbal, Karachi</textarea>
+                    </div>
+
+                </div>
+            </section>
+
+            <div class="btn-container" style="margin-top:30px; display:flex; gap:10px;">
+                <button type="button" id="editBtn" onclick="toggleEdit()"
+                        style="background:#7C9473; color:white; padding:12px 25px; border:none; border-radius:8px; cursor:pointer;">
+                    Edit Profile
+                </button>
+                <button type="submit" name="update_profile" class="save-btn"
+                        style="background:#5B4636; color:white; padding:12px 25px; border:none; border-radius:8px; cursor:pointer;">
+                    Save Changes
+                </button>
+                <button type="button" onclick="window.location.reload()" class="cancel-btn"
+                        style="background:#ccc; padding:12px 25px; border:none; border-radius:8px; cursor:pointer;">
+                    Cancel
+                </button>
+            </div>
+
+        </form>
+    </main>
+</div>
+
+<script>
+function triggerUpload() {
+    document.getElementById('fileInput').click();
+}
+
+function toggleEdit() {
+    document.querySelectorAll('.text-data').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.edit-input').forEach(i => i.style.display = 'block');
+    document.getElementById('editBtn').style.display    = 'none';
+    document.querySelector('.save-btn').style.display   = 'inline-block';
+    document.querySelector('.cancel-btn').style.display = 'inline-block';
+}
+
+function previewImg(input) {
+    if (input.files && input.files[0]) {
+        if (input.files[0].size > 2 * 1024 * 1024) {
+            alert('Image cannot be larger than 2MB.');
+            input.value = '';
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = e => document.getElementById('preview').src = e.target.result;
+        reader.readAsDataURL(input.files[0]);
+        toggleEdit();
+    }
+}
+</script>
+</body>
+</html>

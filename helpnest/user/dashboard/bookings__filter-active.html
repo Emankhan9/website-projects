@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="user/dashboard/bookings__filter-active.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <title>HelpNest | My Bookings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/user-dashboard.css">
+  <link rel="stylesheet" href="../css/bookings.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .filter-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1.5rem; }
+    .filter-tab  { padding:8px 16px; border-radius:20px; font-size:0.8rem; font-weight:600; text-decoration:none; color:#888; background:#fff; border:1.5px solid #ede8e0; transition:all 0.25s; display:flex; align-items:center; gap:6px; }
+    .filter-tab:hover { border-color:#7C9473; color:#7C9473; }
+    .filter-tab.active { background:#5B4636; color:#fff; border-color:#5B4636; }
+    .filter-tab .tab-count { background:rgba(255,255,255,0.25); padding:1px 7px; border-radius:10px; font-size:0.7rem; }
+    .filter-tab:not(.active) .tab-count { background:#f0ece0; color:#999; }
+
+    .rated-badge     { display:flex; align-items:center; gap:6px; padding:8px 14px; background:#eef4eb; color:#7C9473; border-radius:10px; font-size:0.82rem; font-weight:600; }
+    .cancelled-badge { display:flex; align-items:center; gap:6px; padding:8px 14px; background:#fde8e8; color:#e74c3c; border-radius:10px; font-size:0.82rem; font-weight:600; }
+
+    /* ── Highlight animation ── */
+    .booking-card.highlighted {
+      animation: cardHL 3s ease-in-out;
+      border: 2px solid #7C9473 !important;
+    }
+    @keyframes cardHL {
+      0%   { box-shadow: 0 0 0 0 rgba(124,148,115,0); background: #fff; }
+      20%  { box-shadow: 0 0 0 10px rgba(124,148,115,0.25); background: #f0f9ee; }
+      100% { box-shadow: 0 4px 20px rgba(0,0,0,0.06); background: #fff; }
+    }
+
+    /* ── Notification origin banner (highlighted from redirect) ── */
+    .notif-origin-banner {
+      background: #f0f7ee;
+      border: 1.5px solid #c5dac0;
+      border-radius: 12px;
+      padding: 10px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: #5B4636;
+      font-weight: 500;
+    }
+    .notif-origin-banner i { color: #7C9473; }
+    .notif-origin-banner a { color: #7C9473; font-weight: 700; margin-left: auto; text-decoration: none; }
+    .notif-origin-banner a:hover { text-decoration: underline; }
+
+    /* Unread notification nudge bar — non-intrusive prompt to visit notifications.html ── */
+    .unread-nudge-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #fdfaf5, #f5f0ff);
+      border: 1.5px solid #d5c8f0;
+      border-radius: 12px;
+      padding: 10px 16px;
+      margin-bottom: 14px;
+      font-size: 0.82rem;
+      color: #5B4636;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .unread-nudge-bar:hover { background: #eee8ff; transform: translateY(-1px); }
+    .unread-nudge-bar .nudge-pill {
+      background: #e74c3c;
+      color: #fff;
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .unread-nudge-bar i { color: #9b59b6; font-size: 1rem; flex-shrink: 0; }
+    .unread-nudge-bar .nudge-arrow { margin-left: auto; color: #ccc; font-size: 0.75rem; }
+  </style>
+</head>
+<body>
+<div class="dashboard-container">
+  
+<style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('mobNavOverlay').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="mobNavOverlay"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('mobNavOverlay').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="user-dashboard.html">
+                    <span><i class="fa-solid fa-house" style="width:18px"></i> Dashboard</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="bookings.html">
+                    <span><i class="fa-solid fa-calendar-check" style="width:18px"></i> My Bookings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="payments.html">
+                    <span><i class="fa-solid fa-wallet" style="width:18px"></i> Payments</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <span><i class="fa-solid fa-star" style="width:18px"></i> My Reviews</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="disputes.html">
+                    <span><i class="fa-solid fa-scale-balanced" style="width:18px"></i> Disputes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="messages.html">
+                    <span><i class="fa-solid fa-message" style="width:18px"></i> Messages</span>
+                                            
+                        <span class="badge-count" id="mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <span><i class="fa-solid fa-bell" style="width:18px"></i> Notifications</span>
+                                            <span class="badge-count" id="mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="profile.html">
+                    <span><i class="fa-solid fa-user" style="width:18px"></i> Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <span><i class="fa-solid fa-gear" style="width:18px"></i> Settings</span>
+                </a>
+            </li>
+            <li style="margin-top:20px;">
+                <a href="../../index.html" class="logout-link">
+                    <span><i class="fa-solid fa-right-from-bracket" style="width:18px"></i> Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="user-dashboard.html">
+                <i class="fa-solid fa-house"></i>
+                <span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="bookings.html">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span class="nav-label">My Bookings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="payments.html">
+                <i class="fa-solid fa-wallet"></i>
+                <span class="nav-label">Payments</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i>
+                <span class="nav-label">My Reviews</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i>
+                <span class="nav-label">Messages</span>
+                                    
+                    <span class="badge-count" id="desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i>
+                <span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i>
+                <span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // ✅ Don't poll on notifications page itself — user is already reading them
+    const curPage = 'bookings.html';
+    if (curPage === 'notifications.html') return;
+
+    function updateBadge(desktopId, mobileId, count) {
+        const desk = document.getElementById(desktopId);
+        const mob  = document.getElementById(mobileId);
+        [desk, mob].forEach(el => {
+            if (!el) return;
+            if (count > 0) {
+                el.textContent    = count;
+                el.style.display  = 'inline-flex';
+            } else {
+                el.style.display  = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(res => {
+                if (!res.ok) return null;
+                return res.json();
+            })
+            .then(data => {
+                if (!data) return;
+                updateBadge('desk-badge-notifs', 'mob-badge-notifs', data.notifs || 0);
+                updateBadge('desk-badge-msgs',   'mob-badge-msgs',   data.msgs   || 0);
+            })
+            .catch(() => {}); // Silent fail — don't break page
+    }
+
+    // ✅ Only poll when tab is visible — saves battery + server load
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) {
+            pollTimer = setInterval(refreshBadges, 30000); // 30 seconds
+        }
+    }
+
+    function stopPolling() {
+        if (pollTimer) {
+            clearInterval(pollTimer);
+            pollTimer = null;
+        }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') {
+            refreshBadges(); // Immediate refresh on tab focus
+            startPolling();
+        } else {
+            stopPolling();
+        }
+    });
+
+    // Immediate fetch on page load — don't wait 30s for first badge update
+    refreshBadges();
+    startPolling();
+})();
+</script>
+  <main class="main-content">
+    <header class="header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+      <div>
+        <h2>My Bookings</h2>
+        <p class="subtext">Track your ongoing and completed services</p>
+      </div>
+      <a href="../../explore.html" class="btn" style="padding:10px 25px; text-decoration:none;">Explore Helpers</a>
+    </header>
+
+    
+    
+    
+          <a href="notifications.html" class="unread-nudge-bar">
+        <i class="fa-solid fa-bell"></i>
+        You have
+        <span class="nudge-pill">2 new</span>
+        notifications waiting
+        <i class="fa fa-chevron-right nudge-arrow"></i>
+      </a>
+    
+    
+    <div class="filter-tabs">
+      <a href="bookings__filter-all.html"       class="filter-tab "><i class="fa fa-list"></i> All <span class="tab-count">5</span></a>
+      <a href="bookings__filter-pending.html"   class="filter-tab "><i class="fa fa-clock"></i> Pending <span class="tab-count">1</span></a>
+      <a href="bookings__filter-active.html"    class="filter-tab active"><i class="fa fa-bolt"></i> Active <span class="tab-count">1</span></a>
+      <a href="bookings__filter-completed.html" class="filter-tab "><i class="fa fa-circle-check"></i> Completed <span class="tab-count">3</span></a>
+      <a href="bookings__filter-cancelled.html" class="filter-tab "><i class="fa fa-ban"></i> Cancelled <span class="tab-count">0</span></a>
+    </div>
+
+    
+    <div id="bookingsContainer">
+                        <div class="booking-card "
+               id="booking-5">
+            <div class="booking-left">
+              <img src="../../Uploads/profiles/imran.svg"
+                   alt="Helper"
+                   onerror="this.src='../../assets/default-avatar.png'">
+            </div>
+            <div class="booking-middle">
+              <h3>Imran Ali</h3>
+              <p class="service">Driver</p>
+                            <p style="font-size:0.78rem;color:#aaa;margin:2px 0;">
+                <i class="fa fa-hashtag"></i> HN-2026-00005              </p>
+              <p class="date">
+                <i class="far fa-calendar"></i> 21/10/2026                <i class="far fa-clock" style="margin-left:10px;"></i>
+                8:00 AM —
+                10:00 AM              </p>
+              <p style="font-size:0.85rem;color:#888;margin:4px 0;">
+                <i class="fa fa-retweet"></i>
+                Monthly                &nbsp;|&nbsp;
+                <i class="fa fa-wallet"></i> Rs. 42,000              </p>
+                            <span class="status accepted">Confirmed</span>
+                                                                    </div>
+            <div class="booking-right">
+              <a href="../../common/view-profile__id-4.html"
+                 class="btn-outline">View Profile</a>
+                              
+                                  
+                  <span style="display:flex;align-items:center;gap:6px;padding:8px 14px;
+                    background:#f0f7ff;color:#3498db;border-radius:10px;font-size:0.8rem;
+                    font-weight:600;" title="Helper marks first, then you can confirm">
+                    <i class="fa fa-hourglass-half"></i> Waiting for Helper
+                  </span>
+
+                
+                                  <button class="btn-outline"
+                          style="color:#e67e22;border-color:#e67e22;margin-top:6px;width:100%;"
+                          onclick="confirmCancelAccepted(5, true)">
+                    <i class="fa fa-xmark"></i> Cancel
+                  </button>
+                                          </div>
+          </div>
+        
+          </div>
+  </main>
+</div>
+
+<script>
+// ── Highlight scroll ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+    const hid = 0;
+    if (!hid) return;
+    const card = document.getElementById('booking-' + hid);
+    if (card) setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
+});
+
+// ── Helper: submit hidden form ────────────────────────────────────────────
+function postAction(url, fields) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = url;
+    Object.entries(fields).forEach(([name, value]) => {
+        const i = document.createElement('input');
+        i.type = 'hidden'; i.name = name; i.value = value;
+        form.appendChild(i);
+    });
+    document.body.appendChild(form);
+    form.submit();
+}
+
+const CSRF = "static-demo-token";
+
+// ── Confirm Service Done (user side) ─────────────────────────────────────────
+function confirmComplete(bookingId) {
+    Swal.fire({
+        html: `
+          <div style="padding:8px 4px 4px;">
+            <div style="width:54px;height:54px;background:linear-gradient(135deg,#eef4eb,#d6e8cf);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7C9473" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <h2 style="font-family:'Playfair Display',serif;color:#5B4636;font-size:1.2rem;margin:0 0 4px;">Confirm Service Completion</h2>
+
+            
+            <div style="background:#fffbea;border:1.5px solid #f5c842;border-radius:8px;
+                        padding:8px 12px;margin:0 0 14px;font-size:0.78rem;color:#7a5c00;
+                        display:flex;align-items:flex-start;gap:8px;text-align:left;">
+              <i class="fa fa-money-bill-wave" style="margin-top:2px;color:#e6a817;"></i>
+              <span>Payment is <strong>Cash Only</strong>. Please pay the helper in cash before confirming.</span>
+            </div>
+
+            
+            <label style="display:flex;align-items:center;gap:10px;background:#f4faf4;
+                          border:1.5px solid #c3e6cb;border-radius:8px;padding:10px 12px;
+                          margin-bottom:16px;cursor:pointer;font-size:0.82rem;color:#2d6a4f;
+                          font-weight:600;text-align:left;">
+              <input type="checkbox" id="cashPaidCheck"
+                     style="width:16px;height:16px;accent-color:#27ae60;cursor:pointer;flex-shrink:0;">
+              I have paid the helper in full cash ✓
+            </label>
+
+            <p style="color:#aaa;font-size:0.78rem;margin:0 0 12px;">
+              Rate your experience to help others find the right helper.
+            </p>
+            <div style="display:flex;justify-content:center;gap:8px;margin-bottom:8px;" id="starContainer">
+              <span class="star" data-val="1" style="font-size:2.2rem;cursor:pointer;color:#ddd;transition:all 0.15s;line-height:1;">★</span>
+              <span class="star" data-val="2" style="font-size:2.2rem;cursor:pointer;color:#ddd;transition:all 0.15s;line-height:1;">★</span>
+              <span class="star" data-val="3" style="font-size:2.2rem;cursor:pointer;color:#ddd;transition:all 0.15s;line-height:1;">★</span>
+              <span class="star" data-val="4" style="font-size:2.2rem;cursor:pointer;color:#ddd;transition:all 0.15s;line-height:1;">★</span>
+              <span class="star" data-val="5" style="font-size:2.2rem;cursor:pointer;color:#ddd;transition:all 0.15s;line-height:1;">★</span>
+            </div>
+            <p id="ratingLabel" style="font-size:0.78rem;color:#bbb;margin:0 0 18px;min-height:18px;font-weight:500;"></p>
+            <input type="hidden" id="ratingVal" value="0">
+            <div style="height:1px;background:#f0ebe0;margin-bottom:16px;"></div>
+            <div style="text-align:left;margin-bottom:4px;">
+              <label style="font-size:0.75rem;font-weight:700;color:#7C9473;letter-spacing:0.5px;text-transform:uppercase;">Your Comment <span style="color:#ccc;font-weight:400;">(optional)</span></label>
+            </div>
+            <textarea id="reviewComment"
+              placeholder="Tell others about your experience..."
+              style="width:100%;padding:11px 13px;border:1.5px solid #ede8e0;border-radius:10px;font-family:'Poppins',sans-serif;font-size:0.83rem;resize:none;height:85px;color:#444;outline:none;box-sizing:border-box;"
+              onfocus="this.style.borderColor='#7C9473'"
+              onblur="this.style.borderColor='#ede8e0'"></textarea>
+          </div>`,
+        showCancelButton: true,
+        confirmButtonColor: '#27ae60',
+        cancelButtonColor: '#c8bfb5',
+        confirmButtonText: '<i class="fa fa-circle-check" style="margin-right:6px;"></i> Confirm Service Done',
+        cancelButtonText: 'Not Yet',
+        didOpen: () => {
+            const labels = ['','Terrible 😞','Not Good 😕','Okay 😐','Good 😊','Excellent! 🌟'];
+            const stars  = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.addEventListener('mouseenter', () => {
+                    const hv = parseInt(star.getAttribute('data-val'));
+                    stars.forEach(s => {
+                        s.style.color     = parseInt(s.getAttribute('data-val')) <= hv ? '#f1c40f' : '#ddd';
+                        s.style.transform = parseInt(s.getAttribute('data-val')) <= hv ? 'scale(1.15)' : 'scale(1)';
+                    });
+                    document.getElementById('ratingLabel').textContent = labels[hv];
+                    document.getElementById('ratingLabel').style.color = '#f1c40f';
+                });
+                star.addEventListener('mouseleave', () => {
+                    const cur = parseInt(document.getElementById('ratingVal').value);
+                    stars.forEach(s => {
+                        s.style.color     = parseInt(s.getAttribute('data-val')) <= cur ? '#f1c40f' : '#ddd';
+                        s.style.transform = 'scale(1)';
+                    });
+                    document.getElementById('ratingLabel').textContent = cur > 0 ? labels[cur] : '';
+                    document.getElementById('ratingLabel').style.color = cur > 0 ? '#f1c40f' : '#bbb';
+                });
+                star.addEventListener('click', () => {
+                    const val    = parseInt(star.getAttribute('data-val'));
+                    const cur    = parseInt(document.getElementById('ratingVal').value);
+                    const newVal = (val === cur) ? 0 : val;
+                    document.getElementById('ratingVal').value = newVal;
+                    stars.forEach(s => {
+                        s.style.color     = parseInt(s.getAttribute('data-val')) <= newVal ? '#f1c40f' : '#ddd';
+                        s.style.transform = 'scale(1)';
+                    });
+                    document.getElementById('ratingLabel').textContent = newVal > 0 ? labels[newVal] : '';
+                    document.getElementById('ratingLabel').style.color = newVal > 0 ? '#f1c40f' : '#bbb';
+                });
+            });
+        },
+        preConfirm: () => {
+            const cashChecked = document.getElementById('cashPaidCheck').checked;
+            const rating      = document.getElementById('ratingVal').value;
+            if (!cashChecked) {
+                Swal.showValidationMessage('<i class="fa fa-circle-exclamation"></i> Please confirm that you have paid the helper in cash.');
+                return false;
+            }
+            if (rating == 0) {
+                Swal.showValidationMessage('<i class="fa fa-circle-exclamation"></i> Please select a star rating first!');
+                return false;
+            }
+            return { rating, comment: document.getElementById('reviewComment').value };
+        }
+    }).then(result => {
+        if (result.isConfirmed) {
+            const { rating, comment } = result.value;
+            // ✅ PRIMARY handler: user-confirm.php
+            // complete-booking.php is a legacy alias with identical logic —
+            // both files are consistent. Always use user-confirm.php here.
+            postAction('../../../actions/user-confirm.php', {
+                booking_id: bookingId,
+                rating:     rating,
+                comment:    comment,
+                csrf_token: CSRF
+            });
+        }
+    });
+}
+
+// ── Cancel PENDING booking ────────────────────────────────────────────────
+function confirmCancel(bookingId) {
+    Swal.fire({
+        title: 'Cancel Booking?',
+        text:  'This booking is still pending. You can cancel it for free.',
+        icon:  'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e74c3c',
+        cancelButtonColor:  '#aaa',
+        confirmButtonText: 'Yes, Cancel It',
+        cancelButtonText:  'Go Back'
+    }).then(result => {
+        if (result.isConfirmed) {
+            postAction('../../../actions/cancel-booking.php', {
+                booking_id: bookingId,
+                csrf_token: CSRF
+            });
+        }
+    });
+}
+
+// ── Cancel ACCEPTED booking ───────────────────────────────────────────────
+function confirmCancelAccepted(bookingId, isToday) {
+    const penaltyNote = isToday
+        ? '<p style="color:#e67e22;font-size:0.82rem;margin-top:8px;"><i class="fa fa-triangle-exclamation"></i> <strong>Same-day cancellation</strong> — please note this may affect your booking history.</p>'
+        : '';
+    Swal.fire({
+        title: 'Cancel Accepted Booking?',
+        html:  `<p style="color:#888;font-size:0.85rem;">Please provide a reason for cancellation.</p>
+                ${penaltyNote}
+                <textarea id="cancelReasonInput" class="swal2-textarea"
+                  placeholder="e.g. Emergency came up, schedule changed..."
+                  style="margin-top:10px;font-size:0.85rem;resize:none;height:90px;"></textarea>`,
+        icon:  'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e74c3c',
+        cancelButtonColor:  '#aaa',
+        confirmButtonText: 'Confirm Cancellation',
+        cancelButtonText:  'Go Back',
+        preConfirm: () => {
+            const reason = document.getElementById('cancelReasonInput').value.trim();
+            if (!reason) {
+                Swal.showValidationMessage('<i class="fa fa-circle-exclamation"></i> Please provide a reason before cancelling.');
+                return false;
+            }
+            return reason;
+        }
+    }).then(result => {
+        if (result.isConfirmed) {
+            postAction('../../../actions/cancel-booking.php', {
+                booking_id:    bookingId,
+                cancel_reason: result.value,
+                csrf_token:    CSRF
+            });
+        }
+    });
+}
+
+// ── URL msg handling ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (!urlParams.has('msg')) return;
+    const msg = urlParams.get('msg');
+    if (msg === 'waiting_housekeeper') {
+        Swal.fire({ icon:'info', title:'Please Wait', text:'Your helper has not yet marked their side as complete. Once they do, you will receive a notification and the "Service Received & Cash Paid" button will appear.', confirmButtonColor:'#7C9473' });
+    } else if (msg === 'review_posted') {
+        Swal.fire({ icon:'success', title:'Review Posted!',      text:'Thank you for your feedback.',  confirmButtonColor:'#7C9473' });
+    } else if (msg === 'success') {
+        Swal.fire({ icon:'success', title:'Booking Completed!',  confirmButtonColor:'#7C9473' });
+    } else if (msg === 'booking_cancelled') {
+        Swal.fire({ icon:'info',    title:'Booking Cancelled',   confirmButtonColor:'#7C9473' });
+    // ✅ FIX: Added msg=invalid handler — complete-booking.php was sending this, no Swal existed
+    } else if (msg === 'invalid') {
+        Swal.fire({ icon:'error', title:'Invalid Request', text:'This booking could not be processed. Please try again.', confirmButtonColor:'#7C9473' });
+    } else if (msg === 'auto_cancelled') {
+        Swal.fire({ icon:'warning', title:'Booking Expired', text:'This booking was automatically cancelled because the helper did not respond in time. Please book another helper.', confirmButtonColor:'#7C9473' });
+    // ✅ FIX: raise-dispute.php sends these — handlers were missing
+    } else if (msg === 'raised') {
+        Swal.fire({ icon:'success', title:'Dispute Submitted!', text:'Your dispute has been raised and will be reviewed by admin within 24–48 hours.', confirmButtonColor:'#7C9473' });
+    } else if (msg === 'already_raised') {
+        Swal.fire({ icon:'info', title:'Dispute Already Raised', text:'You have already raised a dispute for this booking.', confirmButtonColor:'#7C9473' });
+    }
+
+    // ── Error param handler ─────────────────────────────────────────────────
+    const err = urlParams.get('error');
+    if (err === 'service_already_started') {
+        const bid = urlParams.get('booking_id') || '';
+        Swal.fire({
+            icon: 'warning',
+            title: 'Cannot Cancel',
+            html: `<p style="font-family:'Poppins',sans-serif;font-size:0.9rem;color:#555;line-height:1.6;">
+                        Service time has already passed — cancellation is no longer allowed.<br><br>
+                        If the helper did not show up or the work was unsatisfactory,
+                        you can <strong>raise a dispute</strong> instead.
+                   </p>`,
+            confirmButtonText: 'Raise a Dispute',
+            cancelButtonText: 'Close',
+            showCancelButton: true,
+            confirmButtonColor: '#e67e22',
+            cancelButtonColor: '#aaa',
+        }).then(result => {
+            if (result.isConfirmed && bid) {
+                raiseDisputeModal(bid, 'Booking #' + bid);
+            }
+        });
+    } else if (err === 'cannot_cancel') {
+        Swal.fire({ icon:'error', title:'Cannot Cancel', text:'This booking cannot be cancelled at this stage.', confirmButtonColor:'#7C9473' });
+    }
+    // Clean URL
+    window.history.replaceState({}, document.title,
+        window.location.pathname + '?filter=active'
+        + (0 ? '&highlight=0' : '')
+    );
+});
+
+// ── Raise Dispute Modal ───────────────────────────────────────────────────
+function raiseDisputeModal(bookingId, bookingLabel) {
+    Swal.fire({
+        title: '<span style="font-family:\'Playfair Display\',serif;color:#5B4636;">Raise a Dispute</span>',
+        html: `
+          <div style="text-align:left;font-family:'Poppins',sans-serif;font-size:0.88rem;">
+            <div style="background:#fff8e1;border:1.5px solid #f5c842;border-radius:8px;padding:10px 12px;
+                        margin-bottom:14px;font-size:0.78rem;color:#7a5c00;">
+              <i class="fa-solid fa-circle-info"></i>
+              Booking: <strong>${bookingLabel}</strong><br>
+              Disputes are reviewed by admin within 24–48 hours.
+            </div>
+            <label style="font-size:0.8rem;font-weight:600;color:#5B4636;display:block;margin-bottom:6px;">
+              Describe the Issue <span style="color:#e74c3c;">*</span>
+            </label>
+            <textarea id="disputeReason"
+              placeholder="e.g. The helper did not complete the job properly, or I was charged incorrectly..."
+              style="width:100%;padding:11px 14px;border:1.5px solid #e8e0d5;border-radius:10px;
+                     font-family:'Poppins',sans-serif;font-size:0.85rem;resize:none;height:120px;box-sizing:border-box;"
+              onfocus="this.style.borderColor='#7C9473'"
+              onblur="this.style.borderColor='#e8e0d5'"></textarea>
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonColor: '#e67e22',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: '<i class="fa-solid fa-paper-plane"></i> Submit Dispute',
+        cancelButtonText: 'Cancel',
+        width: '500px',
+        preConfirm: () => {
+            const reason = document.getElementById('disputeReason').value.trim();
+            if (!reason || reason.length < 20) {
+                Swal.showValidationMessage(
+                    '<i class="fa-solid fa-circle-exclamation"></i> Please describe the issue (at least 20 characters).'
+                );
+                return false;
+            }
+            return reason;
+        }
+    }).then(result => {
+        if (result.isConfirmed) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '../../../actions/raise-dispute.php';
+            const fields = {
+                booking_id: bookingId,
+                reason:     result.value,
+                csrf_token: CSRF
+            };
+            for (const [k, v] of Object.entries(fields)) {
+                const inp = document.createElement('input');
+                inp.type = 'hidden'; inp.name = k; inp.value = v;
+                form.appendChild(inp);
+            }
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+</script>
+</body>
+</html>

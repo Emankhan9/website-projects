@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="user/dashboard/user-dashboard.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpNest | User Dashboard</title>
+    <link rel="stylesheet" href="../css/user-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      /* ── Status badge in recent activity table ───────────────── */
+      .status-badge {
+        display: inline-block;
+        padding: 3px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .status-badge.pending   { background: #fff8e1; color: #f39c12; }
+      .status-badge.accepted  { background: #eef4eb; color: #7C9473; }
+      .status-badge.completed { background: #d4edda; color: #276749; }
+      .status-badge.cancelled { background: #fde8e8; color: #e74c3c; }
+
+      /* ── Notification stat card highlight ───────────────────── */
+      .card.notif-card-stat {
+        position: relative;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .card.notif-card-stat:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(91,70,54,0.12);
+      }
+      .notif-badge-dot {
+        position: absolute;
+        top: 12px;
+        right: 14px;
+        width: 10px;
+        height: 10px;
+        background: #e74c3c;
+        border-radius: 50%;
+        border: 2px solid #fff;
+      }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="dashboard-back-arrow" title="Back to Home">
+        <i class="fa-solid fa-circle-chevron-left"></i>
+    </a>
+    <div class="dashboard-container">
+        
+<style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('mobNavOverlay').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="mobNavOverlay"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('mobNavOverlay').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="active">
+                <a href="user-dashboard.html">
+                    <span><i class="fa-solid fa-house" style="width:18px"></i> Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="bookings.html">
+                    <span><i class="fa-solid fa-calendar-check" style="width:18px"></i> My Bookings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="payments.html">
+                    <span><i class="fa-solid fa-wallet" style="width:18px"></i> Payments</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <span><i class="fa-solid fa-star" style="width:18px"></i> My Reviews</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="disputes.html">
+                    <span><i class="fa-solid fa-scale-balanced" style="width:18px"></i> Disputes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="messages.html">
+                    <span><i class="fa-solid fa-message" style="width:18px"></i> Messages</span>
+                                            
+                        <span class="badge-count" id="mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <span><i class="fa-solid fa-bell" style="width:18px"></i> Notifications</span>
+                                            <span class="badge-count" id="mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="profile.html">
+                    <span><i class="fa-solid fa-user" style="width:18px"></i> Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <span><i class="fa-solid fa-gear" style="width:18px"></i> Settings</span>
+                </a>
+            </li>
+            <li style="margin-top:20px;">
+                <a href="../../index.html" class="logout-link">
+                    <span><i class="fa-solid fa-right-from-bracket" style="width:18px"></i> Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="active">
+            <a href="user-dashboard.html">
+                <i class="fa-solid fa-house"></i>
+                <span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="bookings.html">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span class="nav-label">My Bookings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="payments.html">
+                <i class="fa-solid fa-wallet"></i>
+                <span class="nav-label">Payments</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i>
+                <span class="nav-label">My Reviews</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i>
+                <span class="nav-label">Messages</span>
+                                    
+                    <span class="badge-count" id="desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i>
+                <span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i>
+                <span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // ✅ Don't poll on notifications page itself — user is already reading them
+    const curPage = 'user-dashboard.html';
+    if (curPage === 'notifications.html') return;
+
+    function updateBadge(desktopId, mobileId, count) {
+        const desk = document.getElementById(desktopId);
+        const mob  = document.getElementById(mobileId);
+        [desk, mob].forEach(el => {
+            if (!el) return;
+            if (count > 0) {
+                el.textContent    = count;
+                el.style.display  = 'inline-flex';
+            } else {
+                el.style.display  = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(res => {
+                if (!res.ok) return null;
+                return res.json();
+            })
+            .then(data => {
+                if (!data) return;
+                updateBadge('desk-badge-notifs', 'mob-badge-notifs', data.notifs || 0);
+                updateBadge('desk-badge-msgs',   'mob-badge-msgs',   data.msgs   || 0);
+            })
+            .catch(() => {}); // Silent fail — don't break page
+    }
+
+    // ✅ Only poll when tab is visible — saves battery + server load
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) {
+            pollTimer = setInterval(refreshBadges, 30000); // 30 seconds
+        }
+    }
+
+    function stopPolling() {
+        if (pollTimer) {
+            clearInterval(pollTimer);
+            pollTimer = null;
+        }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') {
+            refreshBadges(); // Immediate refresh on tab focus
+            startPolling();
+        } else {
+            stopPolling();
+        }
+    });
+
+    // Immediate fetch on page load — don't wait 30s for first badge update
+    refreshBadges();
+    startPolling();
+})();
+</script>
+        <main class="main-content">
+            <header class="header">
+                <div class="profile-wrap">
+                    <div class="profile-pic">
+                        <img src="../../Uploads/profiles/ayesha.svg" alt="Profile"
+                             onerror="this.src='../../assets/default-avatar.png'">
+                    </div>
+                    <div>
+                        <h1>Welcome back, <span>Ayesha Khan</span></h1>
+                        <p>Role: User | Here's a quick overview of your activity</p>
+                    </div>
+                </div>
+            </header>
+
+            
+            <section class="stats">
+                <div class="card">
+                    <h3>Total Bookings</h3>
+                    <p>5</p>
+                </div>
+                <div class="card">
+                    <h3>Active Bookings</h3>
+                    <p>1</p>
+                </div>
+                <div class="card">
+                    <h3>Pending</h3>
+                    <p>1</p>
+                </div>
+                
+                <a href="notifications.html" class="card notif-card-stat" style="color:inherit;">
+                                            <span class="notif-badge-dot"></span>
+                                        <h3>Notifications</h3>
+                    <p>2 New</p>
+                </a>
+            </section>
+
+            
+            <div class="recent-activity">
+                <h3>Recent Activity</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Helper Name</th>
+                            <th>Service</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                                                    <tr>
+                                    <td>Fatima Noor</td>
+                                    <td>Home Cleaning</td>
+                                    <td style="font-size:0.82rem;color:#888;">
+                                        23 Oct 2026                                    </td>
+                                    <td>
+                                        <span class="status-badge pending">
+                                            Pending                                        </span>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td>Imran Ali</td>
+                                    <td>Driver</td>
+                                    <td style="font-size:0.82rem;color:#888;">
+                                        21 Oct 2026                                    </td>
+                                    <td>
+                                        <span class="status-badge accepted">
+                                            Accepted                                        </span>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td>Zainab Akhtar</td>
+                                    <td>Cooking</td>
+                                    <td style="font-size:0.82rem;color:#888;">
+                                        09 Oct 2026                                    </td>
+                                    <td>
+                                        <span class="status-badge completed">
+                                            Completed                                        </span>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td>Fatima Noor</td>
+                                    <td>Home Cleaning</td>
+                                    <td style="font-size:0.82rem;color:#888;">
+                                        01 Oct 2026                                    </td>
+                                    <td>
+                                        <span class="status-badge completed">
+                                            Completed                                        </span>
+                                    </td>
+                                </tr>
+                                                            <tr>
+                                    <td>Fatima Noor</td>
+                                    <td>Home Cleaning</td>
+                                    <td style="font-size:0.82rem;color:#888;">
+                                        16 Sep 2026                                    </td>
+                                    <td>
+                                        <span class="status-badge completed">
+                                            Completed                                        </span>
+                                    </td>
+                                </tr>
+                                                                        </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

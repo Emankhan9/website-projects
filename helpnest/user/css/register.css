@@ -1,0 +1,364 @@
+/* ===============================
+   🌿 HELPNEST — USER REGISTER CSS
+   Clean + Fully Responsive
+================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #F8F4E3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* ── MAIN WRAPPER ── */
+.register-section {
+  display: flex;
+  width: 90%;
+  max-width: 1200px;
+  background: #EDE6D6;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
+  min-height: 90vh;
+}
+
+/* ── LEFT SIDE ── */
+.text-side {
+  flex: 1;
+  background: #5B4636;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  text-align: center;
+  color: #fff;
+}
+
+.text-side h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+}
+
+.text-side span { color: #A8BFA1; }
+
+.text-side p {
+  color: #F8F4E3;
+  font-size: 1rem;
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+/* ── RIGHT SIDE ── */
+.form-side {
+  flex: 1.2;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 3rem 4rem;
+  border-radius: 20px;
+  text-align: left;
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 1.8rem;
+  color: #5B4636;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+}
+
+/* ── FORM FIELDS ── */
+.input-group { margin-bottom: 0.9rem; }
+
+.input-group label {
+  display: block;
+  color: #5B4636;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  background: #fdfaf5;
+  color: #333;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  border-color: #7C9473;
+  box-shadow: 0 0 0 3px rgba(124, 148, 115, 0.15);
+}
+
+/* Phone input */
+.phone-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fdfaf5;
+  transition: border-color 0.2s;
+}
+
+.phone-container:focus-within {
+  border-color: #7C9473;
+  box-shadow: 0 0 0 3px rgba(124, 148, 115, 0.15);
+}
+
+.phone-prefix {
+  padding: 0.75rem 0.8rem;
+  background: #f0ebe0;
+  color: #5B4636;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-right: 1px solid #ccc;
+  white-space: nowrap;
+}
+
+.phone-container input {
+  border: none;
+  border-radius: 0;
+  flex: 1;
+  background: transparent;
+  box-shadow: none;
+}
+
+.phone-container input:focus {
+  box-shadow: none;
+  border: none;
+}
+
+/* HK box */
+.hk-box {
+  background: #f8f4ee;
+  border: 1.5px dashed #A8BFA1;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+/* Submit button */
+.btn {
+  width: 100%;
+  padding: 0.85rem;
+  background: #7C9473;
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: background 0.25s, transform 0.2s;
+  margin-top: 0.5rem;
+}
+
+.btn:hover {
+  background: #5f7a5a;
+  transform: scale(1.02);
+}
+
+/* Login link */
+.login-link-container {
+  text-align: center;
+  margin-top: 1rem;
+  color: #5B4636;
+  font-size: 0.88rem;
+}
+
+.login-link-container a {
+  color: #7C9473;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Toast */
+#toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #e74c3c;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  z-index: 9999;
+  display: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+#toast.show { display: block; }
+
+/* Success Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 380px;
+  width: 90%;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+.success-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #7C9473;
+  color: #fff;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.modal-content h2 {
+  font-family: 'Playfair Display', serif;
+  color: #5B4636;
+  margin-bottom: 0.5rem;
+}
+
+.modal-content p {
+  color: #888;
+  font-size: 0.88rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ===============================
+   📱 TABLET (769px — 1024px)
+================================= */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  body {
+    align-items: flex-start;
+    padding: 1.5rem;
+  }
+
+  .register-section {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .text-side {
+    padding: 2rem 1.5rem;
+  }
+
+  .text-side h1 { font-size: 1.9rem; }
+
+  .form-container {
+    padding: 2rem 2rem;
+  }
+}
+
+/* ===============================
+   📱 MOBILE (max 768px)
+================================= */
+@media (max-width: 768px) {
+
+  body {
+    align-items: flex-start;
+    padding: 0;
+    overflow-y: auto;
+  }
+
+  .register-section {
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+    overflow: visible;
+    box-shadow: none;
+  }
+
+  .text-side { display: none; }
+
+  .form-side {
+    padding: 1.5rem 1rem;
+    width: 100%;
+    overflow: visible;
+    align-items: flex-start;
+  }
+
+  .form-container {
+    padding: 2rem 1.2rem;
+    box-shadow: none;
+    max-width: 100%;
+    border-radius: 12px;
+  }
+
+  .form-container h2 {
+    font-size: 1.8rem;
+    white-space: normal;
+  }
+
+  .input-group input,
+  .input-group select {
+    font-size: 16px;
+  }
+
+  .phone-container input {
+    font-size: 16px;
+  }
+
+  .btn {
+    padding: 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .hk-box {
+    padding: 0.8rem;
+  }
+
+  #toast {
+    width: 90%;
+    text-align: center;
+    font-size: 0.85rem;
+  }
+}

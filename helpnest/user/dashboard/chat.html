@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="user/dashboard/chat.html";window.HN_CHAT=[{"message": "Hi Imran, pick-up is from Gulshan Block 5 at 8 sharp.", "is_sent": true, "created_at": "20 Oct, 07:00 PM"}, {"message": "Ji, I will be there 10 minutes early.", "is_sent": false, "created_at": "20 Oct, 07:12 PM"}];</script>
+<script src="../../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <title>Chat | HelpNest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/user-dashboard.css">
+  <style>
+    .chat-wrapper { display:flex; flex-direction:column; height:calc(100vh - 120px); background:#fff; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08); overflow:hidden; }
+    .chat-header { background:#5B4636; padding:16px 24px; display:flex; align-items:center; gap:14px; }
+    .chat-header img { width:42px; height:42px; border-radius:50%; object-fit:cover; border:2px solid #EDE6D6; }
+    .chat-header h3 { color:#fff; font-size:0.95rem; margin:0; }
+    .chat-header p { color:rgba(255,255,255,0.6); font-size:0.75rem; margin:0; }
+    .chat-body { flex:1; overflow-y:auto; padding:20px; background:#fdfaf5; display:flex; flex-direction:column; gap:12px; }
+    .msg-bubble { max-width:65%; padding:10px 14px; border-radius:16px; font-size:0.88rem; line-height:1.6; position:relative; word-break:break-word; }
+    .msg-bubble.sent { background:#5B4636; color:#fff; align-self:flex-end; border-bottom-right-radius:4px; }
+    .msg-bubble.received { background:#fff; color:#333; align-self:flex-start; border-bottom-left-radius:4px; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+    .msg-time { font-size:0.68rem; margin-top:4px; opacity:0.7; text-align:right; }
+    .chat-footer { padding:16px 20px; background:#fff; border-top:1px solid #f0ebe0; display:flex; gap:10px; align-items:center; }
+    .chat-footer input { flex:1; padding:12px 16px; border:1.5px solid #e8e0d5; border-radius:25px; font-family:'Poppins',sans-serif; font-size:0.88rem; outline:none; background:#fdfaf5; }
+    .chat-footer input:focus { border-color:#7C9473; }
+    .send-btn { width:44px; height:44px; border-radius:50%; background:#5B4636; color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1rem; transition:0.2s; }
+    .send-btn:hover { background:#7C9473; }
+    .send-btn:disabled { background:#ccc; cursor:not-allowed; }
+    .booking-info-bar { background:#eef4eb; padding:8px 20px; font-size:0.78rem; color:#7C9473; font-weight:600; display:flex; align-items:center; gap:6px; }
+  </style>
+</head>
+<body>
+<div class="dashboard-container">
+  
+<style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('mobNavOverlay').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="mobNavOverlay"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('mobNavOverlay').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="user-dashboard.html">
+                    <span><i class="fa-solid fa-house" style="width:18px"></i> Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="bookings.html">
+                    <span><i class="fa-solid fa-calendar-check" style="width:18px"></i> My Bookings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="payments.html">
+                    <span><i class="fa-solid fa-wallet" style="width:18px"></i> Payments</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <span><i class="fa-solid fa-star" style="width:18px"></i> My Reviews</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="disputes.html">
+                    <span><i class="fa-solid fa-scale-balanced" style="width:18px"></i> Disputes</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="messages.html">
+                    <span><i class="fa-solid fa-message" style="width:18px"></i> Messages</span>
+                                            
+                        <span class="badge-count" id="mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <span><i class="fa-solid fa-bell" style="width:18px"></i> Notifications</span>
+                                            <span class="badge-count" id="mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="profile.html">
+                    <span><i class="fa-solid fa-user" style="width:18px"></i> Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <span><i class="fa-solid fa-gear" style="width:18px"></i> Settings</span>
+                </a>
+            </li>
+            <li style="margin-top:20px;">
+                <a href="../../index.html" class="logout-link">
+                    <span><i class="fa-solid fa-right-from-bracket" style="width:18px"></i> Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="user-dashboard.html">
+                <i class="fa-solid fa-house"></i>
+                <span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="bookings.html">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span class="nav-label">My Bookings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="payments.html">
+                <i class="fa-solid fa-wallet"></i>
+                <span class="nav-label">Payments</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i>
+                <span class="nav-label">My Reviews</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i>
+                <span class="nav-label">Messages</span>
+                                    
+                    <span class="badge-count" id="desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i>
+                <span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i>
+                <span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // ✅ Don't poll on notifications page itself — user is already reading them
+    const curPage = 'chat.html';
+    if (curPage === 'notifications.html') return;
+
+    function updateBadge(desktopId, mobileId, count) {
+        const desk = document.getElementById(desktopId);
+        const mob  = document.getElementById(mobileId);
+        [desk, mob].forEach(el => {
+            if (!el) return;
+            if (count > 0) {
+                el.textContent    = count;
+                el.style.display  = 'inline-flex';
+            } else {
+                el.style.display  = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(res => {
+                if (!res.ok) return null;
+                return res.json();
+            })
+            .then(data => {
+                if (!data) return;
+                updateBadge('desk-badge-notifs', 'mob-badge-notifs', data.notifs || 0);
+                updateBadge('desk-badge-msgs',   'mob-badge-msgs',   data.msgs   || 0);
+            })
+            .catch(() => {}); // Silent fail — don't break page
+    }
+
+    // ✅ Only poll when tab is visible — saves battery + server load
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) {
+            pollTimer = setInterval(refreshBadges, 30000); // 30 seconds
+        }
+    }
+
+    function stopPolling() {
+        if (pollTimer) {
+            clearInterval(pollTimer);
+            pollTimer = null;
+        }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') {
+            refreshBadges(); // Immediate refresh on tab focus
+            startPolling();
+        } else {
+            stopPolling();
+        }
+    });
+
+    // Immediate fetch on page load — don't wait 30s for first badge update
+    refreshBadges();
+    startPolling();
+})();
+</script>
+  <main class="main-content">
+    <div class="chat-wrapper">
+
+      <div class="chat-header">
+        <a href="messages.html" style="color:#fff;font-size:1.2rem;margin-right:4px;text-decoration:none;">
+          <i class="fa fa-arrow-left"></i>
+        </a>
+        <img src="../../Uploads/profiles/imran.svg"
+             onerror="this.src='../../assets/default-avatar.png'">
+        <div>
+          <h3>Imran Ali</h3>
+          <p>Driver</p>
+        </div>
+      </div>
+
+      <div class="booking-info-bar">
+        <i class="fa fa-calendar"></i>
+        21 Oct 2026      </div>
+
+      <div class="chat-body" id="chatBody">
+        <div style="text-align:center; color:#ccc; font-size:0.8rem; padding:20px;">
+          <i class="fa fa-lock" style="margin-bottom:6px; display:block; font-size:1.5rem;"></i>
+          Messages are only visible to you and your helper
+        </div>
+      </div>
+
+      <div class="chat-footer">
+        <input type="text" id="msgInput" placeholder="Type a message..."
+               onkeypress="if(event.key==='Enter' && !isSending) sendMessage()"
+               maxlength="1000">
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+          <i class="fa fa-paper-plane"></i>
+        </button>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+const BOOKING_ID = 5;
+let CSRF_TOKEN   = "static-demo-token";
+let isSending    = false;
+
+// ─── XSS prevention ───────────────────────────────────────────
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// ─── Load messages ────────────────────────────────────────────
+function loadMessages() {
+  fetch(`../../../actions/get_messages.php?booking_id=${BOOKING_ID}`)
+    .then(res => {
+      if (!res.ok) throw new Error('Network error');
+      return res.json();
+    })
+    .then(messages => {
+      const body = document.getElementById('chatBody');
+
+      if (!Array.isArray(messages) || !messages.length) {
+        body.innerHTML = `
+          <div style="text-align:center; color:#ccc; font-size:0.8rem; padding:20px;">
+            <i class="fa fa-lock" style="margin-bottom:6px; display:block; font-size:1.5rem;"></i>
+            Messages are only visible to you and your helper
+          </div>`;
+        return;
+      }
+
+      const wasAtBottom =
+        body.scrollHeight - body.scrollTop - body.clientHeight < 60;
+
+      body.innerHTML = '';
+      messages.forEach(msg => {
+        body.innerHTML += `
+          <div class="msg-bubble ${msg.is_sent ? 'sent' : 'received'}">
+            ${escapeHtml(msg.message)}
+            <div class="msg-time">${escapeHtml(msg.created_at)}</div>
+          </div>`;
+      });
+
+      // Only auto-scroll if user was already near bottom
+      if (wasAtBottom) {
+        body.scrollTop = body.scrollHeight;
+      }
+    })
+    .catch(() => {});
+}
+
+// ─── Send message ─────────────────────────────────────────────
+function sendMessage() {
+  if (isSending) return;
+
+  const input  = document.getElementById('msgInput');
+  const btn    = document.getElementById('sendBtn');
+  const msg    = input.value.trim();
+
+  if (!msg) return;
+  if (msg.length > 1000) { alert('Message too long.'); return; }
+
+  isSending    = true;
+  btn.disabled = true;
+
+  const formData = new FormData();
+  formData.append('booking_id', BOOKING_ID);
+  formData.append('message',    msg);
+  formData.append('csrf_token', CSRF_TOKEN);
+
+  fetch('../../../actions/send_message.php', { method: 'POST', body: formData })
+    .then(res => {
+      if (!res.ok) throw new Error('Network error');
+      return res.json();
+    })
+    .then(data => {
+      if (data.status === 'success') {
+        input.value = '';
+        loadMessages();
+        refreshCsrfToken();
+      } else {
+        alert(data.msg || 'Could not send message.');
+      }
+    })
+    .catch(() => {
+      alert('Network error. Please try again.');
+    })
+    .finally(() => {
+      isSending    = false;
+      btn.disabled = false;
+      input.focus();
+    });
+}
+
+// ─── Refresh CSRF token ───────────────────────────────────────
+async function refreshCsrfToken() {
+  try {
+    const res  = await fetch('../../../actions/get_csrf_token.php');
+    const data = await res.json();
+    if (data.token) CSRF_TOKEN = data.token;
+  } catch (e) {
+    // Silent fail — old token used on next send
+  }
+}
+
+// ─── Polling (pause when tab hidden) ─────────────────────────
+let pollingInterval = null;
+
+function startPolling() {
+  if (!pollingInterval) {
+    pollingInterval = setInterval(loadMessages, 5000);
+  }
+}
+
+function stopPolling() {
+  if (pollingInterval) {
+    clearInterval(pollingInterval);
+    pollingInterval = null;
+  }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    loadMessages();
+    startPolling();
+  } else {
+    stopPolling();
+  }
+});
+
+// ─── Init ─────────────────────────────────────────────────────
+loadMessages();
+startPolling();
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+/* ================================================
+   HELPNEST — PROFILE PAGE CSS
+   Sidebar/container/main-content user-dashboard.css se aata hai
+   Yahan sirf profile-specific styles hain
+================================================ */
+
+/* ── PROFILE HEADER ── */
+.profile-header {
+  background: linear-gradient(135deg, #5B4636 0%, #7a5c47 100%);
+  border-radius: 16px; padding: 2rem 2.5rem;
+  display: flex; align-items: center; gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.profile-pic {
+  position: relative; cursor: pointer;
+  display: inline-block; width: 100px; height: 100px;
+  border-radius: 50%; overflow: hidden;
+  border: 3px solid rgba(255,255,255,0.5);
+  flex-shrink: 0;
+}
+.profile-pic img { width: 100%; height: 100%; object-fit: cover; }
+.camera-icon {
+  position: absolute; bottom: 5px; right: 5px;
+  background: #7C9473; color: white;
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; justify-content: center; align-items: center;
+  border: 2px solid white; font-size: 14px; z-index: 10;
+}
+.profile-header h1 {
+  font-family: 'Playfair Display', serif;
+  color: #fff; font-size: 1.6rem; margin-bottom: 4px;
+}
+.profile-header h1 span { color: #A8BFA1; }
+.profile-header p { color: rgba(255,255,255,0.75); font-size: 0.88rem; }
+
+/* ── PROFILE DETAILS SECTION ── */
+.profile-details {
+  background: #fff; border-radius: 16px;
+  border: 1px solid #f0ebe0; padding: 2rem;
+}
+.profile-details h2 {
+  font-family: 'Playfair Display', serif;
+  color: #5B4636; margin-bottom: 1.5rem;
+  font-size: 1.2rem; padding-bottom: 0.8rem;
+  border-bottom: 1px solid #f0ebe0;
+}
+
+/* ── INFO BOXES ── */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.info-box {
+  background: #fdfaf5; padding: 1.2rem 1.4rem;
+  border-radius: 12px; border: 1px solid #f0ebe0;
+  border-left: 4px solid #7C9473;
+  transition: box-shadow 0.2s;
+}
+.info-box:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+.info-box h4 {
+  color: #7C9473; font-size: 0.78rem;
+  font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; margin-bottom: 8px;
+}
+.info-box p { color: #444; font-size: 0.95rem; font-weight: 500; }
+
+/* ── EDIT INPUTS ── */
+.edit-input {
+  display: none; width: 100%;
+  border: 1.5px solid #7C9473; border-radius: 8px;
+  padding: 8px 12px; margin-top: 5px;
+  font-family: inherit; font-size: 0.9rem;
+  background: #fff; color: #333; transition: 0.2s;
+}
+.edit-input:focus {
+  outline: none; border-color: #5B4636;
+  box-shadow: 0 0 0 3px rgba(124,148,115,0.15);
+}
+
+/* ── BUTTONS ── */
+.btn-container { margin-top: 1.5rem; display: flex; gap: 10px; flex-wrap: wrap; }
+.save-btn {
+  display: none; background: #5B4636; color: #fff;
+  border: none; padding: 10px 24px; border-radius: 8px;
+  cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: 0.25s;
+}
+.save-btn:hover { background: #7C9473; }
+.cancel-btn {
+  display: none; background: #f0ebe0; color: #666;
+  border: none; padding: 10px 24px; border-radius: 8px;
+  cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: 0.25s;
+}
+.cancel-btn:hover { background: #ddd; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column; text-align: center;
+    padding: 1.4rem 1rem; gap: 1rem;
+  }
+  .info-grid { grid-template-columns: 1fr; }
+  .btn-container { flex-direction: column; }
+  .save-btn, .cancel-btn { width: 100%; text-align: center; }
+}
+@media (max-width: 480px) {
+  .profile-details { padding: 1.2rem; }
+  .profile-header { padding: 1rem; }
+}

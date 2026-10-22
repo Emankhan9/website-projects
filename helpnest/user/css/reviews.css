@@ -1,0 +1,72 @@
+HelpNest Review Cards styling
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.review-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(124, 148, 115, 0.1);
+}
+
+.review-card::before {
+    content: '"';
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 80px;
+    color: #F4F1EA;
+    font-family: 'Playfair Display', serif;
+    z-index: 0;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.helper-info h4 {
+    margin: 0;
+    color: #5B4636; /* HelpNest Brown */
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+}
+
+.stars-row {
+    color: #f1c40f;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+.review-body {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.review-footer {
+    font-size: 0.8rem;
+    color: #bbb;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="user/dashboard/disputes.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Disputes | HelpNest</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/user-dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+
+<div class="mob-topbar">
+  <span class="mob-logo">HelpNest</span>
+  <button class="hamburger" onclick="document.getElementById('userMobNav').classList.add('open')">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+<div class="mob-nav-overlay" id="userMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="mob-nav-panel">
+    <button class="mob-nav-close" onclick="document.getElementById('userMobNav').classList.remove('open')">✕</button>
+    <h2>HelpNest</h2>
+    <ul>
+      <li><a href="user-dashboard.html"><i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span></a></li>
+      <li><a href="bookings.html"><i class="fa-solid fa-calendar-check"></i><span class="nav-label">My Bookings</span></a></li>
+      <li><a href="messages.html"><i class="fa-solid fa-message"></i><span class="nav-label">Messages</span></a></li>
+      <li><a href="reviews.html"><i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span></a></li>
+      <li class="active"><a href="disputes.html"><i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span></a></li>
+      <li><a href="notifications.html"><i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span></a></li>
+      <li><a href="profile.html"><i class="fa-solid fa-user"></i><span class="nav-label">Profile</span></a></li>
+    </ul>
+    <div class="mob-logout"><a href="../../index.html"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a></div>
+  </div>
+</div>
+
+<div class="dashboard-container">
+  
+<style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('mobNavOverlay').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="mobNavOverlay"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('mobNavOverlay').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="user-dashboard.html">
+                    <span><i class="fa-solid fa-house" style="width:18px"></i> Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="bookings.html">
+                    <span><i class="fa-solid fa-calendar-check" style="width:18px"></i> My Bookings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="payments.html">
+                    <span><i class="fa-solid fa-wallet" style="width:18px"></i> Payments</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <span><i class="fa-solid fa-star" style="width:18px"></i> My Reviews</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="disputes.html">
+                    <span><i class="fa-solid fa-scale-balanced" style="width:18px"></i> Disputes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="messages.html">
+                    <span><i class="fa-solid fa-message" style="width:18px"></i> Messages</span>
+                                            
+                        <span class="badge-count" id="mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <span><i class="fa-solid fa-bell" style="width:18px"></i> Notifications</span>
+                                            <span class="badge-count" id="mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="profile.html">
+                    <span><i class="fa-solid fa-user" style="width:18px"></i> Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <span><i class="fa-solid fa-gear" style="width:18px"></i> Settings</span>
+                </a>
+            </li>
+            <li style="margin-top:20px;">
+                <a href="../../index.html" class="logout-link">
+                    <span><i class="fa-solid fa-right-from-bracket" style="width:18px"></i> Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="user-dashboard.html">
+                <i class="fa-solid fa-house"></i>
+                <span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="bookings.html">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span class="nav-label">My Bookings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="payments.html">
+                <i class="fa-solid fa-wallet"></i>
+                <span class="nav-label">Payments</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i>
+                <span class="nav-label">My Reviews</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i>
+                <span class="nav-label">Messages</span>
+                                    
+                    <span class="badge-count" id="desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i>
+                <span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i>
+                <span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // ✅ Don't poll on notifications page itself — user is already reading them
+    const curPage = 'disputes.html';
+    if (curPage === 'notifications.html') return;
+
+    function updateBadge(desktopId, mobileId, count) {
+        const desk = document.getElementById(desktopId);
+        const mob  = document.getElementById(mobileId);
+        [desk, mob].forEach(el => {
+            if (!el) return;
+            if (count > 0) {
+                el.textContent    = count;
+                el.style.display  = 'inline-flex';
+            } else {
+                el.style.display  = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(res => {
+                if (!res.ok) return null;
+                return res.json();
+            })
+            .then(data => {
+                if (!data) return;
+                updateBadge('desk-badge-notifs', 'mob-badge-notifs', data.notifs || 0);
+                updateBadge('desk-badge-msgs',   'mob-badge-msgs',   data.msgs   || 0);
+            })
+            .catch(() => {}); // Silent fail — don't break page
+    }
+
+    // ✅ Only poll when tab is visible — saves battery + server load
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) {
+            pollTimer = setInterval(refreshBadges, 30000); // 30 seconds
+        }
+    }
+
+    function stopPolling() {
+        if (pollTimer) {
+            clearInterval(pollTimer);
+            pollTimer = null;
+        }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') {
+            refreshBadges(); // Immediate refresh on tab focus
+            startPolling();
+        } else {
+            stopPolling();
+        }
+    });
+
+    // Immediate fetch on page load — don't wait 30s for first badge update
+    refreshBadges();
+    startPolling();
+})();
+</script>  <main class="main-content">
+
+    <header class="header" style="margin-bottom:1.5rem;">
+      <div>
+        <h2>My Disputes</h2>
+        <p class="subtext">View your disputes and raise new ones for completed or cancelled bookings</p>
+      </div>
+          </header>
+
+    
+    
+    
+          <div style="text-align:center;padding:60px;background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.05);">
+        <i class="fa-solid fa-scale-balanced" style="font-size:3rem;color:#EDE6D6;display:block;margin-bottom:16px;"></i>
+        <h3 style="color:#5B4636;font-family:'Playfair Display',serif;margin-bottom:10px;">No Disputes Yet</h3>
+        <p style="color:#888;margin-bottom:20px;">If you have an issue with a completed or cancelled booking, raise a dispute.</p>
+              </div>
+    
+  </main>
+</div>
+
+<script>
+const CSRF = "static-demo-token";
+
+const eligibleBookings = [];
+
+function showRaiseDispute() {
+    if (eligibleBookings.length === 0) {
+        Swal.fire({
+          icon:'info',
+          title:'No Eligible Bookings',
+          text:'Only completed or cancelled bookings can have a dispute raised.',
+          confirmButtonColor:'#7C9473'
+        });
+        return;
+    }
+
+    const options = eligibleBookings.map(b =>
+        `<option value="${b.id}">${b.label}</option>`
+    ).join('');
+
+    Swal.fire({
+        title: '<span style="font-family:\'Playfair Display\',serif;color:#5B4636;">Raise a Dispute</span>',
+        html: `
+          <div style="text-align:left;font-family:'Poppins',sans-serif;font-size:0.88rem;">
+            <div style="background:#fff8e1;border:1.5px solid #f5c842;border-radius:8px;padding:10px 12px;
+                        margin-bottom:14px;font-size:0.78rem;color:#7a5c00;">
+              <i class="fa-solid fa-circle-info"></i>
+              Disputes are reviewed by admin within 24–48 hours. Please describe your issue clearly.
+            </div>
+            <label style="font-size:0.8rem;font-weight:600;color:#5B4636;display:block;margin-bottom:6px;">Select Booking</label>
+            <select id="disputeBookingId" style="width:100%;padding:10px;border:1.5px solid #e8e0d5;border-radius:10px;
+                    font-family:Poppins,sans-serif;font-size:0.85rem;margin-bottom:14px;box-sizing:border-box;">
+              ${options}
+            </select>
+            <label style="font-size:0.8rem;font-weight:600;color:#5B4636;display:block;margin-bottom:6px;">
+              Describe the Issue <span style="color:#e74c3c;">*</span>
+            </label>
+            <textarea id="disputeReason"
+              placeholder="e.g. The helper did not complete the job properly, or I was charged incorrectly..."
+              style="width:100%;padding:11px 14px;border:1.5px solid #e8e0d5;border-radius:10px;
+                     font-family:'Poppins',sans-serif;font-size:0.85rem;resize:none;height:110px;box-sizing:border-box;"
+              onfocus="this.style.borderColor='#7C9473'"
+              onblur="this.style.borderColor='#ede8e0'"></textarea>
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonColor: '#7C9473',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: '<i class="fa-solid fa-paper-plane"></i> Submit Dispute',
+        cancelButtonText: 'Cancel',
+        width: '520px',
+        preConfirm: () => {
+            const booking_id = document.getElementById('disputeBookingId').value;
+            const reason     = document.getElementById('disputeReason').value.trim();
+            if (!reason || reason.length < 20) {
+                Swal.showValidationMessage('<i class="fa-solid fa-circle-exclamation"></i> Please describe the issue (at least 20 characters).');
+                return false;
+            }
+            return { booking_id, reason };
+        }
+    }).then(result => {
+        if (result.isConfirmed) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '../../../actions/raise-dispute.php';
+            const fields = {
+                booking_id: result.value.booking_id,
+                reason:     result.value.reason,
+                csrf_token: CSRF
+            };
+            for (const [k, v] of Object.entries(fields)) {
+                const inp = document.createElement('input');
+                inp.type = 'hidden'; inp.name = k; inp.value = v;
+                form.appendChild(inp);
+            }
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+</script>
+</body>
+</html>

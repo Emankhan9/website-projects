@@ -1,0 +1,78 @@
+/* ================================================
+   HELPNEST — SETTINGS PAGE CSS
+   Sidebar/container/main-content user-dashboard.css se aata hai
+   Yahan sirf settings-specific styles hain
+================================================ */
+
+/* ── SETTINGS CARD ── */
+.settings-card {
+  background: #F8F4E3;
+  padding: 1.8rem;
+  border-radius: 14px;
+  margin-top: 2rem;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+.settings-card h3 {
+  color: #5B4636;
+  margin-bottom: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* ── FORM GROUPS ── */
+.form-group { margin-bottom: 1.2rem; }
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.form-group input[type="password"],
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group select {
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline-color: #7C9473;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #333;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #7C9473;
+  box-shadow: 0 0 0 3px rgba(124,148,115,0.15);
+}
+
+/* ── SAVE BUTTON ── */
+.btn-save {
+  background: linear-gradient(135deg, #5B4636, #3e2f22);
+  color: #fff; border: none;
+  padding: 0.7rem 1.8rem; border-radius: 10px;
+  font-weight: 600; cursor: pointer;
+  transition: 0.3s ease; font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+}
+.btn-save:hover {
+  background: #7C9473;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .settings-card { padding: 1.2rem; margin-top: 1.2rem; }
+  .btn-save { width: 100%; text-align: center; padding: 0.8rem; }
+  .settings-card h3 { font-size: 1rem; }
+}
+@media (max-width: 480px) {
+  .settings-card { padding: 1rem; }
+  .form-group label { font-size: 0.85rem; }
+}

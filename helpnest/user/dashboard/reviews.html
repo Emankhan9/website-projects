@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="user/dashboard/reviews.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <title>HelpNest | My Reviews</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/user-dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    :root {
+      --brown: #5B4636;
+      --green: #7C9473;
+      --green-light: #eef4eb;
+      --cream: #fdfaf5;
+      --border: #ede8e0;
+    }
+
+    .reviews-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.8rem;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .reviews-header h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--brown);
+      font-size: 1.5rem;
+      margin: 0;
+    }
+    .reviews-header p { color: #999; font-size: 0.83rem; margin: 2px 0 0; }
+    .review-count-badge {
+      background: var(--green-light);
+      color: var(--green);
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+
+    .policy-banner {
+      background: linear-gradient(135deg, #fff5f5, #fff);
+      border: 1px solid #fdd;
+      border-left: 4px solid #e74c3c;
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .policy-banner i { color: #e74c3c; font-size: 1.2rem; flex-shrink: 0; }
+    .policy-banner p { margin: 0; font-size: 0.81rem; color: #666; line-height: 1.5; }
+    .policy-banner strong { color: #c0392b; }
+
+    .review-card {
+      background: #fff;
+      border-radius: 16px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .review-card:hover {
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+      transform: translateY(-1px);
+    }
+    .review-card-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #f7f3ee;
+      background: var(--cream);
+    }
+    .helper-avatar {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+    }
+    .helper-info { flex: 1; min-width: 0; }
+    .helper-info h4 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--brown);
+      margin: 0 0 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .helper-info span {
+      font-size: 0.75rem;
+      color: #aaa;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .helper-info span i { color: var(--green); }
+
+    .stars-display { display: flex; gap: 3px; }
+    .stars-display i { font-size: 1rem; }
+    .stars-display i.filled { color: #f1c40f; }
+    .stars-display i.empty  { color: #ddd; }
+
+    .review-card-body { padding: 14px 20px; }
+    .review-comment {
+      font-size: 0.865rem;
+      color: #444;
+      font-style: italic;
+      line-height: 1.7;
+      padding: 12px 16px 12px 22px;
+      background: var(--cream);
+      border-radius: 10px;
+      border-left: 3px solid var(--green);
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .review-comment::before {
+      content: '\201C';
+      font-size: 3rem;
+      color: var(--green);
+      opacity: 0.15;
+      position: absolute;
+      top: -6px;
+      left: 6px;
+      font-family: 'Playfair Display', serif;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .review-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .review-date { font-size: 0.75rem; color: #bbb; display: flex; align-items: center; gap: 5px; }
+    .review-date i { color: #ddd; }
+
+    .review-actions { display: flex; gap: 8px; }
+    .btn-edit, .btn-delete {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      border: 1.5px solid;
+    }
+    .btn-edit { border-color: var(--green); color: var(--green); background: var(--green-light); }
+    .btn-edit:hover { background: var(--green); color: #fff; }
+    .btn-delete { border-color: #e74c3c; color: #e74c3c; background: #fff5f5; }
+    .btn-delete:hover { background: #e74c3c; color: #fff; }
+
+    .empty-reviews {
+      text-align: center;
+      padding: 70px 20px;
+      background: #fff;
+      border-radius: 16px;
+      border: 1px dashed var(--border);
+    }
+    .empty-reviews .empty-icon {
+      width: 72px; height: 72px;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .empty-reviews .empty-icon i { font-size: 1.8rem; color: var(--green); }
+    .empty-reviews h3 { font-family: 'Playfair Display', serif; color: var(--brown); margin-bottom: 8px; font-size: 1.1rem; }
+    .empty-reviews p { color: #aaa; font-size: 0.85rem; }
+
+    /* ── Inline Edit Modal ── */
+    .edit-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(3px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .edit-overlay.open { display: flex; }
+    .edit-modal {
+      background: #fff;
+      border-radius: 20px;
+      padding: 28px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      animation: popIn 0.25s ease;
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(0.95) translateY(10px); }
+      to   { opacity:1; transform:scale(1) translateY(0); }
+    }
+    .edit-modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .edit-modal-icon {
+      width: 42px; height: 42px;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .edit-modal-icon i { color: var(--green); font-size: 1rem; }
+    .edit-modal-header h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--brown);
+      font-size: 1.15rem;
+      margin: 0 0 2px;
+    }
+    .edit-modal-header p { font-size: 0.78rem; color: #aaa; margin: 0; }
+
+    .edit-star-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .edit-stars {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .edit-stars span {
+      font-size: 2rem;
+      cursor: pointer;
+      color: #ddd;
+      transition: transform 0.15s, color 0.15s;
+      line-height: 1;
+    }
+    .edit-stars span.lit { color: #f1c40f; }
+    .edit-stars span:hover { transform: scale(1.2); }
+    #editRatingLabel {
+      font-size: 0.78rem;
+      color: #f1c40f;
+      font-weight: 600;
+      min-height: 18px;
+      margin-bottom: 16px;
+    }
+
+    .edit-comment-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    #editComment {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.83rem;
+      color: #444;
+      resize: none;
+      height: 85px;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+      background: var(--cream);
+    }
+    #editComment:focus { outline: none; border-color: var(--green); background: #fff; }
+    .edit-char { text-align: right; font-size: 0.73rem; color: #bbb; margin-top: 4px; margin-bottom: 16px; }
+
+    .edit-divider { height: 1px; background: var(--border); margin-bottom: 16px; }
+
+    .edit-btn-row { display: flex; gap: 10px; }
+    .edit-btn-save {
+      flex: 1;
+      padding: 11px;
+      background: linear-gradient(135deg, var(--green), #5a7a52);
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .edit-btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(124,148,115,0.3); }
+    .edit-btn-cancel {
+      flex: 1;
+      padding: 11px;
+      background: #f5f0e8;
+      color: var(--brown);
+      border: none;
+      border-radius: 25px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .edit-btn-cancel:hover { background: var(--border); }
+  </style>
+</head>
+<body>
+<div class="dashboard-container">
+  
+<style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('mobNavOverlay').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="mobNavOverlay"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('mobNavOverlay').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="user-dashboard.html">
+                    <span><i class="fa-solid fa-house" style="width:18px"></i> Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="bookings.html">
+                    <span><i class="fa-solid fa-calendar-check" style="width:18px"></i> My Bookings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="payments.html">
+                    <span><i class="fa-solid fa-wallet" style="width:18px"></i> Payments</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="reviews.html">
+                    <span><i class="fa-solid fa-star" style="width:18px"></i> My Reviews</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="disputes.html">
+                    <span><i class="fa-solid fa-scale-balanced" style="width:18px"></i> Disputes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="messages.html">
+                    <span><i class="fa-solid fa-message" style="width:18px"></i> Messages</span>
+                                            
+                        <span class="badge-count" id="mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <span><i class="fa-solid fa-bell" style="width:18px"></i> Notifications</span>
+                                            <span class="badge-count" id="mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="profile.html">
+                    <span><i class="fa-solid fa-user" style="width:18px"></i> Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <span><i class="fa-solid fa-gear" style="width:18px"></i> Settings</span>
+                </a>
+            </li>
+            <li style="margin-top:20px;">
+                <a href="../../index.html" class="logout-link">
+                    <span><i class="fa-solid fa-right-from-bracket" style="width:18px"></i> Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="user-dashboard.html">
+                <i class="fa-solid fa-house"></i>
+                <span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="bookings.html">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span class="nav-label">My Bookings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="payments.html">
+                <i class="fa-solid fa-wallet"></i>
+                <span class="nav-label">Payments</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i>
+                <span class="nav-label">My Reviews</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i>
+                <span class="nav-label">Messages</span>
+                                    
+                    <span class="badge-count" id="desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i>
+                <span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i>
+                <span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // ✅ Don't poll on notifications page itself — user is already reading them
+    const curPage = 'reviews.html';
+    if (curPage === 'notifications.html') return;
+
+    function updateBadge(desktopId, mobileId, count) {
+        const desk = document.getElementById(desktopId);
+        const mob  = document.getElementById(mobileId);
+        [desk, mob].forEach(el => {
+            if (!el) return;
+            if (count > 0) {
+                el.textContent    = count;
+                el.style.display  = 'inline-flex';
+            } else {
+                el.style.display  = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(res => {
+                if (!res.ok) return null;
+                return res.json();
+            })
+            .then(data => {
+                if (!data) return;
+                updateBadge('desk-badge-notifs', 'mob-badge-notifs', data.notifs || 0);
+                updateBadge('desk-badge-msgs',   'mob-badge-msgs',   data.msgs   || 0);
+            })
+            .catch(() => {}); // Silent fail — don't break page
+    }
+
+    // ✅ Only poll when tab is visible — saves battery + server load
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) {
+            pollTimer = setInterval(refreshBadges, 30000); // 30 seconds
+        }
+    }
+
+    function stopPolling() {
+        if (pollTimer) {
+            clearInterval(pollTimer);
+            pollTimer = null;
+        }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') {
+            refreshBadges(); // Immediate refresh on tab focus
+            startPolling();
+        } else {
+            stopPolling();
+        }
+    });
+
+    // Immediate fetch on page load — don't wait 30s for first badge update
+    refreshBadges();
+    startPolling();
+})();
+</script>  <main class="main-content">
+
+    <div class="reviews-header">
+      <div>
+        <h2>My Reviews</h2>
+        <p>Manage the feedback you've shared with helpers</p>
+      </div>
+              <span class="review-count-badge">
+          <i class="fa fa-star" style="color:#f1c40f;margin-right:4px;"></i>
+          3 Reviews        </span>
+          </div>
+
+    <div class="policy-banner">
+      <i class="fas fa-shield-heart"></i>
+      <p>Keep your reviews <strong>honest and respectful</strong>. Abusive or misleading language may result in account suspension.</p>
+    </div>
+
+    <div class="reviews-list">
+                        <div class="review-card">
+
+            <div class="review-card-top">
+              <img class="helper-avatar"
+                src="../../Uploads/profiles/zainab.svg"
+                onerror="this.src='../../assets/default-avatar.png'"
+                alt="Zainab Akhtar">
+              <div class="helper-info">
+                <h4>Zainab Akhtar</h4>
+                <span><i class="fa fa-tag"></i>Cooking</span>
+              </div>
+              <div class="stars-display">
+                                  <i class="fa fa-star filled"></i>
+                                  <i class="fa fa-star filled"></i>
+                                  <i class="fa fa-star filled"></i>
+                                  <i class="fa fa-star filled"></i>
+                                  <i class="fa fa-star filled"></i>
+                              </div>
+            </div>
+
+            <div class="review-card-body">
+              <div class="review-comment">Zainab cooked a fantastic biryani and karahi for our family dinner. Everyone loved it.</div>
+              <div class="review-meta">
+                <span class="review-date">
+                  <i class="far fa-calendar-alt"></i>
+                  10 Oct, 2026                  &nbsp;·&nbsp;
+                  <i class="far fa-clock"></i>
+                  10:00 AM                </span>
+                <div class="review-actions">
+                  
+                  <button class="btn-edit"
+                    data-id="2"
+                    data-rating="5"
+                    data-comment="Zainab cooked a fantastic biryani and karahi for our family dinner. Everyone loved it."
+                    onclick="openEditModal(this)">
+                    <i class="fas fa-pen"></i> Edit
+                  </button>
+
+                  <form method="POST" action="#" style="margin:0;">
+                    <input type="hidden" name="review_id" value="2">
+                    <input type="hidden" name="csrf_token" value="static-demo-token">
+                    <button type="button" class="btn-delete" onclick="confirmDelete(this)">
+                      <i class="fas fa-trash-can"></i> Delete
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+                  <div class="review-card">
+
+            <div class="review-card-top">
+              <img class="helper-avatar"
+                src="../../Uploads/profiles/fatima.svg"
+                onerror="this.src='../../assets/default-avatar.png'"
+                alt="Fatima Noor">
+              <div class="helper-info">
+                <h4>Fatima Noor</h4>
+                <span><i class="fa fa-tag"></i>Home Cleaning</span>
+              </div>
+              <div class="stars-display">
+                                  <i class="fa fa-star filled"></i>
+                                  <i class="fa fa-star filled"></i>
+                                  <i class="fa fa-star filled"></i>
+                                  <i class="fa fa-star filled"></i>
+                                  <i class="fa fa-star filled"></i>
+                              </div>
+            </div>
+
+            <div class="review-card-body">
+              <div class="review-comment">Fatima did an amazing job — the house was spotless and she was so polite. Highly recommended!</div>
+              <div class="review-meta">
+                <span class="review-date">
+                  <i class="far fa-calendar-alt"></i>
+                  02 Oct, 2026                  &nbsp;·&nbsp;
+                  <i class="far fa-clock"></i>
+                  10:00 AM                </span>
+                <div class="review-actions">
+                  
+                  <button class="btn-edit"
+                    data-id="1"
+                    data-rating="5"
+                    data-comment="Fatima did an amazing job — the house was spotless and she was so polite. Highly recommended!"
+                    onclick="openEditModal(this)">
+                    <i class="fas fa-pen"></i> Edit
+                  </button>
+
+                  <form method="POST" action="#" style="margin:0;">
+                    <input type="hidden" name="review_id" value="1">
+                    <input type="hidden" name="csrf_token" value="static-demo-token">
+                    <button type="button" class="btn-delete" onclick="confirmDelete(this)">
+                      <i class="fas fa-trash-can"></i> Delete
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+                  <div class="review-card">
+
+            <div class="review-card-top">
+              <img class="helper-avatar"
+                src="../../Uploads/profiles/fatima.svg"
+                onerror="this.src='../../assets/default-avatar.png'"
+                alt="Fatima Noor">
+              <div class="helper-info">
+                <h4>Fatima Noor</h4>
+                <span><i class="fa fa-tag"></i>Home Cleaning</span>
+              </div>
+              <div class="stars-display">
+                                  <i class="fa fa-star filled"></i>
+                                  <i class="fa fa-star filled"></i>
+                                  <i class="fa fa-star filled"></i>
+                                  <i class="fa fa-star filled"></i>
+                                  <i class="fa fa-star filled"></i>
+                              </div>
+            </div>
+
+            <div class="review-card-body">
+              <div class="review-comment">Second time booking Fatima, consistent quality every time.</div>
+              <div class="review-meta">
+                <span class="review-date">
+                  <i class="far fa-calendar-alt"></i>
+                  17 Sep, 2026                  &nbsp;·&nbsp;
+                  <i class="far fa-clock"></i>
+                  10:00 AM                </span>
+                <div class="review-actions">
+                  
+                  <button class="btn-edit"
+                    data-id="6"
+                    data-rating="5"
+                    data-comment="Second time booking Fatima, consistent quality every time."
+                    onclick="openEditModal(this)">
+                    <i class="fas fa-pen"></i> Edit
+                  </button>
+
+                  <form method="POST" action="#" style="margin:0;">
+                    <input type="hidden" name="review_id" value="6">
+                    <input type="hidden" name="csrf_token" value="static-demo-token">
+                    <button type="button" class="btn-delete" onclick="confirmDelete(this)">
+                      <i class="fas fa-trash-can"></i> Delete
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        
+          </div>
+
+  </main>
+</div>
+
+
+<div class="edit-overlay" id="editOverlay" onclick="if(event.target===this)closeEditModal()">
+  <div class="edit-modal">
+    <div class="edit-modal-header">
+      <div class="edit-modal-icon"><i class="fas fa-pen"></i></div>
+      <div>
+        <h3>Edit Review</h3>
+        <p>Update your rating and feedback</p>
+      </div>
+    </div>
+
+    <form method="POST" action="#" id="editForm">
+      <input type="hidden" name="csrf_token" value="static-demo-token">
+      <input type="hidden" name="review_id"  id="editReviewId">
+      <input type="hidden" name="rating"     id="editRatingInput" value="0">
+
+      <div class="edit-star-label">Your Rating</div>
+      <div class="edit-stars" id="editStars">
+        <span data-val="1">★</span>
+        <span data-val="2">★</span>
+        <span data-val="3">★</span>
+        <span data-val="4">★</span>
+        <span data-val="5">★</span>
+      </div>
+      <div id="editRatingLabel"></div>
+
+      <div class="edit-divider"></div>
+
+      <div class="edit-comment-label">Your Comment <span style="color:#ccc;font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></div>
+      <textarea name="comment" id="editComment" maxlength="1000"
+        placeholder="Share your experience..."></textarea>
+      <div class="edit-char"><span id="editCharCount">0</span> / 1000</div>
+
+      <div class="edit-btn-row">
+        <button type="submit" class="edit-btn-save" id="editSaveBtn">
+          <i class="fas fa-floppy-disk"></i> Save Changes
+        </button>
+        <button type="button" class="edit-btn-cancel" onclick="closeEditModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// ── Status messages ──
+const urlP = new URLSearchParams(window.location.search);
+const st = urlP.get('status');
+if (st === 'deleted') Swal.fire({ icon:'success', title:'Review Deleted', timer:2000, showConfirmButton:false });
+if (st === 'updated') Swal.fire({ icon:'success', title:'Review Updated!', timer:2000, showConfirmButton:false });
+if (st === 'error')   Swal.fire({ icon:'error', title:'Something went wrong', text:'Please try again.', confirmButtonColor:'#7C9473' });
+// ✅ FIX: URL clean karo — refresh par Swal dobara na aaye
+if (st) window.history.replaceState({}, '', location.pathname);
+
+// ── Delete confirm ──
+function confirmDelete(btn) {
+  const form = btn.closest('form');
+  Swal.fire({
+    html: `
+      <div style="padding:8px 0 4px;">
+        <div style="width:50px;height:50px;background:#fff0f0;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+          <i class="fas fa-trash-can" style="color:#e74c3c;font-size:1.2rem;"></i>
+        </div>
+        <h2 style="font-family:'Playfair Display',serif;color:#5B4636;font-size:1.2rem;margin:0 0 6px;">Delete Review?</h2>
+        <p style="color:#aaa;font-size:0.82rem;margin:0;">This action cannot be undone.</p>
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonColor: '#e74c3c',
+    cancelButtonColor: '#c8bfb5',
+    confirmButtonText: '<i class="fas fa-trash-can" style="margin-right:5px;"></i> Yes, Delete',
+    cancelButtonText: 'Cancel',
+    customClass: {
+      popup: 'swal-rounded',
+      confirmButton: 'swal-pill-btn',
+      cancelButton:  'swal-pill-btn',
+    },
+    didOpen: () => {
+      if (!document.getElementById('swalPillStyles')) {
+        const s = document.createElement('style');
+        s.id = 'swalPillStyles';
+        s.textContent = `
+          .swal-rounded { border-radius:20px !important; padding:28px !important; max-width:360px !important; }
+          .swal-pill-btn { border-radius:25px !important; font-family:'Poppins',sans-serif !important; font-weight:600 !important; font-size:0.85rem !important; padding:10px 22px !important; }
+        `;
+        document.head.appendChild(s);
+      }
+    }
+  }).then(result => {
+    if (result.isConfirmed) form.submit();
+  });
+}
+
+// ── Edit modal ──
+const LABELS = ['','Terrible 😞','Not Good 😕','Okay 😐','Good 😊','Excellent! 🌟'];
+
+function openEditModal(btn) {
+  const id      = btn.dataset.id;
+  const rating  = parseInt(btn.dataset.rating);
+  const comment = btn.dataset.comment;
+
+  document.getElementById('editReviewId').value    = id;
+  document.getElementById('editRatingInput').value = rating;
+  document.getElementById('editComment').value     = comment;
+  document.getElementById('editCharCount').textContent = comment.length;
+  updateEditStars(rating);
+  document.getElementById('editRatingLabel').textContent = rating > 0 ? LABELS[rating] : '';
+
+  // Animation dobara chalao
+  const modal = document.querySelector('.edit-modal');
+  modal.style.animation = 'none';
+  modal.offsetHeight;
+  modal.style.animation = '';
+
+  document.getElementById('editOverlay').classList.add('open');
+}
+
+function closeEditModal() {
+  document.getElementById('editOverlay').classList.remove('open');
+}
+
+function updateEditStars(val) {
+  document.querySelectorAll('#editStars span').forEach(s => {
+    s.classList.toggle('lit', parseInt(s.dataset.val) <= val);
+    s.style.color = parseInt(s.dataset.val) <= val ? '#f1c40f' : '#ddd';
+  });
+}
+
+// Star interactions
+document.querySelectorAll('#editStars span').forEach(star => {
+  star.addEventListener('mouseenter', () => {
+    const hv = parseInt(star.dataset.val);
+    document.querySelectorAll('#editStars span').forEach(s => {
+      s.style.color     = parseInt(s.dataset.val) <= hv ? '#f1c40f' : '#ddd';
+      s.style.transform = parseInt(s.dataset.val) <= hv ? 'scale(1.18)' : 'scale(1)';
+    });
+    document.getElementById('editRatingLabel').textContent = LABELS[hv];
+  });
+  star.addEventListener('mouseleave', () => {
+    const cur = parseInt(document.getElementById('editRatingInput').value);
+    document.querySelectorAll('#editStars span').forEach(s => {
+      s.style.transform = 'scale(1)';
+    });
+    updateEditStars(cur);
+    document.getElementById('editRatingLabel').textContent = cur > 0 ? LABELS[cur] : '';
+  });
+  star.addEventListener('click', () => {
+    const val = parseInt(star.dataset.val);
+    const cur = parseInt(document.getElementById('editRatingInput').value);
+    // Same star dobara click = deselect
+    const newVal = (val === cur) ? 0 : val;
+    document.getElementById('editRatingInput').value = newVal;
+    updateEditStars(newVal);
+    document.getElementById('editRatingLabel').textContent = newVal > 0 ? LABELS[newVal] : '';
+  });
+});
+
+// Char counter
+const editComment = document.getElementById('editComment');
+editComment.addEventListener('input', () => {
+  const len = editComment.value.length;
+  const el  = document.getElementById('editCharCount');
+  el.textContent = len;
+  el.style.color = len > 900 ? '#e74c3c' : '#bbb';
+});
+
+// Form validation + submit feedback
+document.getElementById('editForm').addEventListener('submit', e => {
+  const rating = parseInt(document.getElementById('editRatingInput').value);
+  if (rating === 0) {
+    e.preventDefault();
+    Swal.fire({ icon:'warning', title:'Rating Required', text:'Please select at least 1 star.', confirmButtonColor:'#7C9473' });
+    return;
+  }
+  // Loading state — user ko pata chale form submit ho raha hai
+  const btn = document.getElementById('editSaveBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+});
+</script>
+</body>
+</html>

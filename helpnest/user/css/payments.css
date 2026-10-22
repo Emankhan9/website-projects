@@ -1,0 +1,36 @@
+/* ================================================
+   HELPNEST — PAYMENTS PAGE CSS
+   Sidebar/container/table/btn user-dashboard.css se aata hai
+   Yahan sirf payments-specific styles hain
+================================================ */
+
+/* ── PAYMENT STATS CARDS ── */
+.stats .card p { color: #7C9473; }
+
+/* ── TABLE SECTION HEADING ── */
+.table-section h2 {
+  font-family: 'Playfair Display', serif;
+  color: #5B4636; padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid #f0ebe0;
+  font-size: 1.1rem; font-weight: 500;
+}
+
+/* ── STATUS BADGES ── */
+.badge-paid {
+  background: #d4edda; color: #276749;
+  font-size: 0.8rem; font-weight: 600;
+  padding: 4px 12px; border-radius: 20px;
+  display: inline-block;
+}
+.badge-pending {
+  background: #fff3cd; color: #b7791f;
+  font-size: 0.8rem; font-weight: 600;
+  padding: 4px 12px; border-radius: 20px;
+  display: inline-block;
+}
+.badge-type {
+  background: #eef4eb; color: #7C9473;
+  font-size: 0.8rem; font-weight: 600;
+  padding: 4px 12px; border-radius: 20px;
+  display: inline-block;
+}
