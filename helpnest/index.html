@@ -1,1 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="";window.HN_PAGE="index.html";</script>
+<script src="js/static-demo.js"></script>
 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelpNest | Home</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  
+  <nav id="mainNav">
+    <ul>
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="explore.html"><i class="fa-solid fa-compass"></i> Explore</a></li>
+
+              <li><a href="common/login.html" class="sidebar-login-btn">Login</a></li>
+          </ul>
+  </nav>
+
+  
+  <div id="navOverlay" class="nav-overlay"></div>
+
+  
+  <header class="navbar">
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="logo">Help<span>Nest</span></div>
+
+    
+    <nav class="desktop-nav">
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="explore.html"><i class="fa-solid fa-compass"></i> Explore</a></li>
+
+                  <li><a href="common/login.html" class="btn">Login</a></li>
+              </ul>
+    </nav>
+  </header>
+
+  
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> Trusted & Verified Helpers</span>
+      <h1 class="hero-title">Your Home Deserves<br><em>The Best Care</em></h1>
+      <p class="hero-sub">Find skilled, verified housekeepers near you — cooking, cleaning, laundry & more.</p>
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search cleaning, cooking, laundry..." id="searchInput">
+        <button onclick="searchHelpers()">Search</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>7+</strong><span>Helpers</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>14+</strong><span>Bookings</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>4.7★</strong><span>Rating</span></div>
+      </div>
+    </div>
+    <div class="hero-scroll"><i class="fa-solid fa-chevron-down"></i></div>
+  </section>
+
+  
+  <section class="how-it-works">
+    <div class="section-label">Simple Process</div>
+    <h2>How HelpNest Works</h2>
+    <p class="section-sub">Get started in 3 easy steps</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon"><i class="fa-solid fa-user-plus"></i></div>
+        <div class="step-num">01</div>
+        <h3>Register</h3>
+        <p>Create a free account as a homeowner or a helper in minutes.</p>
+      </div>
+      <div class="step-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+      <div class="step">
+        <div class="step-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <div class="step-num">02</div>
+        <h3>Search</h3>
+        <p>Browse verified helpers by skill and service type to find the perfect match.</p>
+      </div>
+      <div class="step-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+      <div class="step">
+        <div class="step-icon"><i class="fa-solid fa-calendar-check"></i></div>
+        <div class="step-num">03</div>
+        <h3>Book</h3>
+        <p>Book your preferred helper, confirm timing, and pay cash after service.</p>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="features-strip">
+    <div class="feature"><i class="fa-solid fa-circle-check"></i> Background Verified</div>
+    <div class="feature"><i class="fa-solid fa-star"></i> Rated & Reviewed</div>
+    <div class="feature"><i class="fa-solid fa-money-bill-wave"></i> Cash on Service</div>
+    <div class="feature"><i class="fa-solid fa-headset"></i> 24/7 Support</div>
+  </section>
+
+  
+  <section class="testimonials">
+    <div class="section-label">Happy Clients</div>
+    <h2>What Our Users Say</h2>
+    <div class="reviews">
+                                  <div class="card">
+            <div class="stars">
+              ★★★★★            </div>
+            <p>"Rukhsana took wonderful care of my grandmother for the whole month. Truly a blessing."</p>
+            <div class="reviewer">
+                              <img src="Uploads/profiles/hira.svg"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                     alt="Hira Siddiqui"
+                     style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #e8e0d5;">
+                <div class="reviewer-avatar" style="display:none;">HS</div>
+                            <div>
+                <h4>Hira Siddiqui</h4>
+              </div>
+            </div>
+          </div>
+                            <div class="card card-featured">
+            <div class="stars">
+              ★★★★★            </div>
+            <p>"Zainab cooked a fantastic biryani and karahi for our family dinner. Everyone loved it."</p>
+            <div class="reviewer">
+                              <img src="Uploads/profiles/ayesha.svg"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                     alt="Ayesha Khan"
+                     style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #e8e0d5;">
+                <div class="reviewer-avatar" style="display:none;">AK</div>
+                            <div>
+                <h4>Ayesha Khan</h4>
+              </div>
+            </div>
+          </div>
+                            <div class="card">
+            <div class="stars">
+              ★★★★★            </div>
+            <p>"Fatima did an amazing job — the house was spotless and she was so polite. Highly recommended!"</p>
+            <div class="reviewer">
+                              <img src="Uploads/profiles/ayesha.svg"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                     alt="Ayesha Khan"
+                     style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #e8e0d5;">
+                <div class="reviewer-avatar" style="display:none;">AK</div>
+                            <div>
+                <h4>Ayesha Khan</h4>
+              </div>
+            </div>
+          </div>
+                  </div>
+  </section>
+
+  
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Ready to Find Your Perfect Helper?</h2>
+      <p>Join thousands of families who trust HelpNest every day.</p>
+      <div class="cta-buttons">
+        <a href="common/register.html" class="btn-primary">Get Started Free</a>
+        <a href="explore.html" class="btn-outline-white">Browse Helpers</a>
+      </div>
+    </div>
+  </section>
+
+  
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="logo">Help<span>Nest</span></div>
+        <p>Connecting homes with trusted helpers across Pakistan.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="explore.html">Explore</a>
+        <a href="common/login.html">Login</a>
+        <a href="common/register.html">Register</a>
+      </div>
+      <div class="footer-social">
+        <h4>Follow Us</h4>
+        <div class="socials">
+          <a href="#"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 HelpNest. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
