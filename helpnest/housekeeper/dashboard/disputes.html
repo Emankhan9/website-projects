@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="housekeeper/dashboard/disputes.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Disputes | HelpNest</title>
+  <link rel="stylesheet" href="../css/housekeeper-dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+<div class="dashboard-container">
+  <style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('hkMobNav').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="hkMobNav"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('hkMobNav').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="housekeeper-dashboard.html">
+                    <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="requests.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                            <span class="badge-count" id="hk-mob-badge-requests">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="tasks.html">
+                    <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="earnings.html">
+                    <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="messages.html">
+                    <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                            <span class="badge-count" id="hk-mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="disputes.html">
+                    <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                            <span class="badge-count" id="hk-mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="profile.html">
+                    <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+                </a>
+            </li>
+        </ul>
+        <div class="mob-logout">
+            <a href="../../index.html">
+                <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="housekeeper-dashboard.html">
+                <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="requests.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                    <span class="badge-count" id="hk-desk-badge-requests">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="tasks.html">
+                <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="earnings.html">
+                <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                    <span class="badge-count" id="hk-desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="hk-desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i><span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // Don't poll on notifications page — user is already there
+    const curPage = 'disputes.html';
+    if (curPage === 'notifications.html') return;
+
+    // Update both Desktop + Mobile IDs
+    function updateBadge(ids, count) {
+        (Array.isArray(ids) ? ids : [ids]).forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (count > 0) {
+                el.textContent   = count;
+                el.style.display = 'inline-flex';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) return;
+                updateBadge(['hk-desk-badge-notifs',   'hk-mob-badge-notifs'],   data.notifs   || 0);
+                updateBadge(['hk-desk-badge-msgs',     'hk-mob-badge-msgs'],     data.msgs     || 0);
+                updateBadge(['hk-desk-badge-requests', 'hk-mob-badge-requests'], data.requests || 0);
+            })
+            .catch(() => {});
+    }
+
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) pollTimer = setInterval(refreshBadges, 30000);
+    }
+    function stopPolling() {
+        if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') { refreshBadges(); startPolling(); }
+        else stopPolling();
+    });
+
+    startPolling();
+})();
+</script>  <main class="main-content">
+
+    <header class="task-header" style="margin-bottom:1.5rem;">
+      <div>
+        <h1>My Disputes</h1>
+        <p style="color:#999;font-size:0.85rem;margin-top:4px;">Raise or track disputes for your bookings</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;">
+                <button onclick="showRaiseDispute()"
+          style="padding:9px 20px;background:linear-gradient(135deg,#7C9473,#5a7a52);color:#fff;border:none;
+                 border-radius:12px;font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:600;
+                 cursor:pointer;display:flex;align-items:center;gap:7px;">
+          <i class="fa-solid fa-plus"></i> Raise Dispute
+        </button>
+                <div class="h-profile">
+          <span>Fatima Noor</span>
+          <img src="../../Uploads/profiles/fatima.svg"
+               onerror="this.src='../../assets/default-avatar.png'" class="nav-img">
+        </div>
+      </div>
+    </header>
+
+    
+    
+    <div class="task-list-wrapper">
+              <div class="empty-state">
+          <i class="fa-solid fa-scale-balanced"></i>
+          <p>No disputes raised yet.</p>
+        </div>
+          </div>
+
+  </main>
+</div>
+
+<script>
+const CSRF = "static-demo-token";
+
+const eligibleBookings = [{"id":4,"label":"HN-2026-00004 \u2014 Sana Malik (20 Oct 2026)"}];
+
+function showRaiseDispute() {
+    if (eligibleBookings.length === 0) {
+        Swal.fire({
+          icon:'info',
+          title:'No Eligible Bookings',
+          text:'Only completed or cancelled bookings are eligible.',
+          confirmButtonColor:'#7C9473'
+        });
+        return;
+    }
+    const options = eligibleBookings.map(b => `<option value="${b.id}">${b.label}</option>`).join('');
+    Swal.fire({
+        title: '<span style="font-family:\'Playfair Display\',serif;color:#5B4636;">Raise a Dispute</span>',
+        html: `
+          <div style="text-align:left;font-family:'Poppins',sans-serif;font-size:0.88rem;">
+            <div style="background:#fff8e1;border:1.5px solid #f5c842;border-radius:8px;padding:10px 12px;
+                        margin-bottom:14px;font-size:0.78rem;color:#7a5c00;">
+              <i class="fa-solid fa-circle-info"></i>
+              Admin reviews disputes within 24–48 hours. Describe your issue clearly.
+            </div>
+            <label style="font-size:0.8rem;font-weight:600;color:#5B4636;display:block;margin-bottom:6px;">Select Booking</label>
+            <select id="disputeBookingId" style="width:100%;padding:10px;border:1.5px solid #e8e0d5;border-radius:10px;
+                    font-family:Poppins,sans-serif;font-size:0.85rem;margin-bottom:14px;box-sizing:border-box;">
+              ${options}
+            </select>
+            <label style="font-size:0.8rem;font-weight:600;color:#5B4636;display:block;margin-bottom:6px;">
+              Describe the Issue <span style="color:#e74c3c;">*</span>
+            </label>
+            <textarea id="disputeReason" placeholder="e.g. Client did not pay after service was completed..."
+              style="width:100%;padding:11px 14px;border:1.5px solid #e8e0d5;border-radius:10px;
+                     font-family:'Poppins',sans-serif;font-size:0.85rem;resize:none;height:110px;box-sizing:border-box;"
+              onfocus="this.style.borderColor='#7C9473'"
+              onblur="this.style.borderColor='#ede8e0'"></textarea>
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonColor: '#7C9473',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: '<i class="fa-solid fa-paper-plane"></i> Submit Dispute',
+        cancelButtonText: 'Cancel',
+        width: '520px',
+        preConfirm: () => {
+            const booking_id = document.getElementById('disputeBookingId').value;
+            const reason     = document.getElementById('disputeReason').value.trim();
+            if (!reason || reason.length < 20) {
+                Swal.showValidationMessage('<i class="fa-solid fa-circle-exclamation"></i> Please describe the issue (at least 20 characters).');
+                return false;
+            }
+            return { booking_id, reason };
+        }
+    }).then(result => {
+        if (result.isConfirmed) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '../../../actions/raise-dispute.php';
+            const fields = {
+                booking_id: result.value.booking_id,
+                reason:     result.value.reason,
+                csrf_token: CSRF
+            };
+            for (const [k, v] of Object.entries(fields)) {
+                const inp = document.createElement('input');
+                inp.type = 'hidden'; inp.name = k; inp.value = v;
+                form.appendChild(inp);
+            }
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+</script>
+</body>
+</html>

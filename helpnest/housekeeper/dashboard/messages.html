@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="housekeeper/dashboard/messages.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messages | HelpNest</title>
+  <link rel="stylesheet" href="../css/housekeeper-dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="dashboard-container">
+  <style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('hkMobNav').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="hkMobNav"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('hkMobNav').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="housekeeper-dashboard.html">
+                    <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="requests.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                            <span class="badge-count" id="hk-mob-badge-requests">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="tasks.html">
+                    <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="earnings.html">
+                    <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="messages.html">
+                    <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                            <span class="badge-count" id="hk-mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="disputes.html">
+                    <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                            <span class="badge-count" id="hk-mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="profile.html">
+                    <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+                </a>
+            </li>
+        </ul>
+        <div class="mob-logout">
+            <a href="../../index.html">
+                <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="housekeeper-dashboard.html">
+                <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="requests.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                    <span class="badge-count" id="hk-desk-badge-requests">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="tasks.html">
+                <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="earnings.html">
+                <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                    <span class="badge-count" id="hk-desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="hk-desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i><span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // Don't poll on notifications page — user is already there
+    const curPage = 'messages.html';
+    if (curPage === 'notifications.html') return;
+
+    // Update both Desktop + Mobile IDs
+    function updateBadge(ids, count) {
+        (Array.isArray(ids) ? ids : [ids]).forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (count > 0) {
+                el.textContent   = count;
+                el.style.display = 'inline-flex';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) return;
+                updateBadge(['hk-desk-badge-notifs',   'hk-mob-badge-notifs'],   data.notifs   || 0);
+                updateBadge(['hk-desk-badge-msgs',     'hk-mob-badge-msgs'],     data.msgs     || 0);
+                updateBadge(['hk-desk-badge-requests', 'hk-mob-badge-requests'], data.requests || 0);
+            })
+            .catch(() => {});
+    }
+
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) pollTimer = setInterval(refreshBadges, 30000);
+    }
+    function stopPolling() {
+        if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') { refreshBadges(); startPolling(); }
+        else stopPolling();
+    });
+
+    startPolling();
+})();
+</script>  <main class="main-content">
+    <header style="margin-bottom:1.5rem;">
+      <h1>Messages</h1>
+      <p>Your active booking conversations</p>
+    </header>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+                        <a href="chat.html" style="text-decoration:none;">
+            <div style="background:#fff;padding:16px 20px;border-radius:14px;box-shadow:0 4px 15px rgba(0,0,0,0.06);display:flex;align-items:center;gap:14px;border-left:4px solid #5B4636;transition:0.2s;"
+                 onmouseover="this.style.transform='translateY(-2px)'"
+                 onmouseout="this.style.transform='translateY(0)'">
+              <img src="../../Uploads/profiles/hira.svg"
+                   onerror="this.src='../../assets/default-avatar.png'"
+                   style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #A8BFA1;flex-shrink:0;">
+              <div style="flex:1;min-width:0;">
+                <h4 style="margin:0;color:#5B4636;font-size:0.95rem;">
+                  Hira Siddiqui                </h4>
+                <p style="margin:2px 0;font-size:0.78rem;color:#888;">
+                  Home Cleaning                  &nbsp;|&nbsp;
+                  <i class="fa fa-hashtag"></i> HN-2026-00011                </p>
+                <p style="margin:2px 0;font-size:0.75rem;color:#aaa;">
+                  <i class="fa fa-calendar"></i> 26 Oct 2026                </p>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
+                                  <span style="background:#e74c3c;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;">
+                    1                  </span>
+                                <i class="fa fa-chevron-right" style="color:#ccc;font-size:0.8rem;"></i>
+              </div>
+            </div>
+          </a>
+        
+          </div>
+  </main>
+</div>
+</body>
+</html>

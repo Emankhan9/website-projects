@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="housekeeper/dashboard/tasks.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Tasks | HelpNest</title>
+  <link rel="stylesheet" href="../css/housekeeper-dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    /* Highlight animation for task cards */
+    .task-card.highlighted {
+      animation: taskHL 3s ease-in-out;
+      border: 2px solid #7C9473 !important;
+    }
+    @keyframes taskHL {
+      0%   { box-shadow: 0 0 0 0px rgba(124,148,115,0); background: #fff; }
+      15%  { box-shadow: 0 0 0 8px rgba(124,148,115,0.3); background: #f0faf4; }
+      60%  { box-shadow: 0 0 0 12px rgba(124,148,115,0.1); background: #f5fbf3; }
+      100% { box-shadow: 0 4px 20px rgba(91,70,54,0.1); background: #fff; }
+    }
+    /* Notification origin banner */
+    .notif-origin-banner {
+      background: #f0f7ee; border: 1.5px solid #c5dac0; border-radius: 12px;
+      padding: 10px 16px; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.82rem; color: #5B4636; font-weight: 500;
+    }
+    .notif-origin-banner i { color: #7C9473; }
+    .notif-origin-banner a { color: #7C9473; font-weight: 700; margin-left: auto; text-decoration: none; }
+    .notif-origin-banner a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+
+
+<div class="dashboard-container">
+  <style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('hkMobNav').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="hkMobNav"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('hkMobNav').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="housekeeper-dashboard.html">
+                    <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="requests.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                            <span class="badge-count" id="hk-mob-badge-requests">2</span>
+                                    </a>
+            </li>
+            <li class="active">
+                <a href="tasks.html">
+                    <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="earnings.html">
+                    <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="messages.html">
+                    <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                            <span class="badge-count" id="hk-mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="disputes.html">
+                    <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                            <span class="badge-count" id="hk-mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="profile.html">
+                    <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+                </a>
+            </li>
+        </ul>
+        <div class="mob-logout">
+            <a href="../../index.html">
+                <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="housekeeper-dashboard.html">
+                <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="requests.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                    <span class="badge-count" id="hk-desk-badge-requests">2</span>
+                            </a>
+        </li>
+        <li class="active">
+            <a href="tasks.html">
+                <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="earnings.html">
+                <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                    <span class="badge-count" id="hk-desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="hk-desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i><span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // Don't poll on notifications page — user is already there
+    const curPage = 'tasks.html';
+    if (curPage === 'notifications.html') return;
+
+    // Update both Desktop + Mobile IDs
+    function updateBadge(ids, count) {
+        (Array.isArray(ids) ? ids : [ids]).forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (count > 0) {
+                el.textContent   = count;
+                el.style.display = 'inline-flex';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) return;
+                updateBadge(['hk-desk-badge-notifs',   'hk-mob-badge-notifs'],   data.notifs   || 0);
+                updateBadge(['hk-desk-badge-msgs',     'hk-mob-badge-msgs'],     data.msgs     || 0);
+                updateBadge(['hk-desk-badge-requests', 'hk-mob-badge-requests'], data.requests || 0);
+            })
+            .catch(() => {});
+    }
+
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) pollTimer = setInterval(refreshBadges, 30000);
+    }
+    function stopPolling() {
+        if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') { refreshBadges(); startPolling(); }
+        else stopPolling();
+    });
+
+    startPolling();
+})();
+</script>  
+
+  <main class="main-content">
+    <header class="task-header">
+      <h1>Active Assignments</h1>
+      <div class="h-profile">
+        <span>Fatima Noor</span>
+        <img src="../../Uploads/profiles/fatima.svg"
+             onerror="this.src='../../assets/default-avatar.png'" class="nav-img">
+      </div>
+    </header>
+
+    <div class="task-list-wrapper">
+
+      
+      
+                        <div class="task-card "
+               id="booking-11">
+
+            <div class="client-profile-section">
+              <div class="img-container">
+                <img src="../../Uploads/profiles/hira.svg"
+                     onerror="this.src='../../assets/default-avatar.png'"
+                     class="client-card-img">
+              </div>
+              <div class="client-info">
+                <h3>Hira Siddiqui</h3>
+                                <p style="font-size:0.75rem;color:#aaa;">
+                  <i class="fa fa-hashtag"></i> HN-2026-00011                </p>
+                <p><i class="fa fa-map-marker-alt"></i> PECHS Block 6, Karachi</p>
+              </div>
+            </div>
+
+            <div class="task-details-center">
+              <div class="info-pill">
+                <i class="fa fa-calendar-day"></i> 26 Oct              </div>
+              <div class="info-pill">
+                <i class="fa fa-clock"></i> 09:00 AM              </div>
+                              <div class="info-pill" style="background:#e3f2fd;color:#1565c0;border:1.5px solid #90caf9;">
+                  <i class="fa fa-hourglass-start"></i> Upcoming
+                </div>
+                          </div>
+
+            <div class="task-actions">
+                              
+                                  <span style="display:flex;align-items:center;gap:6px;padding:8px 14px;
+                               background:#f8f4ee;color:#bbb;border-radius:10px;
+                               font-size:0.8rem;font-weight:600;cursor:not-allowed;"
+                        title="Service date/time has not arrived yet">
+                    <i class="fa fa-lock"></i> Not Yet
+                  </span>
+                
+                <button onclick="confirmHelperCancel(11, false)"
+                  style="margin-top:6px;padding:8px 14px;border-radius:10px;border:1.5px solid #e67e22;
+                         background:#fff;color:#e67e22;font-family:'Poppins',sans-serif;
+                         font-size:0.8rem;font-weight:600;cursor:pointer;width:100%;transition:0.2s;"
+                  onmouseover="this.style.background='#e67e22';this.style.color='#fff';"
+                  onmouseout="this.style.background='#fff';this.style.color='#e67e22';">
+                  <i class="fa fa-xmark"></i> Cancel Task
+                </button>
+
+                          </div>
+          </div>
+        
+      
+    </div>
+  </main>
+</div>
+
+<script>
+const CSRF_TOKEN = "static-demo-token";
+
+// ── Mark Job Done ─────────────────────────────────────────────────────────
+function markDone(id) {
+    Swal.fire({
+        title: 'Mark Job as Completed?',
+        html: `<p style="color:#888;font-size:0.85rem;margin:0 0 10px;">
+                 Please confirm that you have completed your work.
+               </p>
+               <div style="background:#fffbea;border:1.5px solid #f5c842;border-radius:8px;
+                           padding:8px 12px;font-size:0.78rem;color:#7a5c00;
+                           display:flex;align-items:flex-start;gap:8px;text-align:left;">
+                 <i class="fa fa-money-bill-wave" style="margin-top:2px;color:#e6a817;flex-shrink:0;"></i>
+                 <span>Don't forget to collect <strong>cash payment</strong> from the client after confirming.</span>
+               </div>`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#7C9473',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: '<i class="fa fa-check-double"></i> Yes, Job Done!',
+        cancelButtonText: 'Go Back'
+    }).then(r => {
+        if (!r.isConfirmed) return;
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '../../../actions/helper-complete.php';
+        const fields = { booking_id: id, csrf_token: CSRF_TOKEN };
+        for (const [k, v] of Object.entries(fields)) {
+            const inp = document.createElement('input');
+            inp.type = 'hidden'; inp.name = k; inp.value = v;
+            form.appendChild(inp);
+        }
+        document.body.appendChild(form);
+        form.submit();
+    });
+}
+
+// ── Cancel Task ───────────────────────────────────────────────────────────
+function confirmHelperCancel(bookingId, isToday) {
+    const penaltyNote = isToday
+        ? '<p style="color:#e67e22;font-size:0.82rem;margin-top:8px;"><i class="fa fa-triangle-exclamation"></i> <strong>Same-day cancellation</strong> — this may affect your reliability rating.</p>'
+        : '';
+    Swal.fire({
+        title: 'Cancel This Task?',
+        html: `<p style="color:#888;font-size:0.85rem;">Please give a reason — the client will be notified.</p>
+               ${penaltyNote}
+               <textarea id="helperCancelReason" class="swal2-textarea"
+                 placeholder="e.g. Family emergency, health issue..."
+                 style="margin-top:10px;font-size:0.85rem;resize:none;height:90px;"></textarea>`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e74c3c',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: 'Yes, Cancel Task',
+        cancelButtonText: 'Go Back',
+        preConfirm: () => {
+            const reason = document.getElementById('helperCancelReason').value.trim();
+            if (!reason) {
+                Swal.showValidationMessage('<i class="fa fa-circle-exclamation"></i> Please provide a reason.');
+                return false;
+            }
+            return reason;
+        }
+    }).then(result => {
+        if (!result.isConfirmed) return;
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '../../../actions/cancel-booking.php';
+        const fields = { booking_id: bookingId, cancel_reason: result.value, csrf_token: CSRF_TOKEN };
+        for (const [k, v] of Object.entries(fields)) {
+            const inp = document.createElement('input');
+            inp.type = 'hidden'; inp.name = k; inp.value = v;
+            form.appendChild(inp);
+        }
+        document.body.appendChild(form);
+        form.submit();
+    });
+}
+
+// ── Highlight + scroll + Swal messages ───────────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+    const hid = 0;
+    if (hid) {
+        const card = document.getElementById('booking-' + hid);
+        if (card) setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
+    }
+
+    const msg = new URLSearchParams(window.location.search).get('msg');
+    if (msg === 'task_done') {
+        Swal.fire({
+            title: 'Job Completed!',
+            text: "Great work! The client has been notified. Don't forget to collect your cash payment.",
+            icon: 'success',
+            confirmButtonColor: '#7C9473'
+        });
+    } else if (msg === 'waiting_user') {
+        Swal.fire({
+            title: 'Marked Done!',
+            text: 'A confirmation notification has been sent to the client. The booking will be marked complete once they confirm.',
+            icon: 'info',
+            confirmButtonColor: '#7C9473'
+        });
+    } else if (msg === 'task_cancelled') {
+        Swal.fire({
+            title: 'Task Cancelled',
+            text: 'Booking cancelled successfully.',
+            icon: 'info',
+            timer: 2500,
+            showConfirmButton: false
+        });
+    }
+
+    // ── Error param handler ─────────────────────────────────────────────────
+    const err = new URLSearchParams(window.location.search).get('error');
+    if (err === 'service_already_started') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Cannot Cancel',
+            text: 'Service time has already passed — cancellation is no longer allowed. If there is an issue, please raise a dispute instead.',
+            confirmButtonColor: '#7C9473'
+        });
+    } else if (err === 'cannot_cancel') {
+        Swal.fire({ icon:'error', title:'Cannot Cancel', text:'This booking cannot be cancelled at this stage.', confirmButtonColor:'#7C9473' });
+    }
+
+    // Clean URL after showing message
+    if (msg) {
+        window.history.replaceState({}, '', location.pathname + (hid ? '?highlight=' + hid : ''));
+    }
+});
+</script>
+</body>
+</html>

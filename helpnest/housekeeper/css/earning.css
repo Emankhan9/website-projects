@@ -1,0 +1,201 @@
+/* ===============================
+    🌿 HELPNEST - EARNINGS PAGE
+================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #F8F4E3;
+}
+
+/* Main Dashboard Wrapper */
+.dashboard-container {
+  display: flex;
+  width: 95%;
+  max-width: 1300px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 2rem auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  height: 90vh;
+}
+
+/* ===============================
+    🌿 MAIN CONTENT
+================================= */
+
+.main-content {
+  flex: 1;
+  padding: 2.5rem 3rem;
+  overflow-y: auto;
+}
+
+header h1 {
+  font-size: 2rem;
+  color: #5B4636;
+  font-family: 'Playfair Display', serif;
+}
+
+header p {
+  color: #7C7C7C;
+  margin-top: 0.3rem;
+}
+
+/* ===============================
+    🌿 SUMMARY BOXES
+================================= */
+
+.summary-section {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+.box {
+  background: #EDE6D6;
+  padding: 1.4rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.box h3 {
+  color: #5B4636;
+  font-size: 1.1rem;
+}
+
+.box p {
+  color: #7C9473;
+  font-size: 1.5rem;
+  margin-top: 0.4rem;
+  font-weight: 600;
+}
+
+/* ===============================
+    🌿 TABLE SECTION
+================================= */
+
+.table-section {
+  margin-top: 3rem;
+}
+
+.table-section h2 {
+  color: #5B4636;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+th, td {
+  padding: 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #A8BFA1;
+  color: #fff;
+  font-weight: 500;
+}
+
+.paid {
+  background: #7C9473;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+.pending {
+  background: #D4A017;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+/* ===============================
+    🌿 IMPROVED RESPONSIVE (FYP READY)
+================================= */
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  /* .sidebar {
+    width: 100%;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  .sidebar h2 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .sidebar ul {
+    display: flex;
+    gap: 0.5rem;
+    width: max-content;
+  }
+
+  .sidebar ul li {
+    margin-bottom: 0;
+  }
+
+  .sidebar ul li a {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  } */
+
+  .main-content {
+    padding: 1.5rem;
+  }
+
+  .summary-section {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+
+  .table-section {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 500px;
+  }
+
+  th, td {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .summary-section {
+    grid-template-columns: 1fr;
+  }
+  
+  header h1 {
+    font-size: 1.5rem;
+  }
+}

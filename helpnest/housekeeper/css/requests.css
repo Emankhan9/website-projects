@@ -1,0 +1,99 @@
+.requests-section { margin-top: 2rem; }
+.requests-section h2 { color: #5B4636; font-family: 'Playfair Display', serif; margin-bottom: 1rem; }
+
+.request-card {
+  background: #fff;
+  padding: 1.2rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.request-card p { margin: 6px 0; color: #5B4636; }
+.actions { margin-top: 12px; display: flex; gap: 10px; }
+.actions .btn { padding: 0.5rem 1rem; border-radius: 6px; border: none; cursor: pointer; transition: 0.3s; }
+.actions .btn.accept { background: #7C9473; color: #fff; }
+.actions .btn.reject { background: #c0392b; color: #fff; }
+
+.status { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; }
+.status.accepted { background: #4CAF50; color: #fff; }
+.status.pending { background: #D4A017; color: #fff; }
+.status.rejected { background: #c0392b; color: #fff; }
+
+/* === Responsive (Matching Earning.css EXACT measurements) === */
+@media (max-width: 768px) {
+  body {
+    height: auto;
+    align-items: flex-start;
+  }
+
+  .dashboard-container {
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  /* Slim Top Nav Bar */
+  /* .sidebar {
+    width: 100% !important;
+    padding: 0.8rem 1rem !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center;
+  }
+
+  .sidebar h2 {
+    margin-bottom: 0 !important;
+    font-size: 1.2rem;
+  }
+
+  .sidebar ul {
+    display: flex !important;
+    gap: 10px;
+  }
+
+  .sidebar li {
+    padding: 0.4rem 0.6rem !important;
+  }
+
+  .sidebar li a {
+    white-space: nowrap;
+    font-size: 0.85rem;
+  } */
+
+  /* Shrunk Content Area */
+  .main-content {
+    padding: 1.2rem !important;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  /* Request Cards Scaling */
+  .request-card {
+    padding: 1rem !important;
+    margin-bottom: 1rem;
+  }
+
+  /* Keep buttons side-by-side but slim */
+  .request-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 0.5rem 0.8rem !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+/* Small screen text adjustment */
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.5rem; /* Exactly like Earning.css */
+  }
+}

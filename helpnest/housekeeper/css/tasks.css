@@ -1,0 +1,125 @@
+/* HelpNest Tasks CSS — responsive override */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body { background: #fdfbf7; color: #333; }
+
+.main-content {
+  flex: 1; padding: 2.5rem 3rem;
+  background: #fff; min-width: 0;
+}
+
+/* Task Header */
+.task-header {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 2rem;
+  flex-wrap: wrap; gap: 1rem;
+}
+.h-profile {
+  display: flex; align-items: center; gap: 12px;
+  background: #f8f8f8; padding: 6px 18px; border-radius: 50px;
+}
+.h-profile span { font-size: 0.85rem; color: #5B4636; font-weight: 600; }
+.nav-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #7C9473; }
+
+/* Task List */
+.task-list-wrapper { margin-top: 0.5rem; }
+
+.task-card {
+  display: flex; justify-content: space-between;
+  align-items: center; background: #fff;
+  padding: 1.3rem 1.6rem; border-radius: 16px;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  border-left: 8px solid #7C9473;
+  transition: 0.3s ease; gap: 1rem;
+}
+.task-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+
+.client-profile-section { display: flex; align-items: center; gap: 14px; flex: 1.5; min-width: 0; }
+.img-container { flex-shrink: 0; }
+.client-card-img {
+  width: 58px; height: 58px; border-radius: 50%;
+  object-fit: cover; border: 2px solid #f0f0f0;
+}
+.client-info h3 { font-size: 1rem; color: #5B4636; margin-bottom: 4px; font-weight: 700; }
+.client-info p  { font-size: 0.82rem; color: #888; display: flex; align-items: center; gap: 5px; }
+
+.task-details-center {
+  flex: 1; display: flex; flex-direction: column;
+  gap: 6px; align-items: center;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  padding: 0 1rem;
+}
+.info-pill {
+  background: #F8F4E3; padding: 5px 14px;
+  border-radius: 20px; font-size: 0.78rem;
+  color: #5B4636; font-weight: 600;
+}
+.info-pill i { color: #7C9473; margin-right: 4px; }
+
+.task-actions { flex: 0 0 auto; }
+.complete-btn {
+  background: #7C9473; color: #fff;
+  border: none; padding: 11px 22px;
+  border-radius: 10px; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center;
+  gap: 8px; font-size: 0.85rem; transition: 0.3s; font-family: inherit;
+}
+.complete-btn:hover { background: #5B4636; transform: translateY(-2px); }
+
+/* Time confirm badge */
+.time-confirm-badge {
+  background: #7C9473; color: white;
+  padding: 12px 20px; border-radius: 10px;
+  margin-bottom: 1.5rem; display: inline-block;
+  font-weight: 500; box-shadow: 0 4px 10px rgba(124,148,115,0.3);
+  animation: slideIn 0.5s ease;
+}
+@keyframes slideIn {
+  from { transform: translateX(-20px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center; padding: 60px 20px;
+  background: #fff; border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.empty-state i { font-size: 3rem; color: #EDE6D6; margin-bottom: 1rem; display: block; }
+.empty-state p { color: #888; font-size: 0.9rem; }
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .main-content { padding: 1.4rem 1rem; }
+
+  .task-header { flex-direction: column; align-items: flex-start; margin-bottom: 1.2rem; }
+  .task-header h1 { font-size: 1.2rem; }
+
+  .task-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 1rem;
+    gap: 0.8rem;
+    border-left-width: 5px;
+  }
+
+  .client-profile-section { width: 100%; }
+
+  .task-details-center {
+    flex-direction: row; flex-wrap: wrap;
+    border: none; padding: 0;
+    gap: 8px; width: 100%;
+    align-items: flex-start;
+  }
+
+  .task-actions { width: 100%; }
+  .complete-btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .main-content { padding: 1rem 0.8rem; }
+  .client-card-img { width: 48px; height: 48px; }
+  .client-info h3 { font-size: 0.9rem; }
+  .complete-btn { font-size: 0.82rem; padding: 10px 16px; }
+}

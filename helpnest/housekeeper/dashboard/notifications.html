@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="housekeeper/dashboard/notifications.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications | HelpNest</title>
+  <link rel="stylesheet" href="../css/housekeeper-dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .notif-header { margin-bottom: 1.5rem; }
+    .notif-header h2 { font-family: 'Playfair Display', serif; color: #5B4636; font-size: 1.8rem; margin: 0 0 4px; }
+    .notif-header p  { color: #aaa; font-size: 0.85rem; }
+
+    .notif-summary { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .summary-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: #fff; border-radius: 14px; padding: 10px 16px;
+      box-shadow: 0 2px 10px rgba(91,70,54,0.07);
+      border: 1.5px solid #f0ece0; flex: 1; min-width: 130px;
+    }
+    .summary-pill .pill-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+    .summary-pill .pill-count { font-size: 1.3rem; font-weight: 700; color: #5B4636; line-height: 1; }
+    .summary-pill .pill-label { font-size: 0.72rem; color: #aaa; margin-top: 2px; }
+
+    .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .filter-tab {
+      padding: 7px 16px; border-radius: 20px; font-family: 'Poppins', sans-serif;
+      font-size: 0.78rem; font-weight: 600; cursor: pointer; text-decoration: none;
+      border: 1.5px solid #e8e0d0; background: #fff; color: #888; transition: all 0.2s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .filter-tab:hover { border-color: #7C9473; color: #5B4636; }
+    .filter-tab.active { background: #5B4636; color: #fff; border-color: #5B4636; }
+    .filter-tab .tab-count { background: rgba(255,255,255,0.25); color: inherit; border-radius: 10px; padding: 1px 7px; font-size: 0.72rem; font-weight: 700; }
+    .filter-tab:not(.active) .tab-count { background: #f0ece0; color: #888; }
+
+    .notif-card {
+      background: #fff; border-radius: 16px; padding: 16px 18px;
+      margin-bottom: 10px; display: flex; align-items: flex-start; gap: 14px;
+      box-shadow: 0 2px 12px rgba(91,70,54,0.06); border-left: 4px solid #e8e0d0;
+      transition: transform 0.18s, box-shadow 0.18s; position: relative;
+      cursor: pointer; text-decoration: none; color: inherit;
+    }
+    .notif-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(91,70,54,0.14); }
+    .notif-card.unread { background: #fdfaf5; }
+
+    .notif-card.highlighted {
+      animation: highlightPulse 2s ease-in-out;
+      box-shadow: 0 0 0 3px #7C9473, 0 8px 24px rgba(124,148,115,0.25) !important;
+    }
+    @keyframes highlightPulse {
+      0%   { box-shadow: 0 0 0 6px rgba(124,148,115,0.5); }
+      50%  { box-shadow: 0 0 0 12px rgba(124,148,115,0.1); }
+      100% { box-shadow: 0 0 0 3px #7C9473, 0 8px 24px rgba(124,148,115,0.25); }
+    }
+
+    .notif-icon-wrap { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+    .notif-body { flex: 1; min-width: 0; }
+    .notif-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+    .notif-type-badge { font-size: 0.68rem; font-weight: 700; padding: 2px 10px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .notif-time { font-size: 0.72rem; color: #bbb; display: flex; align-items: center; gap: 4px; }
+    .notif-message { font-size: 0.85rem; color: #555; line-height: 1.6; margin-bottom: 6px; }
+    .notif-booking-ref { font-size: 0.75rem; color: #7C9473; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+    .unread-dot { position: absolute; top: 16px; right: 16px; width: 8px; height: 8px; border-radius: 50%; background: #7C9473; }
+
+    .redirect-chip {
+      display: inline-flex; align-items: center; gap: 5px; font-size: 0.72rem;
+      font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 1.5px solid;
+      transition: all 0.2s; white-space: nowrap;
+    }
+    .notif-card:hover .redirect-chip { transform: translateX(3px); }
+
+    .date-sep {
+      display: flex; align-items: center; gap: 10px; margin: 18px 0 10px;
+      color: #bbb; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .date-sep::before, .date-sep::after { content: ''; flex: 1; height: 1px; background: #f0ece0; }
+
+    .empty-state { text-align: center; padding: 60px 20px; background: #fff; border-radius: 16px; }
+    .empty-state i { font-size: 2.8rem; display: block; margin-bottom: 14px; color: #ddd; }
+    .empty-state h3 { font-family: 'Playfair Display', serif; color: #5B4636; margin-bottom: 6px; }
+    .empty-state p  { color: #999; font-size: 0.88rem; }
+
+    @media (max-width: 600px) {
+      .notif-summary { gap: 8px; }
+      .summary-pill  { min-width: calc(50% - 4px); }
+      .filter-tabs   { gap: 6px; }
+      .filter-tab    { padding: 6px 12px; font-size: 0.74rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mob-topbar">
+  <span class="mob-logo">HelpNest</span>
+  <button class="hamburger" onclick="document.getElementById('hkMobNav').classList.add('open')">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<div class="mob-nav-overlay" id="hkMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="mob-nav-panel">
+    <button class="mob-nav-close" onclick="document.getElementById('hkMobNav').classList.remove('open')">✕</button>
+    <h2>HelpNest</h2>
+    <ul>
+      <li class="">
+        <a href="housekeeper-dashboard.html"><i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span></a>
+      </li>
+      <li class="">
+        <a href="requests.html"><i class="fa-solid fa-inbox"></i><span class="nav-label">Requests</span>
+          <span class="badge-count">2</span>        </a>
+      </li>
+      <li class="">
+        <a href="tasks.html"><i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span></a>
+      </li>
+      <li class="">
+        <a href="earnings.html"><i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span></a>
+      </li>
+      <li class="">
+        <a href="messages.html"><i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+          <span class="badge-count">2</span>        </a>
+      </li>
+      <li class="">
+        <a href="reviews.html"><i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span></a>
+      </li>
+      <li class="active">
+        <a href="notifications.html"><i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span></a>
+      </li>
+      <li class="">
+        <a href="profile.html"><i class="fa-solid fa-user"></i><span class="nav-label">Profile</span></a>
+      </li>
+    </ul>
+    <div class="mob-logout">
+      <a href="../../index.html"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard-container">
+  <style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('hkMobNav').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="hkMobNav"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('hkMobNav').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="housekeeper-dashboard.html">
+                    <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="requests.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                            <span class="badge-count" id="hk-mob-badge-requests">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="tasks.html">
+                    <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="earnings.html">
+                    <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="messages.html">
+                    <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                            <span class="badge-count" id="hk-mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="disputes.html">
+                    <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="notifications.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                            <span class="badge-count" id="hk-mob-badge-notifs" style="display:none;">0</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="profile.html">
+                    <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+                </a>
+            </li>
+        </ul>
+        <div class="mob-logout">
+            <a href="../../index.html">
+                <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="housekeeper-dashboard.html">
+                <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="requests.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                    <span class="badge-count" id="hk-desk-badge-requests">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="tasks.html">
+                <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="earnings.html">
+                <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                    <span class="badge-count" id="hk-desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="hk-desk-badge-notifs" style="display:none;">0</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i><span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // Don't poll on notifications page — user is already there
+    const curPage = 'notifications.html';
+    if (curPage === 'notifications.html') return;
+
+    // Update both Desktop + Mobile IDs
+    function updateBadge(ids, count) {
+        (Array.isArray(ids) ? ids : [ids]).forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (count > 0) {
+                el.textContent   = count;
+                el.style.display = 'inline-flex';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) return;
+                updateBadge(['hk-desk-badge-notifs',   'hk-mob-badge-notifs'],   data.notifs   || 0);
+                updateBadge(['hk-desk-badge-msgs',     'hk-mob-badge-msgs'],     data.msgs     || 0);
+                updateBadge(['hk-desk-badge-requests', 'hk-mob-badge-requests'], data.requests || 0);
+            })
+            .catch(() => {});
+    }
+
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) pollTimer = setInterval(refreshBadges, 30000);
+    }
+    function stopPolling() {
+        if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') { refreshBadges(); startPolling(); }
+        else stopPolling();
+    });
+
+    startPolling();
+})();
+</script>
+  <main class="main-content">
+
+    <div class="notif-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div>
+        <h2>Notifications</h2>
+        <p>Click any notification to go directly to the related page</p>
+      </div>
+      <div class="h-profile">
+        <span>Fatima Noor</span>
+        <img src="../../Uploads/profiles/fatima.svg"
+             onerror="this.src='../../assets/default-avatar.png'" class="nav-img">
+      </div>
+    </div>
+
+    
+    <div class="notif-summary">
+      <div class="summary-pill">
+        <div class="pill-icon" style="background:#f0f7ee;color:#7C9473;"><i class="fa-solid fa-bell"></i></div>
+        <div class="pill-info"><div class="pill-count">5</div><div class="pill-label">Total</div></div>
+      </div>
+      <div class="summary-pill">
+        <div class="pill-icon" style="background:#f0f7ff;color:#2980b9;"><i class="fa-solid fa-calendar-plus"></i></div>
+        <div class="pill-info"><div class="pill-count">2</div><div class="pill-label">Bookings</div></div>
+      </div>
+      <div class="summary-pill">
+        <div class="pill-icon" style="background:#fdf2f2;color:#e74c3c;"><i class="fa-solid fa-circle-xmark"></i></div>
+        <div class="pill-info"><div class="pill-count">0</div><div class="pill-label">Cancellations</div></div>
+      </div>
+      <div class="summary-pill">
+        <div class="pill-icon" style="background:#fffbf0;color:#f39c12;"><i class="fa-solid fa-star"></i></div>
+        <div class="pill-info"><div class="pill-count">1</div><div class="pill-label">Reviews</div></div>
+      </div>
+      <div class="summary-pill">
+        <div class="pill-icon" style="background:#f9f0ff;color:#8e44ad;"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div class="pill-info"><div class="pill-count">0</div><div class="pill-label">Disputes</div></div>
+      </div>
+    </div>
+
+    
+    <div class="filter-tabs">
+              <a href="?filter=all"
+           class="filter-tab active">
+          <i class="fa-solid fa-list"></i>
+          All          <span class="tab-count">5</span>
+        </a>
+              <a href="?filter=booking"
+           class="filter-tab ">
+          <i class="fa-solid fa-calendar-plus"></i>
+          Bookings          <span class="tab-count">2</span>
+        </a>
+              <a href="?filter=cancellation"
+           class="filter-tab ">
+          <i class="fa-solid fa-circle-xmark"></i>
+          Cancellations          <span class="tab-count">0</span>
+        </a>
+              <a href="?filter=completion"
+           class="filter-tab ">
+          <i class="fa-solid fa-circle-check"></i>
+          Completions          <span class="tab-count">1</span>
+        </a>
+              <a href="?filter=review"
+           class="filter-tab ">
+          <i class="fa-solid fa-star"></i>
+          Reviews          <span class="tab-count">1</span>
+        </a>
+              <a href="?filter=dispute"
+           class="filter-tab ">
+          <i class="fa-solid fa-scale-balanced"></i>
+          Disputes          <span class="tab-count">0</span>
+        </a>
+              <a href="?filter=unread"
+           class="filter-tab ">
+          <i class="fa-solid fa-circle"></i>
+          Unread          <span class="tab-count">0</span>
+        </a>
+          </div>
+
+    
+              <div class="date-sep">Today</div>
+    
+        <a class="notif-card "
+           href="requests__tab-pending.html?highlight=6"
+           style="border-left-color:#2980b9;"
+           data-booking="6">
+
+          
+          <div class="notif-icon-wrap" style="background:#f0f7ff;color:#2980b9;">
+            <i class="fa-solid fa-calendar-plus"></i>
+          </div>
+
+          <div class="notif-body">
+            <div class="notif-top">
+              <span class="notif-type-badge"
+                    style="background:#f0f7ff;color:#2980b9;border:1px solid #b3d4f5;">
+                New Request              </span>
+              <span class="notif-time">
+                <i class="fa-regular fa-clock"></i>
+                5h ago              </span>
+            </div>
+
+            <div class="notif-message">New booking request from Ayesha Khan for Home Cleaning.</div>
+
+                        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:6px;">
+              <div class="notif-booking-ref">
+                <i class="fa-solid fa-hashtag"></i> HN-2026-00006                &nbsp;·&nbsp;<i class="fa-regular fa-calendar"></i> 23 Oct 2026              </div>
+              <span class="redirect-chip"
+                    style="color:#2980b9;border-color:#b3d4f5;background:#f0f7ff;">
+                <i class="fa-solid fa-inbox"></i>
+                View in Requests →
+              </span>
+            </div>
+          </div>
+        </a>
+
+    
+        <a class="notif-card "
+           href="requests__tab-pending.html?highlight=7"
+           style="border-left-color:#2980b9;"
+           data-booking="7">
+
+          
+          <div class="notif-icon-wrap" style="background:#f0f7ff;color:#2980b9;">
+            <i class="fa-solid fa-calendar-plus"></i>
+          </div>
+
+          <div class="notif-body">
+            <div class="notif-top">
+              <span class="notif-type-badge"
+                    style="background:#f0f7ff;color:#2980b9;border:1px solid #b3d4f5;">
+                New Request              </span>
+              <span class="notif-time">
+                <i class="fa-regular fa-clock"></i>
+                5h ago              </span>
+            </div>
+
+            <div class="notif-message">New booking request from Bilal Ahmed for Home Cleaning.</div>
+
+                        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:6px;">
+              <div class="notif-booking-ref">
+                <i class="fa-solid fa-hashtag"></i> HN-2026-00007                &nbsp;·&nbsp;<i class="fa-regular fa-calendar"></i> 24 Oct 2026              </div>
+              <span class="redirect-chip"
+                    style="color:#2980b9;border-color:#b3d4f5;background:#f0f7ff;">
+                <i class="fa-solid fa-inbox"></i>
+                View in Requests →
+              </span>
+            </div>
+          </div>
+        </a>
+
+              <div class="date-sep">Yesterday</div>
+    
+        <a class="notif-card "
+           href="earnings.html?highlight=4"
+           style="border-left-color:#27ae60;"
+           data-booking="4">
+
+          
+          <div class="notif-icon-wrap" style="background:#f0faf4;color:#27ae60;">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+
+          <div class="notif-body">
+            <div class="notif-top">
+              <span class="notif-type-badge"
+                    style="background:#f0faf4;color:#27ae60;border:1px solid #b7e4c7;">
+                Completion              </span>
+              <span class="notif-time">
+                <i class="fa-regular fa-clock"></i>
+                1d ago              </span>
+            </div>
+
+            <div class="notif-message">Sana Malik marked booking HN-2026-00004 as completed.</div>
+
+                        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:6px;">
+              <div class="notif-booking-ref">
+                <i class="fa-solid fa-hashtag"></i> HN-2026-00004                &nbsp;·&nbsp;<i class="fa-regular fa-calendar"></i> 20 Oct 2026              </div>
+              <span class="redirect-chip"
+                    style="color:#27ae60;border-color:#b7e4c7;background:#f0faf4;">
+                <i class="fa-solid fa-wallet"></i>
+                View in Earnings →
+              </span>
+            </div>
+          </div>
+        </a>
+
+              <div class="date-sep">02 October 2026</div>
+    
+        <a class="notif-card "
+           href="reviews.html"
+           style="border-left-color:#f39c12;"
+           data-booking="1">
+
+          
+          <div class="notif-icon-wrap" style="background:#fffbf0;color:#f39c12;">
+            <i class="fa-solid fa-star"></i>
+          </div>
+
+          <div class="notif-body">
+            <div class="notif-top">
+              <span class="notif-type-badge"
+                    style="background:#fffbf0;color:#f39c12;border:1px solid #fde8a0;">
+                Review              </span>
+              <span class="notif-time">
+                <i class="fa-regular fa-clock"></i>
+                02 Oct 2026              </span>
+            </div>
+
+            <div class="notif-message">You received a new 5-star review from Ayesha Khan.</div>
+
+                        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:6px;">
+              <div class="notif-booking-ref">
+                <i class="fa-solid fa-hashtag"></i> HN-2026-00001                &nbsp;·&nbsp;<i class="fa-regular fa-calendar"></i> 01 Oct 2026              </div>
+              <span class="redirect-chip"
+                    style="color:#f39c12;border-color:#fde8a0;background:#fffbf0;">
+                <i class="fa-solid fa-star"></i>
+                View in Reviews →
+              </span>
+            </div>
+          </div>
+        </a>
+
+              <div class="date-sep">17 September 2026</div>
+    
+        <a class="notif-card "
+           href="earnings.html?highlight=14"
+           style="border-left-color:#8e44ad;"
+           data-booking="14">
+
+          
+          <div class="notif-icon-wrap" style="background:#f9f0ff;color:#8e44ad;">
+            <i class="fa-solid fa-wallet"></i>
+          </div>
+
+          <div class="notif-body">
+            <div class="notif-top">
+              <span class="notif-type-badge"
+                    style="background:#f9f0ff;color:#8e44ad;border:1px solid #d7b8f5;">
+                Payment              </span>
+              <span class="notif-time">
+                <i class="fa-regular fa-clock"></i>
+                17 Sep 2026              </span>
+            </div>
+
+            <div class="notif-message">Payment of Rs. 1,600 received for booking HN-2026-00014.</div>
+
+                        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:6px;">
+              <div class="notif-booking-ref">
+                <i class="fa-solid fa-hashtag"></i> HN-2026-00014                &nbsp;·&nbsp;<i class="fa-regular fa-calendar"></i> 16 Sep 2026              </div>
+              <span class="redirect-chip"
+                    style="color:#8e44ad;border-color:#d7b8f5;background:#f9f0ff;">
+                <i class="fa-solid fa-wallet"></i>
+                View in Earnings →
+              </span>
+            </div>
+          </div>
+        </a>
+
+    
+    
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="housekeeper/dashboard/requests__tab-pending.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Requests | HelpNest</title>
+  <link rel="stylesheet" href="../css/housekeeper-dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    /* ── Tab Switcher ── */
+    .tab-switcher { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tab-btn {
+      padding: 9px 22px; border-radius: 25px; border: 2px solid #e8e0d0;
+      background: #fff; font-family: 'Poppins', sans-serif; font-size: 0.82rem;
+      font-weight: 600; color: #888; cursor: pointer; text-decoration: none;
+      transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+    }
+    .tab-btn:hover { border-color: #7C9473; color: #5B4636; }
+    .tab-btn.active { background: #5B4636; color: #fff; border-color: #5B4636; }
+    .tab-btn .tab-badge { font-size: 0.72rem; font-weight: 700; padding: 1px 8px; border-radius: 12px; background: rgba(255,255,255,0.25); }
+    .tab-btn:not(.active) .tab-badge { background: #f0ece0; color: #888; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── Request Card ── */
+    .request-card {
+      background: #fff; border-radius: 16px; padding: 20px;
+      margin-bottom: 14px; border-left: 5px solid #2980b9;
+      box-shadow: 0 4px 16px rgba(91,70,54,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .request-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(91,70,54,0.12); }
+    .request-card.highlighted {
+      animation: cardHighlight 3s ease-in-out;
+      border-left-color: #7C9473 !important;
+    }
+    @keyframes cardHighlight {
+      0%   { box-shadow: 0 0 0 0px rgba(124,148,115,0); background: #fff; }
+      10%  { box-shadow: 0 0 0 6px rgba(124,148,115,0.4); background: #f0faf4; }
+      50%  { box-shadow: 0 0 0 10px rgba(124,148,115,0.15); background: #f5fbf3; }
+      100% { box-shadow: 0 8px 24px rgba(91,70,54,0.12); background: #fff; }
+    }
+
+    /* ✅ Urgent card — deadline nazdeek ho */
+    .request-card.urgent { border-left-color: #e67e22 !important; }
+    .request-card.critical { border-left-color: #e74c3c !important; }
+
+    /* ── Cancelled Card ── */
+    .cancelled-card {
+      background: #fff; border-radius: 16px; padding: 18px 20px;
+      margin-bottom: 12px; border-left: 5px solid #e74c3c;
+      box-shadow: 0 3px 12px rgba(91,70,54,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cancelled-card:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(91,70,54,0.1); }
+    .cancelled-card.highlighted { animation: cardHighlightRed 3s ease-in-out; }
+    @keyframes cardHighlightRed {
+      0%   { box-shadow: 0 0 0 0px rgba(231,76,60,0); background: #fff; }
+      10%  { box-shadow: 0 0 0 6px rgba(231,76,60,0.3); background: #fdf5f5; }
+      50%  { box-shadow: 0 0 0 10px rgba(231,76,60,0.1); background: #fef9f9; }
+      100% { box-shadow: 0 6px 18px rgba(91,70,54,0.1); background: #fff; }
+    }
+
+    .client-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .client-row img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 2px solid #A8BFA1; flex-shrink: 0; }
+    .client-name { font-weight: 700; color: #5B4636; font-size: 0.95rem; }
+    .client-sub  { font-size: 0.75rem; color: #aaa; margin-top: 2px; }
+
+    .booking-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .meta-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 20px; font-size: 0.76rem; font-weight: 600;
+      background: #f5f0e8; color: #5B4636; border: 1px solid #ede8e0;
+    }
+    .meta-pill i { color: #7C9473; }
+
+    .client-msg {
+      background: #fdfaf5; border-radius: 10px; padding: 10px 14px;
+      font-size: 0.83rem; color: #666; font-style: italic; line-height: 1.6;
+      border-left: 3px solid #7C9473; margin-bottom: 14px;
+    }
+
+    /* ✅ Deadline countdown pill */
+    .deadline-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;
+      margin-bottom: 14px; border: 1.5px solid;
+    }
+    .deadline-pill.safe     { background: #eef9ee; color: #27ae60; border-color: #a8ddb0; }
+    .deadline-pill.warning  { background: #fff8e1; color: #e67e22; border-color: #f9d88a; }
+    .deadline-pill.critical { background: #fdecea; color: #e74c3c; border-color: #f5b7b1; }
+
+    .action-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-accept {
+      flex: 1; padding: 10px 20px; background: linear-gradient(135deg, #7C9473, #5a7a52);
+      color: #fff; border: none; border-radius: 12px; font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 120px;
+    }
+    .btn-accept:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(124,148,115,0.3); }
+    .btn-reject {
+      flex: 1; padding: 10px 20px; background: #fff; color: #e74c3c;
+      border: 2px solid #e74c3c; border-radius: 12px; font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 120px;
+    }
+    .btn-reject:hover { background: #e74c3c; color: #fff; transform: translateY(-2px); }
+
+    .cancel-reason-box {
+      background: #fdf2f2; border-radius: 10px; padding: 8px 12px;
+      font-size: 0.78rem; color: #e74c3c; margin-top: 8px;
+      display: flex; align-items: flex-start; gap: 6px; line-height: 1.5;
+    }
+    .cancelled-by-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 700;
+      background: #fdf2f2; color: #e74c3c; border: 1px solid #f5c6c6;
+    }
+
+    .empty-card { text-align: center; padding: 50px 20px; background: #fff; border-radius: 16px; box-shadow: 0 3px 12px rgba(91,70,54,0.06); }
+    .empty-card i { font-size: 2.5rem; color: #ddd; display: block; margin-bottom: 12px; }
+    .empty-card h3 { font-family: 'Playfair Display', serif; color: #5B4636; margin-bottom: 6px; }
+    .empty-card p { color: #999; font-size: 0.85rem; }
+
+    .notif-origin-banner {
+      background: linear-gradient(135deg, #f0f7ee, #e8f4e5);
+      border: 1.5px solid #c5dac0; border-radius: 12px;
+      padding: 10px 16px; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px; font-size: 0.82rem;
+      color: #5B4636; font-weight: 500;
+    }
+    .notif-origin-banner i { color: #7C9473; font-size: 1rem; }
+    .notif-origin-banner a { color: #7C9473; text-decoration: none; font-weight: 700; margin-left: auto; }
+    .notif-origin-banner a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .action-row { flex-direction: column; }
+      .btn-accept, .btn-reject { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mob-topbar">
+  <span class="mob-logo">HelpNest</span>
+  <button class="hamburger" onclick="document.getElementById('hkMobNav').classList.add('open')">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<div class="mob-nav-overlay" id="hkMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="mob-nav-panel">
+    <button class="mob-nav-close" onclick="document.getElementById('hkMobNav').classList.remove('open')">✕</button>
+    <h2>HelpNest</h2>
+    <ul>
+      <li class="">
+        <a href="housekeeper-dashboard.html"><i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span></a>
+      </li>
+      <li class="active">
+        <a href="requests.html">
+          <i class="fa-solid fa-inbox"></i><span class="nav-label">Requests</span>
+          <span class="badge-count">2</span>        </a>
+      </li>
+      <li class="">
+        <a href="tasks.html"><i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span></a>
+      </li>
+      <li class="">
+        <a href="earnings.html"><i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span></a>
+      </li>
+      <li class="">
+        <a href="messages.html">
+          <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+          <span class="badge-count">2</span>        </a>
+      </li>
+      <li class="">
+        <a href="reviews.html"><i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span></a>
+      </li>
+      <li class="">
+        <a href="notifications.html"><i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span></a>
+      </li>
+      <li class="">
+        <a href="profile.html"><i class="fa-solid fa-user"></i><span class="nav-label">Profile</span></a>
+      </li>
+    </ul>
+    <div class="mob-logout">
+      <a href="../../index.html"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard-container">
+  <style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('hkMobNav').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="hkMobNav"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('hkMobNav').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="housekeeper-dashboard.html">
+                    <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="requests.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                            <span class="badge-count" id="hk-mob-badge-requests">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="tasks.html">
+                    <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="earnings.html">
+                    <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="messages.html">
+                    <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                            <span class="badge-count" id="hk-mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="disputes.html">
+                    <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                            <span class="badge-count" id="hk-mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="profile.html">
+                    <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+                </a>
+            </li>
+        </ul>
+        <div class="mob-logout">
+            <a href="../../index.html">
+                <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="housekeeper-dashboard.html">
+                <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="requests.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                    <span class="badge-count" id="hk-desk-badge-requests">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="tasks.html">
+                <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="earnings.html">
+                <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                    <span class="badge-count" id="hk-desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="hk-desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i><span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // Don't poll on notifications page — user is already there
+    const curPage = 'requests.html';
+    if (curPage === 'notifications.html') return;
+
+    // Update both Desktop + Mobile IDs
+    function updateBadge(ids, count) {
+        (Array.isArray(ids) ? ids : [ids]).forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (count > 0) {
+                el.textContent   = count;
+                el.style.display = 'inline-flex';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) return;
+                updateBadge(['hk-desk-badge-notifs',   'hk-mob-badge-notifs'],   data.notifs   || 0);
+                updateBadge(['hk-desk-badge-msgs',     'hk-mob-badge-msgs'],     data.msgs     || 0);
+                updateBadge(['hk-desk-badge-requests', 'hk-mob-badge-requests'], data.requests || 0);
+            })
+            .catch(() => {});
+    }
+
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) pollTimer = setInterval(refreshBadges, 30000);
+    }
+    function stopPolling() {
+        if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') { refreshBadges(); startPolling(); }
+        else stopPolling();
+    });
+
+    startPolling();
+})();
+</script>
+  <main class="main-content">
+    <header>
+      <h1>Booking Requests</h1>
+      <p>Manage your pending and past booking requests</p>
+    </header>
+
+    
+    
+    
+    <div class="tab-switcher">
+      <a href="?tab=pending"
+         class="tab-btn active">
+        <i class="fa-solid fa-hourglass-half"></i>
+        Pending
+        <span class="tab-badge">2</span>
+      </a>
+      <a href="?tab=active"
+         class="tab-btn ">
+        <i class="fa-solid fa-bolt"></i>
+        Active
+        <span class="tab-badge">1</span>
+      </a>
+      <a href="?tab=completed"
+         class="tab-btn ">
+        <i class="fa-solid fa-circle-check"></i>
+        Completed
+        <span class="tab-badge">3</span>
+      </a>
+      <a href="?tab=cancelled"
+         class="tab-btn ">
+        <i class="fa-solid fa-circle-xmark"></i>
+        Cancelled
+        <span class="tab-badge">0</span>
+      </a>
+    </div>
+
+    
+    <div class="tab-content active" id="tab-pending">
+                        <div class="request-card  "
+               id="booking-6">
+
+            
+            <div class="client-row">
+              <img src="../../Uploads/profiles/ayesha.svg"
+                   onerror="this.src='../../assets/default-avatar.png'">
+              <div>
+                <div class="client-name">Ayesha Khan</div>
+                <div class="client-sub">
+                                      <i class="fa-solid fa-phone" style="color:#7C9473;"></i>
+                    0300-1234567                                  </div>
+              </div>
+              <div style="margin-left:auto;">
+                <span style="padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;
+                             background:#fef9e7;
+                             color:#D4A017;">
+                  One Time                </span>
+              </div>
+            </div>
+
+            
+                                        <div class="deadline-pill safe"
+                   data-deadline="2026-10-22 22:00:00">
+                <i class="fa-solid fa-clock"></i>
+                <span class="countdown-text">Respond by 22 Oct, 10:00 PM</span>
+              </div>
+            
+            
+            <div class="booking-meta">
+              <span class="meta-pill">
+                <i class="fa-solid fa-calendar-day"></i>
+                23 Oct 2026                (Friday)
+              </span>
+              <span class="meta-pill">
+                <i class="fa-solid fa-clock"></i>
+                10:00 AM                                  → 1:00 PM                              </span>
+              <span class="meta-pill">
+                <i class="fa-solid fa-location-dot"></i>
+                House 12, Block 5, Gulshan-e-Iqbal, Kara...              </span>
+              <span class="meta-pill" style="background:#eef4eb;color:#5B4636;">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                Rs. 2,400              </span>
+                          </div>
+
+            
+            
+            
+            <div class="action-row">
+              <form method="POST" action="#" style="flex:1;">
+                <input type="hidden" name="booking_id" value="6">
+                <input type="hidden" name="action" value="accept">
+                <input type="hidden" name="csrf_token" value="static-demo-token">
+                <button type="submit" class="btn-accept" style="width:100%;">
+                  <i class="fa-solid fa-check"></i> Accept
+                </button>
+              </form>
+              <button class="btn-reject"
+                      onclick="rejectBooking(6)">
+                <i class="fa-solid fa-xmark"></i> Decline
+              </button>
+            </div>
+          </div>
+                  <div class="request-card  "
+               id="booking-7">
+
+            
+            <div class="client-row">
+              <img src="../../Uploads/profiles/bilal.svg"
+                   onerror="this.src='../../assets/default-avatar.png'">
+              <div>
+                <div class="client-name">Bilal Ahmed</div>
+                <div class="client-sub">
+                                      <i class="fa-solid fa-phone" style="color:#7C9473;"></i>
+                    0321-7654321                                  </div>
+              </div>
+              <div style="margin-left:auto;">
+                <span style="padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;
+                             background:#fef9e7;
+                             color:#D4A017;">
+                  One Time                </span>
+              </div>
+            </div>
+
+            
+                                        <div class="deadline-pill safe"
+                   data-deadline="2026-10-23 22:00:00">
+                <i class="fa-solid fa-clock"></i>
+                <span class="countdown-text">Respond by 23 Oct, 10:00 PM</span>
+              </div>
+            
+            
+            <div class="booking-meta">
+              <span class="meta-pill">
+                <i class="fa-solid fa-calendar-day"></i>
+                24 Oct 2026                (Saturday)
+              </span>
+              <span class="meta-pill">
+                <i class="fa-solid fa-clock"></i>
+                2:00 PM                                  → 5:00 PM                              </span>
+              <span class="meta-pill">
+                <i class="fa-solid fa-location-dot"></i>
+                Flat 3B, Clifton Block 2, Karachi              </span>
+              <span class="meta-pill" style="background:#eef4eb;color:#5B4636;">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                Rs. 2,400              </span>
+                          </div>
+
+            
+            
+            
+            <div class="action-row">
+              <form method="POST" action="#" style="flex:1;">
+                <input type="hidden" name="booking_id" value="7">
+                <input type="hidden" name="action" value="accept">
+                <input type="hidden" name="csrf_token" value="static-demo-token">
+                <button type="submit" class="btn-accept" style="width:100%;">
+                  <i class="fa-solid fa-check"></i> Accept
+                </button>
+              </form>
+              <button class="btn-reject"
+                      onclick="rejectBooking(7)">
+                <i class="fa-solid fa-xmark"></i> Decline
+              </button>
+            </div>
+          </div>
+        
+          </div>
+
+    
+    <div class="tab-content " id="tab-active">
+                        <div class="request-card "
+               style="border-left-color:#27ae60;"
+               id="booking-11">
+
+            <div class="client-row">
+              <img src="../../Uploads/profiles/hira.svg"
+                   onerror="this.src='../../assets/default-avatar.png'">
+              <div>
+                <div class="client-name">Hira Siddiqui</div>
+                <div class="client-sub">
+                                      <i class="fa-solid fa-phone" style="color:#7C9473;"></i>
+                    0312-3344556                                  </div>
+              </div>
+              <div style="margin-left:auto;">
+                                  <span style="font-size:0.72rem;color:#7C9473;font-weight:700;">
+                    <i class="fa fa-hashtag"></i> HN-2026-00011                  </span>
+                              </div>
+            </div>
+
+            <div class="booking-meta">
+              <span class="meta-pill">
+                <i class="fa-solid fa-calendar-day"></i>
+                26 Oct 2026                (Monday)
+              </span>
+              <span class="meta-pill">
+                <i class="fa-solid fa-clock"></i>
+                9:00 AM                 → 12:00 PM              </span>
+              <span class="meta-pill">
+                <i class="fa-solid fa-location-dot"></i>
+                PECHS Block 6, Karachi              </span>
+              <span class="meta-pill" style="background:#eef4eb;color:#5B4636;">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                Rs. 2,400              </span>
+              <span class="meta-pill" style="background:#e8f9ee;color:#27ae60;border-color:#a8ddb0;">
+                <i class="fa-solid fa-circle-check"></i> Accepted
+              </span>
+            </div>
+
+            
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
+              <span style="font-size:0.76rem;font-weight:600;padding:5px 12px;border-radius:20px;
+                background:#f8f4ee;
+                color:#bbb;
+                border:1px solid #e8e0d0;">
+                <i class="fa fa-clock"></i>
+                You: Pending              </span>
+              <span style="font-size:0.76rem;font-weight:600;padding:5px 12px;border-radius:20px;
+                background:#f8f4ee;
+                color:#bbb;
+                border:1px solid #e8e0d0;">
+                <i class="fa fa-clock"></i>
+                Client: Pending              </span>
+            </div>
+          </div>
+                  </div>
+
+    
+    <div class="tab-content " id="tab-completed">
+                        <div class="cancelled-card "
+               style="border-left-color:#27ae60;"
+               id="booking-4">
+
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+              <div class="client-row" style="margin-bottom:0;">
+                <img src="../../Uploads/profiles/sana.svg"
+                     onerror="this.src='../../assets/default-avatar.png'"
+                     style="width:38px;height:38px;">
+                <div>
+                  <div class="client-name" style="font-size:0.88rem;">Sana Malik</div>
+                                      <div style="font-size:0.72rem;color:#7C9473;font-weight:600;">
+                      <i class="fa-solid fa-hashtag"></i> HN-2026-00004                    </div>
+                                  </div>
+              </div>
+              <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 12px;
+                border-radius:12px;font-size:0.72rem;font-weight:700;
+                background:#fff3cd;
+                color:#b7791f;">
+                <i class="fa fa-clock"></i>
+                Payment Pending              </span>
+            </div>
+
+            <div class="booking-meta">
+              <span class="meta-pill">
+                <i class="fa-solid fa-calendar-day"></i>
+                20 Oct 2026              </span>
+              <span class="meta-pill">
+                <i class="fa-solid fa-clock"></i>
+                11:00 AM                 → 1:00 PM              </span>
+              <span class="meta-pill" style="background:#eef4eb;color:#5B4636;">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                Rs. 1,600              </span>
+                            <span class="meta-pill" style="background:#e8f9ee;color:#27ae60;border-color:#a8ddb0;">
+                <i class="fa fa-circle-check"></i>
+                Done: 20 Oct 2026              </span>
+                          </div>
+
+            
+                          <p style="font-size:0.76rem;color:#bbb;margin-top:6px;">
+                <i class="fa fa-star"></i> No review yet
+              </p>
+                      </div>
+                  <div class="cancelled-card "
+               style="border-left-color:#27ae60;"
+               id="booking-1">
+
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+              <div class="client-row" style="margin-bottom:0;">
+                <img src="../../Uploads/profiles/ayesha.svg"
+                     onerror="this.src='../../assets/default-avatar.png'"
+                     style="width:38px;height:38px;">
+                <div>
+                  <div class="client-name" style="font-size:0.88rem;">Ayesha Khan</div>
+                                      <div style="font-size:0.72rem;color:#7C9473;font-weight:600;">
+                      <i class="fa-solid fa-hashtag"></i> HN-2026-00001                    </div>
+                                  </div>
+              </div>
+              <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 12px;
+                border-radius:12px;font-size:0.72rem;font-weight:700;
+                background:#d4edda;
+                color:#276749;">
+                <i class="fa fa-circle-check"></i>
+                Payment Received              </span>
+            </div>
+
+            <div class="booking-meta">
+              <span class="meta-pill">
+                <i class="fa-solid fa-calendar-day"></i>
+                01 Oct 2026              </span>
+              <span class="meta-pill">
+                <i class="fa-solid fa-clock"></i>
+                10:00 AM                 → 2:00 PM              </span>
+              <span class="meta-pill" style="background:#eef4eb;color:#5B4636;">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                Rs. 3,200              </span>
+                            <span class="meta-pill" style="background:#e8f9ee;color:#27ae60;border-color:#a8ddb0;">
+                <i class="fa fa-circle-check"></i>
+                Done: 01 Oct 2026              </span>
+                          </div>
+
+            
+                          <div style="display:flex;align-items:center;gap:6px;margin-top:8px;
+                background:#fffbf0;border-radius:10px;padding:8px 12px;border:1px solid #f9e8a0;">
+                <div style="color:#f1c40f;font-size:0.9rem;letter-spacing:1px;">
+                  ★★★★★                </div>
+                <span style="font-size:0.76rem;font-weight:700;color:#b7791f;">5/5</span>
+                                  <span style="font-size:0.78rem;color:#888;font-style:italic;margin-left:4px;">
+                    "Fatima did an amazing job — the house was spotless and she was so polite. Highly..."
+                  </span>
+                              </div>
+                      </div>
+                  <div class="cancelled-card "
+               style="border-left-color:#27ae60;"
+               id="booking-14">
+
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+              <div class="client-row" style="margin-bottom:0;">
+                <img src="../../Uploads/profiles/ayesha.svg"
+                     onerror="this.src='../../assets/default-avatar.png'"
+                     style="width:38px;height:38px;">
+                <div>
+                  <div class="client-name" style="font-size:0.88rem;">Ayesha Khan</div>
+                                      <div style="font-size:0.72rem;color:#7C9473;font-weight:600;">
+                      <i class="fa-solid fa-hashtag"></i> HN-2026-00014                    </div>
+                                  </div>
+              </div>
+              <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 12px;
+                border-radius:12px;font-size:0.72rem;font-weight:700;
+                background:#d4edda;
+                color:#276749;">
+                <i class="fa fa-circle-check"></i>
+                Payment Received              </span>
+            </div>
+
+            <div class="booking-meta">
+              <span class="meta-pill">
+                <i class="fa-solid fa-calendar-day"></i>
+                16 Sep 2026              </span>
+              <span class="meta-pill">
+                <i class="fa-solid fa-clock"></i>
+                10:00 AM                 → 12:00 PM              </span>
+              <span class="meta-pill" style="background:#eef4eb;color:#5B4636;">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                Rs. 1,600              </span>
+                            <span class="meta-pill" style="background:#e8f9ee;color:#27ae60;border-color:#a8ddb0;">
+                <i class="fa fa-circle-check"></i>
+                Done: 16 Sep 2026              </span>
+                          </div>
+
+            
+                          <div style="display:flex;align-items:center;gap:6px;margin-top:8px;
+                background:#fffbf0;border-radius:10px;padding:8px 12px;border:1px solid #f9e8a0;">
+                <div style="color:#f1c40f;font-size:0.9rem;letter-spacing:1px;">
+                  ★★★★★                </div>
+                <span style="font-size:0.76rem;font-weight:700;color:#b7791f;">5/5</span>
+                                  <span style="font-size:0.78rem;color:#888;font-style:italic;margin-left:4px;">
+                    "Second time booking Fatima, consistent quality every time."
+                  </span>
+                              </div>
+                      </div>
+                  </div>
+
+    
+    <div class="tab-content " id="tab-cancelled">
+              <div class="empty-card">
+          <i class="fa-solid fa-circle-check" style="color:#ddd;"></i>
+          <h3>No Cancelled Bookings</h3>
+          <p>Cancelled bookings will appear here for your records.</p>
+        </div>
+          </div>
+
+  </main>
+</div>
+
+<script>
+const CSRF_TOKEN = "static-demo-token";
+
+// ── Reject modal ──────────────────────────────────────────────────────────
+function rejectBooking(bookingId) {
+    Swal.fire({
+        title: '<span style="font-family:\'Playfair Display\',serif;color:#5B4636;">Decline Request</span>',
+        html: `
+          <p style="color:#888;font-size:0.85rem;margin-bottom:12px;">Please select a reason for declining:</p>
+          <div id="reasonBtns" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;">
+            ${['Busy','Far','Low Pay','Not Specified'].map(r =>
+              `<button type="button" onclick="selectReason(this,'${r}')"
+                 style="padding:8px 18px;border-radius:20px;border:2px solid #e8e0d0;
+                        background:#fff;color:#5B4636;font-family:'Poppins',sans-serif;
+                        font-size:0.82rem;font-weight:600;cursor:pointer;transition:0.2s;"
+                 onmouseover="this.style.borderColor='#e74c3c';this.style.color='#e74c3c';"
+                 onmouseout="if(!this.dataset.selected){this.style.borderColor='#e8e0d0';this.style.color='#5B4636';}">
+                 ${r}
+               </button>`
+            ).join('')}
+          </div>
+          <input type="hidden" id="selectedReason" value="">
+        `,
+        showCancelButton: true,
+        confirmButtonColor: '#e74c3c',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: '<i class="fa fa-xmark"></i> Decline',
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+            const r = document.getElementById('selectedReason').value;
+            if (!r) {
+                Swal.showValidationMessage('<i class="fa fa-circle-exclamation"></i> Please select a reason');
+                return false;
+            }
+            return r;
+        }
+    }).then(result => {
+        if (result.isConfirmed) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '../../../actions/update-booking.php';
+            const fields = { booking_id: bookingId, action: 'reject', reason: result.value, csrf_token: CSRF_TOKEN };
+            for (const [k, v] of Object.entries(fields)) {
+                const inp = document.createElement('input');
+                inp.type = 'hidden'; inp.name = k; inp.value = v;
+                form.appendChild(inp);
+            }
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+
+function selectReason(el, reason) {
+    document.querySelectorAll('#reasonBtns button').forEach(b => {
+        b.style.borderColor = '#e8e0d0';
+        b.style.color = '#5B4636';
+        b.style.background = '#fff';
+        delete b.dataset.selected;
+    });
+    el.style.borderColor = '#e74c3c';
+    el.style.color = '#fff';
+    el.style.background = '#e74c3c';
+    el.dataset.selected = '1';
+    document.getElementById('selectedReason').value = reason;
+}
+
+// ✅ Live countdown — update every second
+function updateCountdowns() {
+    document.querySelectorAll('.deadline-pill[data-deadline]').forEach(pill => {
+        const deadlineStr = pill.getAttribute('data-deadline');
+        if (!deadlineStr) return;
+
+        // ✅ FIX: PHP Asia/Karachi = UTC+5 — set explicitly so that
+        // browser does not use its local timezone (timezone mismatch bug fix)
+        const deadline = new Date(deadlineStr.replace(' ', 'T') + '+05:00');
+        const now      = new Date();
+        const diffMs   = deadline - now;
+        const diffMins = Math.floor(diffMs / 60000);
+        const textEl   = pill.querySelector('.countdown-text');
+        if (!textEl) return;
+
+        if (diffMins <= 0) {
+            textEl.textContent = 'Expired — reloading page...';
+            pill.className = 'deadline-pill critical';
+            // Auto reload — backend pe cancel ho jayega
+            setTimeout(() => location.reload(), 3000);
+            return;
+        }
+
+        const hrs  = Math.floor(diffMins / 60);
+        const mins = diffMins % 60;
+
+        if (diffMins <= 30) {
+            pill.className = 'deadline-pill critical';
+            textEl.textContent = `Expires in ${diffMins}m`;
+            // Also show card as urgent
+            pill.closest('.request-card')?.classList.add('critical');
+        } else if (diffMins <= 120) {
+            pill.className = 'deadline-pill warning';
+            textEl.textContent = hrs > 0 ? `Expires in ${hrs}h ${mins}m` : `Expires in ${diffMins}m`;
+            pill.closest('.request-card')?.classList.add('urgent');
+        } else {
+            pill.className = 'deadline-pill safe';
+            textEl.textContent = `Respond by ${deadline.toLocaleString('en-PK', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'})}`;
+        }
+    });
+}
+
+// Startup + interval
+// ✅ FIX: Update every 10 seconds — 30s was too slow for critical deadlines
+updateCountdowns();
+setInterval(updateCountdowns, 10000);
+
+// ✅ Highlight + scroll
+document.addEventListener('DOMContentLoaded', function () {
+    const highlightId = 0;
+    if (!highlightId) return;
+    const targetCard = document.getElementById('booking-' + highlightId);
+    if (!targetCard) return;
+    setTimeout(() => targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
+});
+</script>
+</body>
+</html>

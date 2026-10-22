@@ -1,0 +1,114 @@
+.reviews-section {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.review-card {
+  background: #ffffff;
+  padding: 1.6rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  transition: 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+}
+
+.review-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.review-top h3 {
+  color: #5B4636;
+  font-size: 1rem;
+}
+
+.stars {
+  color: #fbbc04;
+  font-size: 0.9rem;
+}
+
+.review-text {
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* === Play Store Style Responsive for Reviews === */
+@media (max-width: 768px) {
+  body { height: auto; align-items: flex-start; }
+
+  .dashboard-container {
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .main-content { padding: 1rem !important; }
+
+  /* === Play Store Review Card Styling === */
+  .review-card {
+    background: #fff;
+    padding: 12px !important;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: none; /* Play store uses very light borders instead of heavy shadows */
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Header of the review (Initial + Name + Stars) */
+  .review-user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .user-initial {
+    width: 35px;
+    height: 35px;
+    background: #7C9473;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+
+  .user-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .stars {
+    color: #fbbc04; /* Google Star Color */
+    font-size: 0.8rem;
+  }
+
+  .review-text {
+    font-size: 0.85rem;
+    color: #5f6368;
+    line-height: 1.4;
+  }
+
+  .review-date {
+    font-size: 0.75rem;
+    color: #888;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 { font-size: 1.3rem; }
+}

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="housekeeper/dashboard/settings.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <title>Settings | HelpNest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/housekeeper-dashboard.css">
+  <style>
+    .settings-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .settings-card h3 {
+      font-family: 'Playfair Display', serif;
+      color: #5B4636;
+      font-size: 1.1rem;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f0ebe0;
+    }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #5B4636;
+      margin-bottom: 6px;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #ede8e0;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      background: #fdfaf5;
+      color: #333;
+      transition: border-color 0.2s;
+      max-width: 400px;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #7C9473;
+      background: #fff;
+    }
+    .btn-save {
+      background: linear-gradient(135deg, #7C9473, #5a7a52);
+      color: #fff;
+      border: none;
+      padding: 11px 28px;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 0.5rem;
+    }
+    .btn-save:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(124,148,115,0.3); }
+    .msg-box {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.87rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ── Availability Days ── */
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-top: 6px;
+      max-width: 560px;
+    }
+    .day-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      background: #fdfaf5;
+      border: 1.5px solid #ede8e0;
+      border-radius: 10px;
+      padding: 10px 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      color: #555;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      user-select: none;
+      text-align: center;
+    }
+    .day-label:hover { border-color: #A8BFA1; background: #f5fff3; }
+    .day-label input[type="checkbox"] { display: none; }
+    .day-tick {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      color: #fff;
+      transition: all 0.2s;
+    }
+    .day-label input[type="checkbox"]:checked ~ .day-tick {
+      background: #7C9473;
+      border-color: #7C9473;
+    }
+    .day-label input[type="checkbox"]:checked ~ .day-tick::after { content: '✓'; }
+    .day-label.checked {
+      border-color: #7C9473;
+      background: #f0f7ee;
+      color: #3d2e22;
+      font-weight: 600;
+    }
+    .avail-note {
+      font-size: 0.75rem;
+      color: #aaa;
+      margin-top: 10px;
+    }
+
+    /* ── Notification Toggle ── */
+    .notif-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 400px;
+      padding: 10px 0;
+    }
+    .notif-row .notif-label-group label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #5B4636;
+      margin-bottom: 0;
+    }
+    .notif-desc {
+      font-size: 0.75rem;
+      color: #aaa;
+      margin-top: 2px;
+    }
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #ccc;
+      border-radius: 28px;
+      transition: background 0.3s;
+    }
+    .toggle-slider:before {
+      content: '';
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .toggle-switch input:checked + .toggle-slider { background: #7C9473; }
+    .toggle-switch input:checked + .toggle-slider:before { transform: translateX(24px); }
+    .notif-status-text {
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-top: 8px;
+      color: #7C9473;
+    }
+    .notif-status-text.off { color: #aaa; }
+
+    @media (max-width: 500px) {
+      .days-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mob-topbar">
+  <span class="mob-logo">HelpNest</span>
+  <button class="hamburger" onclick="document.getElementById('hkMobNav').classList.add('open')">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<div class="mob-nav-overlay" id="hkMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="mob-nav-panel">
+    <button class="mob-nav-close" onclick="document.getElementById('hkMobNav').classList.remove('open')">✕</button>
+    <h2>HelpNest</h2>
+    <ul>
+      <li class="">
+        <a href="housekeeper-dashboard.html"><i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span></a>
+      </li>
+      <li class="">
+        <a href="requests.html">
+          <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+          <span class="badge-count">2</span>        </a>
+      </li>
+      <li class="">
+        <a href="tasks.html"><i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span></a>
+      </li>
+      <li class="">
+        <a href="earnings.html"><i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span></a>
+      </li>
+      <li class="">
+        <a href="messages.html">
+          <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+          <span class="badge-count">2</span>        </a>
+      </li>
+      <li class="">
+        <a href="reviews.html"><i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span></a>
+      </li>
+      <li class="">
+        <a href="profile.html"><i class="fa-solid fa-user"></i><span class="nav-label">Profile</span></a>
+      </li>
+      <li class="active">
+        <a href="settings.html"><i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span></a>
+      </li>
+    </ul>
+    <div class="mob-logout">
+      <a href="../../index.html"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard-container">
+  <style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('hkMobNav').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="hkMobNav"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('hkMobNav').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="housekeeper-dashboard.html">
+                    <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="requests.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                            <span class="badge-count" id="hk-mob-badge-requests">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="tasks.html">
+                    <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="earnings.html">
+                    <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="messages.html">
+                    <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                            <span class="badge-count" id="hk-mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="disputes.html">
+                    <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                            <span class="badge-count" id="hk-mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="profile.html">
+                    <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="settings.html">
+                    <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+                </a>
+            </li>
+        </ul>
+        <div class="mob-logout">
+            <a href="../../index.html">
+                <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="housekeeper-dashboard.html">
+                <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="requests.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                    <span class="badge-count" id="hk-desk-badge-requests">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="tasks.html">
+                <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="earnings.html">
+                <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                    <span class="badge-count" id="hk-desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="hk-desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i><span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // Don't poll on notifications page — user is already there
+    const curPage = 'settings.html';
+    if (curPage === 'notifications.html') return;
+
+    // Update both Desktop + Mobile IDs
+    function updateBadge(ids, count) {
+        (Array.isArray(ids) ? ids : [ids]).forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (count > 0) {
+                el.textContent   = count;
+                el.style.display = 'inline-flex';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) return;
+                updateBadge(['hk-desk-badge-notifs',   'hk-mob-badge-notifs'],   data.notifs   || 0);
+                updateBadge(['hk-desk-badge-msgs',     'hk-mob-badge-msgs'],     data.msgs     || 0);
+                updateBadge(['hk-desk-badge-requests', 'hk-mob-badge-requests'], data.requests || 0);
+            })
+            .catch(() => {});
+    }
+
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) pollTimer = setInterval(refreshBadges, 30000);
+    }
+    function stopPolling() {
+        if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') { refreshBadges(); startPolling(); }
+        else stopPolling();
+    });
+
+    startPolling();
+})();
+</script>
+  <main class="main-content">
+    <header>
+      <h1>Account Settings</h1>
+      <p>Manage your security preferences</p>
+    </header>
+
+    
+    <section class="settings-card" style="margin-top:1.5rem;">
+      <h3><i class="fa fa-lock" style="color:#7C9473;margin-right:8px;"></i> Change Password</h3>
+
+      
+      <form action="#" method="POST">
+        <input type="hidden" name="csrf_token" value="static-demo-token">        <div class="form-group">
+          <label>Current Password</label>
+          <input type="password" name="current_pass" placeholder="Enter current password" required>
+        </div>
+        <div class="form-group">
+          <label>New Password</label>
+          <input type="password" name="new_pass" placeholder="Min 8 chars, 1 capital, 1 number" required>
+        </div>
+        <button type="submit" class="btn-save">
+          <i class="fa fa-floppy-disk"></i> Update Password
+        </button>
+      </form>
+    </section>
+
+    
+    <section class="settings-card">
+      <h3><i class="fa fa-calendar-check" style="color:#7C9473;margin-right:8px;"></i> Availability Days</h3>
+
+      
+      <p style="font-size:0.82rem; color:#999; margin-bottom:1rem;">
+        Select the days you are available to work. Users will only be able to book you on these days.
+      </p>
+
+      <form action="#" method="POST">
+        <input type="hidden" name="csrf_token" value="static-demo-token">        <div class="days-grid">
+                    <label class="day-label checked" onclick="handleDayClick(this)">
+            <input type="checkbox"
+                   name="availability[]"
+                   value="Monday"
+                   checked>
+            <span class="day-tick"></span>
+            Mon          </label>
+                    <label class="day-label checked" onclick="handleDayClick(this)">
+            <input type="checkbox"
+                   name="availability[]"
+                   value="Tuesday"
+                   checked>
+            <span class="day-tick"></span>
+            Tue          </label>
+                    <label class="day-label checked" onclick="handleDayClick(this)">
+            <input type="checkbox"
+                   name="availability[]"
+                   value="Wednesday"
+                   checked>
+            <span class="day-tick"></span>
+            Wed          </label>
+                    <label class="day-label checked" onclick="handleDayClick(this)">
+            <input type="checkbox"
+                   name="availability[]"
+                   value="Thursday"
+                   checked>
+            <span class="day-tick"></span>
+            Thu          </label>
+                    <label class="day-label checked" onclick="handleDayClick(this)">
+            <input type="checkbox"
+                   name="availability[]"
+                   value="Friday"
+                   checked>
+            <span class="day-tick"></span>
+            Fri          </label>
+                    <label class="day-label checked" onclick="handleDayClick(this)">
+            <input type="checkbox"
+                   name="availability[]"
+                   value="Saturday"
+                   checked>
+            <span class="day-tick"></span>
+            Sat          </label>
+                    <label class="day-label " onclick="handleDayClick(this)">
+            <input type="checkbox"
+                   name="availability[]"
+                   value="Sunday"
+                   >
+            <span class="day-tick"></span>
+            Sun          </label>
+                  </div>
+        <p class="avail-note">
+          <i class="fa fa-circle-info" style="color:#7C9473;margin-right:4px;"></i>
+          Changing availability will apply to new bookings only. Existing bookings won't be affected.
+        </p>
+        <button type="submit" class="btn-save" style="margin-top:1rem;">
+          <i class="fa fa-floppy-disk"></i> Save Availability
+        </button>
+      </form>
+    </section>
+
+    
+    <section class="settings-card">
+      <h3><i class="fa fa-sliders" style="color:#7C9473;margin-right:8px;"></i> Preferences</h3>
+
+      <form action="#" method="POST" id="notifForm">
+        <input type="hidden" name="csrf_token" value="static-demo-token">
+        <div class="notif-row">
+          <div class="notif-label-group">
+            <label for="notifToggle">🔔 Notifications</label>
+            <div class="notif-desc">Badge counts on Requests &amp; Messages tabs</div>
+          </div>
+          <label class="toggle-switch">
+            <input
+              type="checkbox"
+              id="notifToggle"
+              name="notif_enabled"
+              checked              onchange="document.getElementById('notifForm').submit()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <p class="notif-status-text " id="notifStatusText">
+          🟢 Notifications are ON        </p>
+      </form>
+    </section>
+
+  </main>
+</div>
+
+<script>
+function handleDayClick(labelEl) {
+    const checkbox = labelEl.querySelector('input[type="checkbox"]');
+    checkbox.checked = !checkbox.checked;
+    labelEl.classList.toggle('checked', checkbox.checked);
+}
+
+// Live status text update before form submits
+const toggle = document.getElementById('notifToggle');
+const statusText = document.getElementById('notifStatusText');
+if (toggle) {
+  toggle.addEventListener('change', function () {
+    if (this.checked) {
+      statusText.textContent = '🟢 Notifications are ON';
+      statusText.classList.remove('off');
+    } else {
+      statusText.textContent = '⚫ Notifications are OFF';
+      statusText.classList.add('off');
+    }
+  });
+}
+</script>
+
+</body>
+</html>

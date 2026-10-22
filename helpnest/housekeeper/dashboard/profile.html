@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="housekeeper/dashboard/profile.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelpNest | Profile</title>
+  <link rel="stylesheet" href="../css/housekeeper-dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .profile-pic-wrap { position: relative; width: 120px; height: 120px; flex-shrink: 0; cursor: pointer; }
+    .profile-pic-wrap img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #7C9473; }
+    .status-badge { position: absolute; bottom: 8px; right: 8px; width: 18px; height: 18px; border-radius: 50%; border: 3px solid white; }
+    .profile-name h1 { font-family: 'Playfair Display', serif; color: #5B4636; font-size: 1.5rem; }
+    .profile-name p  { color: #f1c40f; font-size: 1rem; margin-top: 4px; }
+    .btn-row { display: flex; gap: 10px; margin-top: 1.5rem; flex-wrap: wrap; }
+    .btn-row button { padding: 10px 24px; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: 600; font-size: 0.9rem; transition: 0.25s; }
+
+    /* Working hours box styling */
+    .working-hours-box {
+      grid-column: span 2;
+      background: linear-gradient(135deg, #f0f7ee, #e8f4e5);
+      border: 1.5px solid #7C9473;
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+    }
+    .working-hours-box label {
+      color: #5B4636;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 0.7rem;
+      font-size: 0.9rem;
+    }
+    .working-hours-box label i { color: #7C9473; }
+    .hours-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hours-row .time-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 120px;
+    }
+    .hours-row .time-group span {
+      font-size: 0.75rem;
+      color: #888;
+      font-weight: 500;
+    }
+    .hours-row .time-group .view-mode {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #5B4636;
+    }
+    .hours-row .time-sep {
+      font-size: 1.2rem;
+      color: #7C9473;
+      font-weight: 700;
+      margin-top: 18px;
+    }
+    .hours-row input[type="time"].edit-mode {
+      padding: 6px 10px;
+      border: 1.5px solid #c5dac0;
+      border-radius: 7px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: #333;
+      background: #fff;
+      width: 100%;
+    }
+    .hours-row input[type="time"].edit-mode:focus {
+      outline: none;
+      border-color: #7C9473;
+      box-shadow: 0 0 0 2px rgba(124,148,115,0.15);
+    }
+
+    @media (max-width: 600px) {
+      .profile-header-wrap { flex-direction: column; text-align: center; }
+      .info-grid { grid-template-columns: 1fr !important; }
+      .working-hours-box { grid-column: span 1; }
+      .btn-row { flex-direction: column; }
+      .btn-row button { width: 100%; }
+      .hours-row { flex-direction: column; }
+      .hours-sep { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+
+<div class="mob-topbar">
+  <span class="mob-logo">HelpNest</span>
+  <button class="hamburger" onclick="document.getElementById('hkMobNav').classList.add('open')">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="hkMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="mob-nav-panel">
+    <button class="mob-nav-close" onclick="document.getElementById('hkMobNav').classList.remove('open')">✕</button>
+    <h2>HelpNest</h2>
+    <ul>
+      <li><a href="housekeeper-dashboard.html"><i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span></a></li>
+      <li>
+        <a href="requests.html">
+          <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+          <span class="badge-count">2</span>        </a>
+      </li>
+      <li><a href="tasks.html"><i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span></a></li>
+      <li><a href="earnings.html"><i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span></a></li>
+      <li>
+        <a href="messages.html">
+          <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+          <span class="badge-count">2</span>        </a>
+      </li>
+      <li><a href="reviews.html"><i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span></a></li>
+      <li class="active"><a href="profile.html"><i class="fa-solid fa-user"></i><span class="nav-label">Profile</span></a></li>
+    </ul>
+    <div class="mob-logout">
+      <a href="../../index.html"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a>
+    </div>
+  </div>
+</div>
+
+
+<div class="dashboard-container">
+  <style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('hkMobNav').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="hkMobNav"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('hkMobNav').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="housekeeper-dashboard.html">
+                    <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="requests.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                            <span class="badge-count" id="hk-mob-badge-requests">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="tasks.html">
+                    <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="earnings.html">
+                    <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="messages.html">
+                    <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                            <span class="badge-count" id="hk-mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="disputes.html">
+                    <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                            <span class="badge-count" id="hk-mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="active">
+                <a href="profile.html">
+                    <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+                </a>
+            </li>
+        </ul>
+        <div class="mob-logout">
+            <a href="../../index.html">
+                <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="housekeeper-dashboard.html">
+                <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="requests.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                    <span class="badge-count" id="hk-desk-badge-requests">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="tasks.html">
+                <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="earnings.html">
+                <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                    <span class="badge-count" id="hk-desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="hk-desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="active">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i><span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // Don't poll on notifications page — user is already there
+    const curPage = 'profile.html';
+    if (curPage === 'notifications.html') return;
+
+    // Update both Desktop + Mobile IDs
+    function updateBadge(ids, count) {
+        (Array.isArray(ids) ? ids : [ids]).forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (count > 0) {
+                el.textContent   = count;
+                el.style.display = 'inline-flex';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) return;
+                updateBadge(['hk-desk-badge-notifs',   'hk-mob-badge-notifs'],   data.notifs   || 0);
+                updateBadge(['hk-desk-badge-msgs',     'hk-mob-badge-msgs'],     data.msgs     || 0);
+                updateBadge(['hk-desk-badge-requests', 'hk-mob-badge-requests'], data.requests || 0);
+            })
+            .catch(() => {});
+    }
+
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) pollTimer = setInterval(refreshBadges, 30000);
+    }
+    function stopPolling() {
+        if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') { refreshBadges(); startPolling(); }
+        else stopPolling();
+    });
+
+    startPolling();
+})();
+</script>
+  <main class="main-content">
+    <form action="profile.html" method="POST" enctype="multipart/form-data">
+
+      
+      
+      <div class="profile-header-wrap" style="display:flex;align-items:center;gap:20px;margin-bottom:1.5rem;flex-wrap:wrap;">
+        <div class="profile-pic-wrap" onclick="document.getElementById('fileInput').click()">
+          <img src="../../Uploads/profiles/fatima.svg" id="preview"
+               onerror="this.src='../../assets/default-avatar.png'">
+          <div class="status-badge"
+               style="background-color:#4CAF50;"></div>
+          <input type="file" name="profile_pic" id="fileInput" style="display:none;"
+                 accept="image/*" onchange="previewImg(this)">
+        </div>
+        <div class="profile-name">
+          <h1>Fatima Noor</h1>
+          <p>Rating: ★ 4.8/5</p>
+        </div>
+      </div>
+
+      
+      <div class="info-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;">
+
+        <div class="info-box">
+          <label>Full Name</label>
+          <p class="view-mode">Fatima Noor</p>
+          <input type="text" name="fullname" class="edit-mode" value="Fatima Noor">
+        </div>
+
+        <div class="info-box" style="background:#e9e9e9;">
+          <label>Email</label>
+          <p>fatima.noor@example.com</p>
+        </div>
+
+        <div class="info-box">
+          <label>Gender</label>
+          <p class="view-mode">Female</p>
+          <select name="gender" class="edit-mode">
+            <option value="male"   >Male</option>
+            <option value="female" >Female</option>
+            <option value="other"  >Other</option>
+          </select>
+        </div>
+
+        <div class="info-box">
+          <label>Age (Birth Date)</label>
+          <p class="view-mode">34 Years</p>
+          <input type="date" name="dob" class="edit-mode" value="1992-03-14">
+        </div>
+
+        <div class="info-box">
+          <label>Phone</label>
+          <p class="view-mode">0301-1112223</p>
+          <input type="text" name="phone" class="edit-mode" value="0301-1112223">
+        </div>
+
+        <div class="info-box">
+          <label>Experience (Years)</label>
+          <p class="view-mode">5</p>
+          <input type="text" name="experience" class="edit-mode" value="5">
+        </div>
+
+        <div class="info-box">
+          <label>Price (Rs/hr)</label>
+          <p class="view-mode">800</p>
+          <input type="number" name="price_per_hour" class="edit-mode" value="800">
+        </div>
+
+        <div class="info-box">
+          <label>Services</label>
+          <p class="view-mode">Home Cleaning, Laundry &amp; Ironing</p>
+          <input type="text" name="service_category" class="edit-mode" value="Home Cleaning, Laundry &amp; Ironing">
+        </div>
+
+        <div class="info-box">
+          <label>Area / Mohalla <span style="font-size:0.72rem;color:#999;font-weight:400;">(Don't mention your exact home address here)</span></label>
+          <p class="view-mode">Gulistan-e-Johar Block 13, Karachi</p>
+          <input type="text" name="address" id="profileAddress" class="edit-mode" value="Gulistan-e-Johar Block 13, Karachi" placeholder="e.g. Rangpura, Sialkot">
+          <input type="hidden" name="latitude"  id="profileLat">
+          <input type="hidden" name="longitude" id="profileLng">
+          
+          <button type="button" onclick="profileCaptureGPS()" id="profileGpsBtn" class="edit-mode"
+            style="margin-top:6px;display:none;align-items:center;gap:6px;padding:6px 14px;
+                   border-radius:50px;border:1.5px solid #7C9473;background:#f0f7ee;
+                   color:#5a7a52;font-size:0.76rem;font-weight:600;cursor:pointer;">
+            <i class="fa-solid fa-location-crosshairs"></i> Detect My Location
+          </button>
+          <div id="profileGpsStatus" style="font-size:0.74rem;margin-top:4px;display:none;padding:5px 10px;border-radius:7px;"></div>
+        </div>
+
+        <div class="info-box">
+          <label>Availability Status</label>
+          <p class="view-mode">Available</p>
+          <select name="status" class="edit-mode">
+            <option value="available" selected>Available</option>
+            <option value="busy"      >Busy</option>
+          </select>
+        </div>
+
+        
+        <div class="working-hours-box">
+          <label>
+            <i class="fa-solid fa-clock"></i> Working Hours
+            <span style="font-size:0.75rem;color:#888;font-weight:400;margin-left:6px;">(Bookings only allowed within this window)</span>
+          </label>
+          <div class="hours-row">
+            <div class="time-group">
+              <span>From</span>
+              <p class="view-mode">
+                09:00 AM              </p>
+              <input type="time" name="available_from" class="edit-mode"
+                     value="09:00:00"
+                     onchange="validateHours()">
+            </div>
+            <div class="time-sep">→</div>
+            <div class="time-group">
+              <span>Till</span>
+              <p class="view-mode">
+                06:00 PM              </p>
+              <input type="time" name="available_till" class="edit-mode"
+                     value="18:00:00"
+                     onchange="validateHours()">
+            </div>
+          </div>
+          
+          <p id="hoursHint" style="display:none;margin-top:8px;font-size:0.78rem;color:#c0392b;background:#fff2f2;padding:6px 10px;border-radius:6px;">
+            <i class="fa-solid fa-triangle-exclamation"></i> 'Till' time must be after 'From' time.
+          </p>
+        </div>
+
+        <div class="info-box" style="grid-column: span 2;">
+          <label>Bio</label>
+          <p class="view-mode">Detail-oriented cleaner who treats every home like her own. Experienced with deep cleaning, kitchen care and ironing.</p>
+          <textarea name="bio" class="edit-mode" style="height:80px;">Detail-oriented cleaner who treats every home like her own. Experienced with deep cleaning, kitchen care and ironing.</textarea>
+        </div>
+
+      </div>
+
+      
+      <div class="btn-row">
+        <button type="button" id="editBtn" onclick="enableEdit()" style="background:#7C9473;color:white;">Edit Profile</button>
+        <button type="submit" name="update_profile" id="saveBtn" class="edit-mode" style="background:#5B4636;color:white;">Save Changes</button>
+        <button type="button" onclick="window.location.reload()" id="cancelBtn" class="edit-mode" style="background:#ccc;color:#444;">Cancel</button>
+      </div>
+
+    </form>
+  </main>
+</div>
+
+<script>
+function enableEdit() {
+  document.querySelectorAll('.view-mode').forEach(e => e.style.display = 'none');
+  document.querySelectorAll('.edit-mode').forEach(e => e.style.display = 'block');
+  document.getElementById('editBtn').style.display = 'none';
+  // Show GPS button as well
+  var gpsBtn = document.getElementById('profileGpsBtn');
+  if (gpsBtn) gpsBtn.style.display = 'inline-flex';
+}
+
+function previewImg(input) {
+  if (input.files && input.files[0]) {
+    var r = new FileReader();
+    r.onload = function(e) { document.getElementById('preview').src = e.target.result; };
+    r.readAsDataURL(input.files[0]);
+    enableEdit();
+  }
+}
+
+// ── Working hours client-side validation ──────────────────────────────────
+function validateHours() {
+  const from    = document.querySelector('input[name="available_from"]').value;
+  const till    = document.querySelector('input[name="available_till"]').value;
+  const hint    = document.getElementById('hoursHint');
+  const saveBtn = document.getElementById('saveBtn');
+
+  if (from && till && till <= from) {
+    hint.style.display = 'block';
+    saveBtn.disabled   = true;
+    saveBtn.style.opacity = '0.5';
+  } else {
+    hint.style.display = 'none';
+    saveBtn.disabled   = false;
+    saveBtn.style.opacity = '1';
+  }
+}
+
+// ── Profile GPS Capture ───────────────────────────────────────────────────
+function profileCaptureGPS() {
+    var btn    = document.getElementById('profileGpsBtn');
+    var status = document.getElementById('profileGpsStatus');
+    if (!navigator.geolocation) { showProfileGpsStatus('error', 'Geolocation is not supported by your browser.'); return; }
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting...';
+    showProfileGpsStatus('loading', 'Location detect ho rahi hai...');
+    navigator.geolocation.getCurrentPosition(
+        function(pos) {
+            var lat = pos.coords.latitude, lng = pos.coords.longitude;
+            document.getElementById('profileLat').value = lat;
+            document.getElementById('profileLng').value = lng;
+            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+lat+'&lon='+lng+'&addressdetails=1',
+                  { headers: {'Accept-Language':'en'} })
+            .then(function(r){ return r.json(); })
+            .then(function(data) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Detect My Location';
+                if (data && data.address) {
+                    var a = data.address, parts = [];
+                    if (a.neighbourhood||a.suburb||a.residential) parts.push(a.neighbourhood||a.suburb||a.residential);
+                    if (a.village||a.town||a.city_district) parts.push(a.village||a.town||a.city_district);
+                    if (a.city||a.county) parts.push(a.city||a.county);
+                    var addrText = parts.filter(Boolean).join(', ');
+                    var f = document.getElementById('profileAddress');
+                    if (f && addrText) f.value = addrText;
+                    showProfileGpsStatus('ok', '\u2713 Location + area saved! Save Changes dabao.');
+                } else {
+                    showProfileGpsStatus('ok', '\u2713 Coordinates saved. Please type your area manually.');
+                }
+            })
+            .catch(function(){
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Detect My Location';
+                showProfileGpsStatus('ok', '\u2713 Coordinates saved.');
+            });
+        },
+        function(err) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Detect My Location';
+            showProfileGpsStatus('error', err.code===1 ? 'Permission denied. Please allow location access in your browser.' : 'Could not retrieve location.');
+        },
+        { timeout: 8000, maximumAge: 0 }
+    );
+}
+function showProfileGpsStatus(type, msg) {
+    var el = document.getElementById('profileGpsStatus');
+    if (!el) return;
+    var s = { loading:'background:#fff8e8;color:#e67e22;', error:'background:#fff2f2;color:#c0392b;', ok:'background:#f0f9ee;color:#5a7a52;' };
+    el.style.cssText = 'font-size:0.74rem;margin-top:4px;display:flex;padding:5px 10px;border-radius:7px;align-items:center;gap:5px;'+(s[type]||'');
+    el.innerHTML = msg;
+}
+</script>
+
+</body>
+</html>

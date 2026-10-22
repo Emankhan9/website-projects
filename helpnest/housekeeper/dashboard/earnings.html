@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../../";window.HN_PAGE="housekeeper/dashboard/earnings.html";</script>
+<script src="../../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earnings | HelpNest</title>
+  <link rel="stylesheet" href="../css/housekeeper-dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    tr.highlighted td { animation: rowHL 3s ease-in-out; }
+    @keyframes rowHL {
+      0%   { background: rgba(124,148,115,0); }
+      15%  { background: rgba(124,148,115,0.25); }
+      100% { background: rgba(124,148,115,0); }
+    }
+    .notif-origin-banner {
+      background: #f0f7ee; border: 1.5px solid #c5dac0; border-radius: 12px;
+      padding: 10px 16px; margin-bottom: 16px; display: flex; align-items: center;
+      gap: 10px; font-size: 0.82rem; color: #5B4636; font-weight: 500;
+    }
+    .notif-origin-banner i { color: #7C9473; }
+    .notif-origin-banner a { color: #7C9473; font-weight: 700; margin-left: auto; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+  <style>
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e74c3c !important;
+    color: #fff !important;
+    font-size: 0.68rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 20px;
+    padding: 0 5px;
+    margin-left: 6px;
+    line-height: 1;
+}
+</style>
+
+
+<div class="mob-topbar">
+    <span class="mob-logo">HelpNest</span>
+    <button class="hamburger"
+            onclick="document.getElementById('hkMobNav').classList.add('open')"
+            aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+
+<div class="mob-nav-overlay" id="hkMobNav"
+     onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="mob-nav-panel">
+        <button class="mob-nav-close"
+                onclick="document.getElementById('hkMobNav').classList.remove('open')">✕</button>
+        <h2>HelpNest</h2>
+        <ul>
+            <li class="">
+                <a href="housekeeper-dashboard.html">
+                    <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="requests.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                            <span class="badge-count" id="hk-mob-badge-requests">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="tasks.html">
+                    <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="earnings.html">
+                    <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="messages.html">
+                    <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                            <span class="badge-count" id="hk-mob-badge-msgs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="reviews.html">
+                    <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="disputes.html">
+                    <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="notifications.html">
+                    <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                            <span class="badge-count" id="hk-mob-badge-notifs">2</span>
+                                    </a>
+            </li>
+            <li class="">
+                <a href="profile.html">
+                    <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="settings.html">
+                    <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+                </a>
+            </li>
+        </ul>
+        <div class="mob-logout">
+            <a href="../../index.html">
+                <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<aside class="sidebar">
+    <h2>HelpNest</h2>
+    <ul>
+        <li class="">
+            <a href="housekeeper-dashboard.html">
+                <i class="fa-solid fa-house"></i><span class="nav-label">Dashboard</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="requests.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Requests</span>
+                                    <span class="badge-count" id="hk-desk-badge-requests">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="tasks.html">
+                <i class="fa-solid fa-list-check"></i><span class="nav-label">My Tasks</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="earnings.html">
+                <i class="fa-solid fa-wallet"></i><span class="nav-label">Earnings</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="messages.html">
+                <i class="fa-solid fa-message"></i><span class="nav-label">Messages</span>
+                                    <span class="badge-count" id="hk-desk-badge-msgs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="reviews.html">
+                <i class="fa-solid fa-star"></i><span class="nav-label">Reviews</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="disputes.html">
+                <i class="fa-solid fa-scale-balanced"></i><span class="nav-label">Disputes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="notifications.html">
+                <i class="fa-solid fa-bell"></i><span class="nav-label">Notifications</span>
+                                    <span class="badge-count" id="hk-desk-badge-notifs">2</span>
+                            </a>
+        </li>
+        <li class="">
+            <a href="profile.html">
+                <i class="fa-solid fa-user"></i><span class="nav-label">Profile</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout">
+        <a href="../../index.html">
+            <i class="fa-solid fa-right-from-bracket"></i><span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+
+<script>
+(function () {
+    // Don't poll on notifications page — user is already there
+    const curPage = 'earnings.html';
+    if (curPage === 'notifications.html') return;
+
+    // Update both Desktop + Mobile IDs
+    function updateBadge(ids, count) {
+        (Array.isArray(ids) ? ids : [ids]).forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (count > 0) {
+                el.textContent   = count;
+                el.style.display = 'inline-flex';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    function refreshBadges() {
+        fetch('../../../actions/get_badge_counts.php')
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) return;
+                updateBadge(['hk-desk-badge-notifs',   'hk-mob-badge-notifs'],   data.notifs   || 0);
+                updateBadge(['hk-desk-badge-msgs',     'hk-mob-badge-msgs'],     data.msgs     || 0);
+                updateBadge(['hk-desk-badge-requests', 'hk-mob-badge-requests'], data.requests || 0);
+            })
+            .catch(() => {});
+    }
+
+    let pollTimer = null;
+
+    function startPolling() {
+        if (!pollTimer) pollTimer = setInterval(refreshBadges, 30000);
+    }
+    function stopPolling() {
+        if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') { refreshBadges(); startPolling(); }
+        else stopPolling();
+    });
+
+    startPolling();
+})();
+</script>  <main class="main-content">
+    <header>
+      <h1>Earnings Overview</h1>
+      <p>Track your income and payment history</p>
+    </header>
+
+    
+    
+    <div class="summary-section" style="margin-top:1.5rem;">
+      <div class="summary-card total"><h4>Total Earnings</h4><h2>Rs. 6,400</h2><span>All completed jobs</span></div>
+      <div class="summary-card month"><h4>This Month</h4><h2>Rs. 4,800</h2><span>October 2026</span></div>
+      <div class="summary-card completed"><h4>Paid Amount</h4><h2>Rs. 4,800</h2><span>Cash received</span></div>
+      <div class="summary-card pending"><h4>Pending Payments</h4><h2>1</h2><span>Awaiting cash</span></div>
+    </div>
+
+    <div class="table-section" style="margin-top:2rem;">
+      <h2>Recent Transactions</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Booking #</th><th>Date</th><th>Client</th><th>Service</th><th>Type</th><th>Amount</th><th>Payment</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+                                        <tr id="row-4" class="">
+                <td><span style="font-size:0.78rem;font-weight:600;color:#7C9473;">HN-2026-00004</span></td>
+                <td>20 Oct, 2026</td>
+                <td>Sana Malik</td>
+                <td>Laundry &amp; Ironing</td>
+                <td><span style="padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;background:#fef9e7;color:#D4A017">One Time</span></td>
+                <td><strong>Rs. 1,600</strong></td>
+                <td>
+                                      <span class="pending-pay"><i class="fa-solid fa-clock"></i> Unpaid</span>
+                                  </td>
+                <td>
+                                      <button class="complete-btn" style="padding:7px 14px;font-size:0.8rem;"
+                            onclick="confirmPayment(4)">
+                      <i class="fa-solid fa-hand-holding-dollar"></i> Received
+                    </button>
+                                  </td>
+              </tr>
+                            <tr id="row-1" class="">
+                <td><span style="font-size:0.78rem;font-weight:600;color:#7C9473;">HN-2026-00001</span></td>
+                <td>01 Oct, 2026</td>
+                <td>Ayesha Khan</td>
+                <td>Home Cleaning</td>
+                <td><span style="padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;background:#fef9e7;color:#D4A017">One Time</span></td>
+                <td><strong>Rs. 3,200</strong></td>
+                <td>
+                                      <span class="paid"><i class="fa-solid fa-check"></i> Paid</span>
+                                  </td>
+                <td>
+                                      <span style="color:#bbb;font-size:0.82rem;"><i class="fa-solid fa-circle-check"></i> Done</span>
+                                  </td>
+              </tr>
+                            <tr id="row-14" class="">
+                <td><span style="font-size:0.78rem;font-weight:600;color:#7C9473;">HN-2026-00014</span></td>
+                <td>16 Sep, 2026</td>
+                <td>Ayesha Khan</td>
+                <td>Home Cleaning</td>
+                <td><span style="padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;background:#fef9e7;color:#D4A017">One Time</span></td>
+                <td><strong>Rs. 1,600</strong></td>
+                <td>
+                                      <span class="paid"><i class="fa-solid fa-check"></i> Paid</span>
+                                  </td>
+                <td>
+                                      <span style="color:#bbb;font-size:0.82rem;"><i class="fa-solid fa-circle-check"></i> Done</span>
+                                  </td>
+              </tr>
+                                    </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const CSRF_TOKEN = "static-demo-token";
+
+function confirmPayment(id) {
+    Swal.fire({
+        title: 'Confirm Payment?',
+        text: 'Mark this booking as payment received?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#7C9473',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: 'Yes, Received!',
+        cancelButtonText: 'Cancel'
+    }).then(r => {
+        if (!r.isConfirmed) return;
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'earnings.html';
+        const fields = { action: 'paid', booking_id: id, csrf_token: CSRF_TOKEN };
+        for (const [k, v] of Object.entries(fields)) {
+            const inp = document.createElement('input');
+            inp.type = 'hidden'; inp.name = k; inp.value = v;
+            form.appendChild(inp);
+        }
+        document.body.appendChild(form);
+        form.submit();
+    });
+}
+
+// ✅ Highlight scroll
+document.addEventListener('DOMContentLoaded', function () {
+    const hid = 0;
+    if (!hid) return;
+    const row = document.getElementById('row-' + hid);
+    if (row) setTimeout(() => row.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
+});
+</script>
+</body>
+</html>
