@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="";window.HN_PAGE="helpers.html";</script>
+<script src="js/static-demo.js"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>% Experts | HelpNest</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/explore.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+* { box-sizing: border-box; }
+.page-wrapper { max-width:1200px; margin:0 auto; padding:60px 24px 40px; }
+.page-header { text-align:center; margin-bottom:28px; }
+.page-header h1 { font-family:'Playfair Display',serif; font-size:2.4rem; color:#5B4636; margin-bottom:8px; }
+.page-header p { color:#888; font-size:0.95rem; }
+
+/* ── Location bar ── */
+.location-bar { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:24px; flex-wrap:wrap; }
+.loc-btn { display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:50px; border:none; cursor:pointer; font-family:'Poppins',sans-serif; font-size:0.82rem; font-weight:600; transition:all 0.3s; }
+.loc-btn.detect  { background:linear-gradient(135deg,#7C9473,#5a7a52); color:#fff; box-shadow:0 3px 12px rgba(124,148,115,0.3); }
+.loc-btn.detect:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(124,148,115,0.35); }
+.loc-btn.clear   { background:#f5efe0; color:#5B4636; border:1.5px solid #ede8e0; }
+.loc-btn.clear:hover { background:#ede8e0; }
+.loc-status { font-size:0.8rem; color:#7C9473; display:flex; align-items:center; gap:5px; font-weight:500; }
+.loc-status.error { color:#e74c3c; }
+.loc-status.loading { color:#f39c12; }
+
+/* ── Sort info badge ── */
+.sort-badge { display:inline-flex; align-items:center; gap:6px; background:#f0f7ee; border:1.5px solid #c5dac0; border-radius:10px; padding:6px 14px; font-size:0.78rem; color:#5a7a52; font-weight:600; margin-bottom:18px; }
+
+.helpers-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+.helper-card { background:#fff; border-radius:20px; padding:24px 20px; text-align:center; box-shadow:0 4px 18px rgba(0,0,0,0.07); transition:transform 0.3s,box-shadow 0.3s; display:flex; flex-direction:column; align-items:center; position:relative; }
+.helper-card:hover { transform:translateY(-6px); box-shadow:0 14px 35px rgba(0,0,0,0.12); }
+
+/* ── Distance badge on card ── */
+.dist-badge { position:absolute; top:12px; right:12px; background:linear-gradient(135deg,#7C9473,#5a7a52); color:#fff; font-size:0.68rem; font-weight:700; padding:3px 9px; border-radius:20px; display:flex; align-items:center; gap:4px; }
+.dist-badge.far { background:linear-gradient(135deg,#e67e22,#d35400); }
+.dist-badge.unknown { background:#ddd; color:#888; }
+
+.avatar-wrap { position:relative; width:90px; height:90px; margin-bottom:14px; flex-shrink:0; }
+.avatar-wrap img { width:100%; height:100%; border-radius:50%; object-fit:cover; border:3px solid #f0f0f0; }
+.online-dot { position:absolute; bottom:4px; right:4px; width:14px; height:14px; border-radius:50%; background:#4CAF50; border:2px solid #fff; }
+.helper-name { font-size:1rem; font-weight:600; color:#5B4636; margin:0 0 4px; display:flex; align-items:center; justify-content:center; gap:5px; flex-wrap:wrap; }
+.helper-name .fa-circle-check { color:#7C9473; font-size:0.95rem; }
+.verified-badge { display:inline-flex; align-items:center; gap:4px; background:#f0f7ee; border:1.5px solid #c5dac0; border-radius:20px; padding:2px 8px; font-size:0.68rem; font-weight:600; color:#3a6a35; margin-top:4px; }
+.helper-category { font-size:0.82rem; color:#7C9473; font-weight:600; margin:0 0 3px; }
+.helper-exp { font-size:0.82rem; color:#999; margin:0 0 6px; }
+.helper-rating { color:#f1c40f; font-size:0.85rem; margin-bottom:6px; }
+.helper-price { font-weight:700; color:#7C9473; font-size:0.92rem; margin-bottom:18px; }
+.card-actions { display:flex; flex-direction:column; gap:9px; width:100%; margin-top:auto; }
+.btn-view { display:block; background:#5B4636; color:#fff; padding:10px; border-radius:10px; text-decoration:none; font-size:0.85rem; font-weight:600; transition:background 0.25s,transform 0.2s; }
+.btn-view:hover { background:#7C9473; transform:translateY(-2px); }
+.btn-book { display:block; border:2px solid #5B4636; color:#5B4636; padding:9px; border-radius:10px; text-decoration:none; font-size:0.85rem; font-weight:600; transition:all 0.25s; }
+.btn-book:hover { background:#5B4636; color:#fff; transform:translateY(-2px); }
+.empty-state { grid-column:1/-1; text-align:center; padding:70px 20px; color:#bbb; display:flex; flex-direction:column; align-items:center; }
+.empty-state h3 { font-family:'Playfair Display',serif; color:#5B4636; font-size:1.4rem; margin-bottom:8px; }
+.empty-state p { color:#aaa; margin-bottom:20px; font-size:0.9rem; }
+.empty-state a { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:#7C9473; color:#fff; border-radius:50px; text-decoration:none; font-weight:600; font-size:0.82rem; transition:background 0.25s,transform 0.2s; }
+.empty-state a:hover { background:#5B4636; transform:translateY(-2px); }
+
+/* ── Leaflet Map ── */
+.map-section { margin-bottom:28px; border-radius:18px; overflow:hidden; box-shadow:0 4px 18px rgba(0,0,0,0.1); display:none; }
+.map-section.show { display:block; }
+#helpersMap { height:340px; width:100%; }
+.map-toggle-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border-radius:50px; border:1.5px solid #ede8e0; background:#fff; color:#5B4636; font-family:'Poppins',sans-serif; font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.25s; }
+.map-toggle-btn:hover { background:#f5efe0; }
+.map-toggle-btn.active { background:#5B4636; color:#fff; border-color:#5B4636; }
+
+/* ── Radius Filter ── */
+.radius-filter { display:inline-flex; align-items:center; gap:8px; background:#fff; border:1.5px solid #ede8e0; border-radius:50px; padding:6px 14px; font-size:0.82rem; font-weight:600; color:#5B4636; }
+.radius-filter i { color:#7C9473; }
+.radius-filter select { border:none; outline:none; font-family:'Poppins',sans-serif; font-size:0.82rem; font-weight:600; color:#5B4636; background:transparent; cursor:pointer; }
+
+@media (max-width:1100px) { .helpers-grid { grid-template-columns:repeat(3,1fr); } }
+@media (max-width:768px)  { .page-wrapper{padding:40px 16px 32px;} .page-header h1{font-size:1.7rem;} .helpers-grid{grid-template-columns:repeat(2,1fr);gap:16px;} .avatar-wrap{width:75px;height:75px;} .helper-card{padding:20px 14px;} }
+@media (max-width:540px)  { .helpers-grid{grid-template-columns:repeat(2,1fr);gap:12px;} .helper-card{padding:16px 10px;} .avatar-wrap{width:64px;height:64px;} .helper-name{font-size:0.88rem;} .helper-category,.helper-exp,.helper-rating,.helper-price{font-size:0.78rem;} .btn-view,.btn-book{font-size:0.78rem;padding:8px 6px;} .page-header h1{font-size:1.4rem;} }
+@media (max-width:360px)  { .helpers-grid{grid-template-columns:1fr;} .helper-card{flex-direction:row;text-align:left;align-items:flex-start;gap:14px;padding:14px;} .avatar-wrap{width:60px;height:60px;margin-bottom:0;flex-shrink:0;} .helper-name{justify-content:flex-start;font-size:0.9rem;} .card-actions{flex-direction:row;} .btn-view,.btn-book{flex:1;text-align:center;} }
+</style>
+
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+
+<a href="explore.html" class="back-arrow-float" title="Back to Explore">
+    <i class="fa-solid fa-arrow-left"></i>
+</a>
+
+<header class="navbar">
+    <div class="logo">Help<span>Nest</span></div>
+</header>
+
+<div class="page-wrapper">
+    <div class="page-header">
+        <h1>% Experts</h1>
+        <p>7 helper(s) found</p>
+    </div>
+
+    
+    <div class="location-bar">
+                    <button class="loc-btn detect" onclick="detectLocation()">
+                <i class="fa-solid fa-location-crosshairs"></i> Sort by Nearest
+            </button>
+        
+        <button class="map-toggle-btn" id="mapToggleBtn" onclick="toggleMap()">
+            <i class="fa-solid fa-map"></i> Show Map
+        </button>
+
+        <span class="loc-status" id="locStatus">
+                    </span>
+    </div>
+
+    
+    
+    
+    <div class="map-section" id="mapSection">
+        <div id="helpersMap"></div>
+    </div>
+
+    
+    <div class="helpers-grid">
+                            <div class="helper-card">
+                                    <div class="avatar-wrap">
+                <img src="Uploads/profiles/fatima.svg"
+                     onerror="this.src='https://ui-avatars.com/api/?name=Fatima+Noor&background=7C9473&color=fff'"
+                     alt="Fatima Noor">
+                <span class="online-dot" style=""></span>
+            </div>
+            <p class="helper-name">
+                Fatima Noor
+                                    <i class="fa-solid fa-circle-check" title="CNIC Verified by HelpNest"></i>
+                            </p>
+                        <span class="verified-badge">
+                <i class="fa-solid fa-shield-halved"></i> HelpNest Verified
+            </span>
+                        <p class="helper-category">
+                <i class="fa-solid fa-broom" style="font-size:0.7rem;"></i>
+                Home Cleaning, Laundry &amp; Ironing            </p>
+            <p class="helper-exp">5 Years Experience</p>
+            <p class="helper-rating">⭐ 4.8</p>
+            <p class="helper-price">Rs. 800/hr</p>
+            <div class="card-actions">
+                <a href="common/view-profile.html" class="btn-view">
+                    <i class="fa-solid fa-user"></i> View Profile
+                </a>
+                                    <a href="common/login.html" class="btn-book">
+                        <i class="fa-solid fa-lock"></i> Login to Book
+                    </a>
+                            </div>
+        </div>
+                        <div class="helper-card">
+                                    <span style="position:absolute;top:10px;right:10px;background:#e74c3c;color:#fff;
+                         font-size:0.68rem;font-weight:700;padding:3px 9px;border-radius:20px;
+                         letter-spacing:0.3px;display:flex;align-items:center;gap:4px;z-index:2;">
+                <i class="fa-solid fa-circle" style="font-size:0.45rem;"></i> Busy Today
+            </span>
+                        <div class="avatar-wrap">
+                <img src="Uploads/profiles/zainab.svg"
+                     onerror="this.src='https://ui-avatars.com/api/?name=Zainab+Akhtar&background=7C9473&color=fff'"
+                     alt="Zainab Akhtar">
+                <span class="online-dot" style="background:#e74c3c;"></span>
+            </div>
+            <p class="helper-name">
+                Zainab Akhtar
+                                    <i class="fa-solid fa-circle-check" title="CNIC Verified by HelpNest"></i>
+                            </p>
+                        <span class="verified-badge">
+                <i class="fa-solid fa-shield-halved"></i> HelpNest Verified
+            </span>
+                        <p class="helper-category">
+                <i class="fa-solid fa-broom" style="font-size:0.7rem;"></i>
+                Cooking            </p>
+            <p class="helper-exp">8 Years Experience</p>
+            <p class="helper-rating">⭐ 4.9</p>
+            <p class="helper-price">Rs. 1,000/hr</p>
+            <div class="card-actions">
+                <a href="common/view-profile__id-2.html" class="btn-view">
+                    <i class="fa-solid fa-user"></i> View Profile
+                </a>
+                                    <a href="common/login.html" class="btn-book">
+                        <i class="fa-solid fa-lock"></i> Login to Book
+                    </a>
+                            </div>
+        </div>
+                        <div class="helper-card">
+                                    <div class="avatar-wrap">
+                <img src="Uploads/profiles/rukhsana.svg"
+                     onerror="this.src='https://ui-avatars.com/api/?name=Rukhsana+Bibi&background=7C9473&color=fff'"
+                     alt="Rukhsana Bibi">
+                <span class="online-dot" style=""></span>
+            </div>
+            <p class="helper-name">
+                Rukhsana Bibi
+                                    <i class="fa-solid fa-circle-check" title="CNIC Verified by HelpNest"></i>
+                            </p>
+                        <span class="verified-badge">
+                <i class="fa-solid fa-shield-halved"></i> HelpNest Verified
+            </span>
+                        <p class="helper-category">
+                <i class="fa-solid fa-broom" style="font-size:0.7rem;"></i>
+                Babysitting, Elder Care            </p>
+            <p class="helper-exp">10 Years Experience</p>
+            <p class="helper-rating">⭐ 4.7</p>
+            <p class="helper-price">Rs. 900/hr</p>
+            <div class="card-actions">
+                <a href="common/view-profile__id-3.html" class="btn-view">
+                    <i class="fa-solid fa-user"></i> View Profile
+                </a>
+                                    <a href="common/login.html" class="btn-book">
+                        <i class="fa-solid fa-lock"></i> Login to Book
+                    </a>
+                            </div>
+        </div>
+                        <div class="helper-card">
+                                    <span style="position:absolute;top:10px;right:10px;background:#e74c3c;color:#fff;
+                         font-size:0.68rem;font-weight:700;padding:3px 9px;border-radius:20px;
+                         letter-spacing:0.3px;display:flex;align-items:center;gap:4px;z-index:2;">
+                <i class="fa-solid fa-circle" style="font-size:0.45rem;"></i> Busy Today
+            </span>
+                        <div class="avatar-wrap">
+                <img src="Uploads/profiles/imran.svg"
+                     onerror="this.src='https://ui-avatars.com/api/?name=Imran+Ali&background=7C9473&color=fff'"
+                     alt="Imran Ali">
+                <span class="online-dot" style="background:#e74c3c;"></span>
+            </div>
+            <p class="helper-name">
+                Imran Ali
+                                    <i class="fa-solid fa-circle-check" title="CNIC Verified by HelpNest"></i>
+                            </p>
+                        <span class="verified-badge">
+                <i class="fa-solid fa-shield-halved"></i> HelpNest Verified
+            </span>
+                        <p class="helper-category">
+                <i class="fa-solid fa-broom" style="font-size:0.7rem;"></i>
+                Driver            </p>
+            <p class="helper-exp">12 Years Experience</p>
+            <p class="helper-rating">⭐ 4.6</p>
+            <p class="helper-price">Rs. 700/hr</p>
+            <div class="card-actions">
+                <a href="common/view-profile__id-4.html" class="btn-view">
+                    <i class="fa-solid fa-user"></i> View Profile
+                </a>
+                                    <a href="common/login.html" class="btn-book">
+                        <i class="fa-solid fa-lock"></i> Login to Book
+                    </a>
+                            </div>
+        </div>
+                        <div class="helper-card">
+                                    <div class="avatar-wrap">
+                <img src="Uploads/profiles/kashif.svg"
+                     onerror="this.src='https://ui-avatars.com/api/?name=Kashif+Mehmood&background=7C9473&color=fff'"
+                     alt="Kashif Mehmood">
+                <span class="online-dot" style=""></span>
+            </div>
+            <p class="helper-name">
+                Kashif Mehmood
+                                    <i class="fa-solid fa-circle-check" title="CNIC Verified by HelpNest"></i>
+                            </p>
+                        <span class="verified-badge">
+                <i class="fa-solid fa-shield-halved"></i> HelpNest Verified
+            </span>
+                        <p class="helper-category">
+                <i class="fa-solid fa-broom" style="font-size:0.7rem;"></i>
+                Gardener            </p>
+            <p class="helper-exp">6 Years Experience</p>
+            <p class="helper-rating">⭐ 4.5</p>
+            <p class="helper-price">Rs. 600/hr</p>
+            <div class="card-actions">
+                <a href="common/view-profile__id-5.html" class="btn-view">
+                    <i class="fa-solid fa-user"></i> View Profile
+                </a>
+                                    <a href="common/login.html" class="btn-book">
+                        <i class="fa-solid fa-lock"></i> Login to Book
+                    </a>
+                            </div>
+        </div>
+                        <div class="helper-card">
+                                    <div class="avatar-wrap">
+                <img src="Uploads/profiles/nadia.svg"
+                     onerror="this.src='https://ui-avatars.com/api/?name=Nadia+Parveen&background=7C9473&color=fff'"
+                     alt="Nadia Parveen">
+                <span class="online-dot" style=""></span>
+            </div>
+            <p class="helper-name">
+                Nadia Parveen
+                                    <i class="fa-solid fa-circle-check" title="CNIC Verified by HelpNest"></i>
+                            </p>
+                        <span class="verified-badge">
+                <i class="fa-solid fa-shield-halved"></i> HelpNest Verified
+            </span>
+                        <p class="helper-category">
+                <i class="fa-solid fa-broom" style="font-size:0.7rem;"></i>
+                Home Cleaning, Cooking            </p>
+            <p class="helper-exp">4 Years Experience</p>
+            <p class="helper-rating">⭐ 4.4</p>
+            <p class="helper-price">Rs. 750/hr</p>
+            <div class="card-actions">
+                <a href="common/view-profile__id-6.html" class="btn-view">
+                    <i class="fa-solid fa-user"></i> View Profile
+                </a>
+                                    <a href="common/login.html" class="btn-book">
+                        <i class="fa-solid fa-lock"></i> Login to Book
+                    </a>
+                            </div>
+        </div>
+                        <div class="helper-card">
+                                    <div class="avatar-wrap">
+                <img src="Uploads/profiles/asif.svg"
+                     onerror="this.src='https://ui-avatars.com/api/?name=Asif+Raza&background=7C9473&color=fff'"
+                     alt="Asif Raza">
+                <span class="online-dot" style=""></span>
+            </div>
+            <p class="helper-name">
+                Asif Raza
+                                    <i class="fa-solid fa-circle-check" title="CNIC Verified by HelpNest"></i>
+                            </p>
+                        <span class="verified-badge">
+                <i class="fa-solid fa-shield-halved"></i> HelpNest Verified
+            </span>
+                        <p class="helper-category">
+                <i class="fa-solid fa-broom" style="font-size:0.7rem;"></i>
+                Car Washer, Gatekeeper            </p>
+            <p class="helper-exp">3 Years Experience</p>
+            <p class="helper-rating">⭐ 4.3</p>
+            <p class="helper-price">Rs. 500/hr</p>
+            <div class="card-actions">
+                <a href="common/view-profile__id-7.html" class="btn-view">
+                    <i class="fa-solid fa-user"></i> View Profile
+                </a>
+                                    <a href="common/login.html" class="btn-book">
+                        <i class="fa-solid fa-lock"></i> Login to Book
+                    </a>
+                            </div>
+        </div>
+        
+        </div>
+</div>
+
+<footer>
+    <div style="background:#5B4636; text-align:center; padding:1.2rem; color:rgba(255,255,255,0.5); font-size:0.85rem;">
+        &copy; 2025 HelpNest. All rights reserved.
+    </div>
+</footer>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// ── Helpers data for map (PHP se JS mein) ──
+const helpersData = [{"id":1,"name":"Fatima Noor","category":"Home Cleaning, Laundry & Ironing","price":800,"rating":4.8,"lat":24.92,"lng":67.12,"verified":true,"profile":"fatima.svg"},{"id":2,"name":"Zainab Akhtar","category":"Cooking","price":1000,"rating":4.9,"lat":24.93,"lng":67.09,"verified":true,"profile":"zainab.svg"},{"id":3,"name":"Rukhsana Bibi","category":"Babysitting, Elder Care","price":900,"rating":4.7,"lat":24.86,"lng":67.03,"verified":true,"profile":"rukhsana.svg"},{"id":4,"name":"Imran Ali","category":"Driver","price":700,"rating":4.6,"lat":24.83,"lng":67.13,"verified":true,"profile":"imran.svg"},{"id":5,"name":"Kashif Mehmood","category":"Gardener","price":600,"rating":4.5,"lat":24.9,"lng":67.19,"verified":true,"profile":"kashif.svg"},{"id":6,"name":"Nadia Parveen","category":"Home Cleaning, Cooking","price":750,"rating":4.4,"lat":24.94,"lng":67.08,"verified":true,"profile":"nadia.svg"},{"id":7,"name":"Asif Raza","category":"Car Washer, Gatekeeper","price":500,"rating":4.3,"lat":24.87,"lng":67.01,"verified":true,"profile":"asif.svg"}];
+
+const locationActive = false;
+const userLat = null;
+const userLng = null;
+
+// ── Current URL params save karo ──
+const urlParams  = new URLSearchParams(window.location.search);
+const catParam   = urlParams.get('category') || '';
+const srchParam  = urlParams.get('search')   || '';
+const curRadius  = urlParams.get('radius')   || '10';
+
+// ── Radius apply karo ──
+function applyRadius(val) {
+    let newUrl = window.location.pathname + '?';
+    if (catParam)  newUrl += 'category=' + encodeURIComponent(catParam) + '&';
+    if (srchParam) newUrl += 'search='   + encodeURIComponent(srchParam) + '&';
+    newUrl += 'ulat=' + userLat + '&ulng=' + userLng + '&radius=' + val;
+    window.location.href = newUrl;
+}
+
+// ── Location detect karo ──
+function detectLocation() {
+    const status = document.getElementById('locStatus');
+    status.className = 'loc-status loading';
+    status.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting location...';
+
+    if (!navigator.geolocation) {
+        status.className = 'loc-status error';
+        status.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Geolocation not supported';
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function(pos) {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+
+            // Page reload with lat/lng
+            let newUrl = window.location.pathname + '?';
+            if (catParam)  newUrl += 'category=' + encodeURIComponent(catParam) + '&';
+            if (srchParam) newUrl += 'search='   + encodeURIComponent(srchParam) + '&';
+            newUrl += 'ulat=' + lat + '&ulng=' + lng;
+            window.location.href = newUrl;
+        },
+        function(err) {
+            status.className = 'loc-status error';
+            if (err.code === 1) {
+                status.innerHTML = '<i class="fa-solid fa-ban"></i> Location permission denied';
+            } else {
+                status.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Could not get location';
+            }
+        },
+        { timeout: 8000, maximumAge: 60000 }
+    );
+}
+
+// ── Location clear karo ──
+function clearLocation() {
+    let newUrl = window.location.pathname + '?';
+    if (catParam)  newUrl += 'category=' + encodeURIComponent(catParam) + '&';
+    if (srchParam) newUrl += 'search='   + encodeURIComponent(srchParam);
+    window.location.href = newUrl.replace(/[?&]$/, '');
+}
+
+// ── Map toggle ──
+let map = null;
+let mapVisible = false;
+
+function toggleMap() {
+    const section = document.getElementById('mapSection');
+    const btn     = document.getElementById('mapToggleBtn');
+    mapVisible = !mapVisible;
+    section.classList.toggle('show', mapVisible);
+    btn.classList.toggle('active', mapVisible);
+    btn.innerHTML = mapVisible
+        ? '<i class="fa-solid fa-map"></i> Hide Map'
+        : '<i class="fa-solid fa-map"></i> Show Map';
+
+    if (mapVisible && !map) {
+        initMap();
+    }
+}
+
+// ── Leaflet map initialize ──
+function initMap() {
+    // Center: user location ya Sialkot default
+    const centerLat = userLat || 32.4945;
+    const centerLng = userLng || 74.5229;
+
+    map = L.map('helpersMap').setView([centerLat, centerLng], 13);
+
+    // OpenStreetMap tiles — bilkul free
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18
+    }).addTo(map);
+
+    // ── User ka location pin ──
+    if (userLat && userLng) {
+        const userIcon = L.divIcon({
+            html: '<div style="background:#5B4636;width:16px;height:16px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>',
+            iconSize: [16, 16],
+            iconAnchor: [8, 8],
+            className: ''
+        });
+        L.marker([userLat, userLng], { icon: userIcon })
+         .addTo(map)
+         .bindPopup('<strong>📍 Your Location</strong>');
+    }
+
+    // ── Helper pins — safe (rounded coordinates) ──
+    const helperIcon = L.divIcon({
+        html: '<div style="background:#7C9473;width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,0.25);"></div>',
+        iconSize: [14, 14],
+        iconAnchor: [7, 7],
+        className: ''
+    });
+
+    helpersData.forEach(function(h) {
+        if (h.lat === null || h.lng === null) return;
+
+        // ✅ Safe popup — area level info, exact address nahi
+        const popup = '<div style="font-family:Poppins,sans-serif;min-width:150px;">'
+            + '<strong style="color:#5B4636;">' + h.name + '</strong>'
+            + (h.verified ? ' <span style="color:#1DA1F2;font-size:0.75rem;">✓</span>' : '')
+            + '<br><span style="color:#7C9473;font-size:0.78rem;">' + h.category + '</span>'
+            + '<br><span style="font-size:0.78rem;color:#888;">Rs. ' + h.price.toLocaleString() + '/hr</span>'
+            + '<br><span style="font-size:0.78rem;color:#f1c40f;">⭐ ' + h.rating.toFixed(1) + '</span>'
+            + '<br><a href="common/view-profile.html?id=' + h.id + '" '
+            + 'style="display:inline-block;margin-top:6px;padding:3px 10px;background:#5B4636;color:#fff;border-radius:6px;text-decoration:none;font-size:0.75rem;">View Profile</a>'
+            + '</div>';
+
+        L.marker([h.lat, h.lng], { icon: helperIcon })
+         .addTo(map)
+         .bindPopup(popup);
+    });
+}
+</script>
+
+<script src="js/script.js"></script>
+</body>
+</html>

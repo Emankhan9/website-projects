@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="";window.HN_PAGE="book-helper.html";</script>
+<script src="js/static-demo.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Fatima Noor | HelpNest</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --brown:#5B4636; --brown-dark:#3d2e22; --green:#7C9473; --green-light:#A8BFA1; --cream:#F5EFE0; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Poppins',sans-serif; min-height:100vh; background:var(--cream); display:flex; align-items:center; justify-content:center; padding:2rem 1rem; position:relative; overflow-x:hidden; }
+        body::before { content:''; position:fixed; top:-120px; right:-120px; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle,rgba(124,148,115,0.15),transparent 70%); pointer-events:none; }
+        body::after  { content:''; position:fixed; bottom:-100px; left:-100px; width:350px; height:350px; border-radius:50%; background:radial-gradient(circle,rgba(91,70,54,0.1),transparent 70%); pointer-events:none; }
+        .page-wrapper { display:flex; width:100%; max-width:1000px; border-radius:28px; overflow:hidden; box-shadow:0 30px 80px rgba(91,70,54,0.16),0 8px 24px rgba(0,0,0,0.07); position:relative; z-index:1; animation:fadeUp 0.6s ease both; }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:translateY(0);} }
+        .booking-left { flex:0 0 320px; background:linear-gradient(160deg,var(--brown-dark) 0%,var(--brown) 55%,#7a5c47 100%); padding:2.5rem 2rem; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden; }
+        .booking-left::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; border:40px solid rgba(255,255,255,0.05); }
+        .booking-left::after  { content:''; position:absolute; bottom:-80px; left:-80px; width:280px; height:280px; border-radius:50%; border:50px solid rgba(255,255,255,0.04); }
+        .brand { position:relative; z-index:2; }
+        .brand-logo { font-family:'Playfair Display',serif; font-size:1.8rem; color:#fff; }
+        .brand-logo span { color:var(--green-light); }
+        .brand-tagline { font-size:0.7rem; color:rgba(255,255,255,0.45); letter-spacing:2px; text-transform:uppercase; margin-top:3px; }
+        .helper-card { position:relative; z-index:2; background:rgba(255,255,255,0.08); border-radius:18px; padding:1.4rem; backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.1); }
+        .helper-avatar-wrap { display:flex; align-items:center; gap:12px; margin-bottom:1.2rem; }
+        .helper-avatar { width:58px; height:58px; border-radius:14px; object-fit:cover; border:3px solid rgba(255,255,255,0.2); }
+        .helper-avatar-initial { width:58px; height:58px; border-radius:14px; background:linear-gradient(135deg,var(--green),var(--green-light)); display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:700; color:#fff; border:3px solid rgba(255,255,255,0.2); }
+        .helper-name { font-family:'Playfair Display',serif; font-size:1.1rem; color:#fff; }
+        .helper-cat  { font-size:0.75rem; color:var(--green-light); font-weight:600; margin-top:2px; }
+        .price-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.12); padding:7px 14px; border-radius:10px; color:#fff; font-size:0.83rem; font-weight:600; margin-bottom:1rem; }
+        .price-badge i { color:var(--green-light); }
+        .info-items { display:flex; flex-direction:column; gap:9px; }
+        .info-item { display:flex; align-items:center; gap:10px; font-size:0.78rem; color:rgba(255,255,255,0.6); }
+        .info-item i { width:26px; height:26px; background:rgba(255,255,255,0.08); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--green-light); font-size:0.75rem; flex-shrink:0; }
+        .avail-badge { margin-top:1rem; }
+        .avail-badge-title { font-size:0.7rem; color:rgba(255,255,255,0.45); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+        .avail-days-wrap { display:flex; flex-wrap:wrap; gap:5px; }
+        .avail-day-chip { padding:3px 9px; border-radius:20px; font-size:0.68rem; font-weight:600; }
+        .avail-day-chip.yes { background:rgba(168,191,161,0.25); color:var(--green-light); border:1px solid rgba(168,191,161,0.3); }
+        .avail-day-chip.no  { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.08); text-decoration:line-through; }
+
+        /* ── Working hours badge in left panel ── */
+        .work-hours-badge { margin-top:0.8rem; background:rgba(255,255,255,0.07); border-radius:10px; padding:8px 12px; display:flex; align-items:center; gap:8px; }
+        .work-hours-badge i { color:var(--green-light); font-size:0.8rem; flex-shrink:0; }
+        .work-hours-badge span { font-size:0.75rem; color:rgba(255,255,255,0.65); }
+        .work-hours-badge strong { color:#fff; }
+
+        .left-bottom { position:relative; z-index:2; }
+        .back-btn { display:inline-flex; align-items:center; gap:7px; color:rgba(255,255,255,0.45); font-size:0.78rem; text-decoration:none; transition:color 0.2s; }
+        .back-btn:hover { color:rgba(255,255,255,0.8); }
+        .booking-right { flex:1; background:#fff; padding:2.5rem 2.5rem; overflow-y:auto; }
+        .booking-right::-webkit-scrollbar { width:4px; }
+        .booking-right::-webkit-scrollbar-track { background:#f8f4ee; }
+        .booking-right::-webkit-scrollbar-thumb { background:var(--green-light); border-radius:4px; }
+        .right-header { margin-bottom:1.5rem; }
+        .right-header h2 { font-family:'Playfair Display',serif; font-size:1.7rem; color:var(--brown); margin-bottom:0.3rem; }
+        .right-header p { color:#aaa; font-size:0.82rem; }
+
+        /* ── Working hours info bar (below header) ── */
+        .hours-info-bar { display:flex; align-items:center; gap:8px; background:#f0f7ee; border:1.5px solid #c5dac0; border-radius:10px; padding:9px 14px; margin-bottom:1rem; font-size:0.8rem; color:#5a7a52; }
+        .hours-info-bar i { color:#7C9473; flex-shrink:0; }
+
+        .avail-hint { font-size:0.72rem; margin-top:5px; display:none; padding:6px 10px; border-radius:8px; }
+        .avail-hint.ok  { background:#f0f9ee; color:var(--green); display:block; }
+        .avail-hint.err { background:#fff2f2; color:#c0392b; display:block; }
+
+        /* ── Time hint below time inputs ── */
+        .time-hint { font-size:0.72rem; margin-top:4px; padding:5px 9px; border-radius:7px; display:none; }
+        .time-hint.err { background:#fff2f2; color:#c0392b; display:block; }
+        .time-hint.ok  { background:#f0f9ee; color:var(--green); display:block; }
+
+        .error-alert { display:flex; align-items:center; gap:10px; background:#fff2f2; border:1.5px solid #f5c6c6; border-radius:10px; padding:10px 14px; margin-bottom:1rem; font-size:0.82rem; color:#c0392b; animation:fadeUp 0.3s ease; }
+        .error-alert i { flex-shrink:0; font-size:0.9rem; }
+        .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem 1rem; }
+        .form-grid .full { grid-column:1/-1; }
+        .time-row { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem 1rem; grid-column:1/-1; }
+        .form-group { margin-bottom:0; }
+        .form-group label { display:block; font-size:0.77rem; font-weight:600; color:var(--brown); margin-bottom:5px; }
+        .input-wrap { position:relative; }
+        .input-wrap i.input-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#ccc; font-size:0.8rem; transition:color 0.2s; pointer-events:none; }
+        .input-wrap.textarea-wrap i.input-icon { top:12px; transform:none; }
+        .input-wrap input,.input-wrap select,.input-wrap textarea { width:100%; padding:10px 12px 10px 34px; border:1.5px solid #ede8e0; border-radius:10px; font-family:'Poppins',sans-serif; font-size:0.83rem; background:#fdfaf5; color:#333; transition:all 0.25s; }
+        .input-wrap textarea { resize:none; padding-top:10px; }
+        .input-wrap input:focus,.input-wrap select:focus,.input-wrap textarea:focus { outline:none; border-color:var(--green); background:#fff; box-shadow:0 0 0 3px rgba(124,148,115,0.12); }
+        .input-wrap:focus-within i.input-icon { color:var(--green); }
+        .input-wrap input.input-error,.input-wrap select.input-error { border-color:#e74c3c; background:#fff8f8; }
+        .monthly-section { display:none; background:#fdfaf5; border-radius:12px; padding:1rem; border:1.5px dashed var(--green-light); margin-top:0.3rem; grid-column:1/-1; }
+        .monthly-section.show { display:block; animation:fadeUp 0.3s ease; }
+        .monthly-note { display:flex; align-items:flex-start; gap:8px; background:#fff8e8; border-radius:10px; padding:10px 12px; margin-bottom:0.8rem; font-size:0.78rem; color:#888; }
+        .monthly-note i { color:var(--green); margin-top:2px; flex-shrink:0; }
+        .total-box { background:linear-gradient(135deg,#f8f4ee,#f0ece0); border-radius:14px; padding:1.2rem; text-align:center; margin:1rem 0; border:1.5px solid #ede8e0; }
+        .total-label  { font-size:0.72rem; color:#aaa; text-transform:uppercase; letter-spacing:1px; }
+        .total-amount { font-family:'Playfair Display',serif; font-size:1.9rem; color:var(--green); display:block; margin:4px 0 2px; font-weight:700; }
+        .total-rate   { font-size:0.75rem; color:#bbb; }
+        .submit-btn { width:100%; padding:13px; border:none; border-radius:12px; background:linear-gradient(135deg,var(--green),#5a7a52); color:#fff; font-family:'Poppins',sans-serif; font-weight:600; font-size:0.9rem; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .submit-btn:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(124,148,115,0.3); }
+        .submit-btn:disabled { opacity:0.55; cursor:not-allowed; transform:none; box-shadow:none; }
+        .section-label { font-size:0.72rem; font-weight:700; color:var(--green); text-transform:uppercase; letter-spacing:1.5px; margin:1rem 0 0.6rem; display:flex; align-items:center; gap:8px; }
+        .section-label::after { content:''; flex:1; height:1px; background:#f0ece0; }
+        .success-mode .booking-left { display:none; }
+        .success-mode .booking-right { display:flex; align-items:center; justify-content:center; min-height:420px; }
+        .success-wrap { text-align:center; padding:2rem 0; }
+        .success-icon { width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,var(--green),var(--green-light)); color:#fff; font-size:2rem; display:flex; align-items:center; justify-content:center; margin:0 auto 1.2rem; box-shadow:0 8px 25px rgba(124,148,115,0.3); }
+        .success-wrap h2 { font-family:'Playfair Display',serif; color:var(--brown); font-size:1.7rem; margin-bottom:0.5rem; }
+        .success-wrap p { color:#aaa; font-size:0.85rem; margin-bottom:1.5rem; }
+        .explore-btn { display:inline-flex; align-items:center; gap:8px; padding:12px 28px; background:linear-gradient(135deg,var(--green),#5a7a52); color:#fff; border-radius:12px; text-decoration:none; font-weight:600; font-size:0.88rem; transition:all 0.3s; }
+        .explore-btn:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(124,148,115,0.3); }
+        .mobile-top-bar { display:none; background:linear-gradient(135deg,var(--brown-dark),var(--brown)); padding:1rem 1.2rem; align-items:center; gap:12px; }
+        .mobile-helper-avatar { width:44px; height:44px; border-radius:10px; object-fit:cover; border:2px solid rgba(255,255,255,0.2); flex-shrink:0; }
+        .mobile-helper-initial { width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg,var(--green),var(--green-light)); display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:700; color:#fff; border:2px solid rgba(255,255,255,0.2); flex-shrink:0; }
+        .mobile-helper-info { flex:1; min-width:0; }
+        .mobile-helper-info .name { font-family:'Playfair Display',serif; font-size:1rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .mobile-helper-info .meta { font-size:0.72rem; color:var(--green-light); margin-top:1px; }
+        .mobile-back-btn { color:rgba(255,255,255,0.6); font-size:1.1rem; text-decoration:none; transition:color 0.2s; flex-shrink:0; }
+        .mobile-back-btn:hover { color:#fff; }
+        @media (max-width:900px) { .booking-left{flex:0 0 260px;padding:2rem 1.5rem;} .booking-right{padding:2rem 1.8rem;} }
+        @media (max-width:650px) { body{padding:0;align-items:flex-start;background:#fff;} .page-wrapper{flex-direction:column;border-radius:0;box-shadow:none;min-height:100vh;} .booking-left{display:none;} .mobile-top-bar{display:flex;} .booking-right{padding:1.5rem 1.2rem;overflow-y:visible;} .form-grid{grid-template-columns:1fr;} .form-grid .full{grid-column:1;} .time-row{grid-template-columns:1fr 1fr;grid-column:1;} .monthly-section{grid-column:1;} .right-header h2{font-size:1.4rem;} .total-amount{font-size:1.6rem;} .submit-btn{font-size:0.88rem;padding:12px;} }
+        @media (max-width:480px) { .booking-right{padding:1.2rem 1rem;} .input-wrap input,.input-wrap select,.input-wrap textarea{font-size:16px;} .form-group label{font-size:0.75rem;} .right-header h2{font-size:1.25rem;} .section-label{font-size:0.68rem;} .total-box{padding:1rem;} .total-amount{font-size:1.45rem;} .monthly-section{padding:0.8rem;} .submit-btn{font-size:0.85rem;padding:11px;} }
+        @media (max-width:360px) { .booking-right{padding:1rem 0.8rem;} .mobile-top-bar{padding:0.8rem 1rem;} .time-row{grid-template-columns:1fr;} .right-header h2{font-size:1.15rem;} }
+    </style>
+</head>
+<body>
+
+<div class="page-wrapper ">
+
+    
+    <div class="mobile-top-bar">
+        <a href="javascript:history.back()" class="mobile-back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+                    <img src="Uploads/profiles/fatima.svg"
+                 class="mobile-helper-avatar"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="mobile-helper-initial" style="display:none;">F</div>
+                <div class="mobile-helper-info">
+            <div class="name">
+                Fatima Noor                                    <i class="fa-solid fa-circle-check" style="color:#7C9473;font-size:0.85rem;margin-left:3px;" title="HelpNest Verified"></i>
+                            </div>
+            <div class="meta">Rs. 800/hr &middot; Home Cleaning, Laundry &amp; Ironing</div>
+        </div>
+    </div>
+
+    
+    <div class="booking-left">
+        <div class="brand">
+            <div class="brand-logo">Help<span>Nest</span></div>
+            <div class="brand-tagline">Trusted Home Services</div>
+        </div>
+        <div class="helper-card">
+            <div class="helper-avatar-wrap">
+                                    <img src="Uploads/profiles/fatima.svg" class="helper-avatar"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="helper-avatar-initial" style="display:none;">F</div>
+                                <div>
+                    <div class="helper-name">
+                        Fatima Noor                                                    <i class="fa-solid fa-circle-check" style="color:#7C9473;font-size:0.9rem;vertical-align:middle;margin-left:3px;" title="HelpNest Verified"></i>
+                                            </div>
+                    <div class="helper-cat">Home Cleaning, Laundry &amp; Ironing</div>
+                </div>
+            </div>
+            <div class="price-badge"><i class="fa-solid fa-tag"></i> Rs. 800 / hour</div>
+            <div class="info-items">
+                <div class="info-item"><i class="fa-solid fa-shield-halved"></i> Identity Verified by HelpNest</div>
+                <div class="info-item"><i class="fa-solid fa-money-bill-wave"></i> Cash on delivery payment</div>
+                <div class="info-item"><i class="fa-solid fa-rotate-left"></i> Free cancellation (pending only)</div>
+            </div>
+
+            
+                        <div class="avail-badge">
+                <div class="avail-badge-title"><i class="fa-solid fa-calendar-check" style="margin-right:4px;"></i>Available Days</div>
+                <div class="avail-days-wrap">
+                                            <span class="avail-day-chip no">
+                            Sun                        </span>
+                                            <span class="avail-day-chip yes">
+                            Mon                        </span>
+                                            <span class="avail-day-chip yes">
+                            Tue                        </span>
+                                            <span class="avail-day-chip yes">
+                            Wed                        </span>
+                                            <span class="avail-day-chip yes">
+                            Thu                        </span>
+                                            <span class="avail-day-chip yes">
+                            Fri                        </span>
+                                            <span class="avail-day-chip yes">
+                            Sat                        </span>
+                                    </div>
+            </div>
+            
+            
+                        <div class="work-hours-badge">
+                <i class="fa-solid fa-clock"></i>
+                <span>Working Hours: <strong>09:00 AM</strong> – <strong>06:00 PM</strong></span>
+            </div>
+                    </div>
+        <div class="left-bottom">
+            <a href="javascript:history.back()" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Go Back</a>
+        </div>
+    </div>
+
+    
+    <div class="booking-right">
+                <div class="right-header">
+            <h2>Book a Service</h2>
+            <p>Fill in the details to send your booking request</p>
+        </div>
+
+        
+                <div class="hours-info-bar">
+            <i class="fa-solid fa-clock"></i>
+            <span>This helper is available for bookings between <strong>09:00 AM</strong> and <strong>06:00 PM</strong></span>
+        </div>
+        
+        
+        <form action="#" method="POST" id="bookingForm">
+            <input type="hidden" name="csrf_token" value="static-demo-token">            <input type="hidden" name="helper_id" value="1">
+            <input type="hidden" name="booked_service" value="Home Cleaning">
+            <input type="hidden" name="total_amount_preview" id="totalAmount" value="0">
+
+            <div class="section-label">Schedule</div>
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label><i class="fa fa-calendar-days" style="color:var(--green);margin-right:4px;"></i> Service Date</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-calendar input-icon"></i>
+                        <input type="date" name="service_date" id="serviceDate" required
+                               min="2026-10-21"
+                               class=""
+                               onchange="checkDayAvailability(this.value)">
+                    </div>
+                    <div class="avail-hint" id="availHint"></div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa fa-retweet" style="color:var(--green);margin-right:4px;"></i> Booking Type</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-rotate input-icon"></i>
+                        <select name="booking_type" id="bookingType" onchange="toggleMonthly()">
+                            <option value="one_time">One Time Visit</option>
+                            <option value="monthly">Monthly Hire</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="time-row">
+                    <div class="form-group">
+                        <label><i class="fa fa-clock" style="color:var(--green);margin-right:4px;"></i> Start Time</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-clock input-icon"></i>
+                            <input type="time" name="service_time" id="startTime" required
+                                   onchange="checkTimeValidity(); calculateTotal()"
+                                   class="">
+                        </div>
+                        <div class="time-hint" id="startHint"></div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa fa-clock" style="color:var(--green);margin-right:4px;"></i> End Time</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-clock input-icon"></i>
+                            <input type="time" name="end_time" id="endTime" required
+                                   onchange="checkTimeValidity(); calculateTotal()"
+                                   class="">
+                        </div>
+                        <div class="time-hint" id="endHint"></div>
+                    </div>
+                </div>
+
+                <div class="monthly-section" id="monthlyNote">
+                    <div class="monthly-note">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Helper will come daily at selected time for the entire hired period. Total price is calculated based on <strong>26 working days per month</strong> (Mon–Sat). Actual days may vary slightly by month.
+                    </div>
+                    <div class="form-grid" style="margin-top:0;">
+                        <div class="form-group">
+                            <label>Start Month</label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-calendar input-icon"></i>
+                                <input type="month" name="start_month" id="startMonth" onchange="calculateTotal()"
+                                       class="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>End Month</label>
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-calendar input-icon"></i>
+                                <input type="month" name="end_month" id="endMonth" onchange="calculateTotal()"
+                                       class="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="section-label" style="margin-top:1.2rem;">Location &amp; Message</div>
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label><i class="fa fa-location-dot" style="color:var(--green);margin-right:4px;"></i> Your Complete Address</label>
+                    <div class="input-wrap textarea-wrap">
+                        <i class="fa-solid fa-location-dot input-icon"></i>
+                        <textarea name="address" id="addressField" rows="2" placeholder="House #, Street, Area, City" required maxlength="300"></textarea>
+                    </div>
+                    
+                    <button type="button" id="autoFillBtn" onclick="autoFillAddress()"
+                        style="margin-top:7px;display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+                               border-radius:50px;border:1.5px solid var(--green);background:#f0f7ee;
+                               color:#5a7a52;font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:600;
+                               cursor:pointer;transition:all 0.25s;">
+                        <i class="fa-solid fa-location-crosshairs"></i> Use My Current Location
+                    </button>
+                    <div id="addrStatus" style="font-size:0.75rem;margin-top:5px;display:none;
+                         padding:5px 10px;border-radius:7px;align-items:center;gap:6px;"></div>
+                </div>
+                <div class="form-group full">
+                    <label><i class="fa fa-message" style="color:var(--green);margin-right:4px;"></i> Message <span style="color:#bbb;font-weight:400;">(Optional)</span></label>
+                    <div class="input-wrap textarea-wrap">
+                        <i class="fa-solid fa-message input-icon"></i>
+                        <textarea name="message" rows="2" placeholder="e.g. Please bring cleaning supplies..." maxlength="500"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="total-box">
+                <div class="total-label">Estimated Total (preview only — calculated server-side)</div>
+                <span class="total-amount" id="totalDisplay">Rs. 0</span>
+                <div class="total-rate">Rs. 800 per hour</div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <i class="fa-solid fa-paper-plane"></i> Confirm Booking
+            </button>
+        </form>
+            </div>
+</div>
+
+<script>
+const pricePerHour  = 800;
+const disabledDays  = [0];
+const availableDays = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+// Working hours from PHP — empty string if not set
+const workFrom = '09:00'; // "09:00" or ""
+const workTill = '18:00'; // "18:00" or ""
+
+// ── Day availability check ─────────────────────────────────────────────────
+function checkDayAvailability(dateVal) {
+    const hint      = document.getElementById('availHint');
+    const dateEl    = document.getElementById('serviceDate');
+    const submitBtn = document.getElementById('submitBtn');
+    if (!dateVal) { hint.className = 'avail-hint'; hint.textContent = ''; return; }
+    const parts  = dateVal.split('-');
+    const d      = new Date(parts[0], parts[1] - 1, parts[2]);
+    const dayNum = d.getDay();
+    if (disabledDays.includes(dayNum)) {
+        hint.className = 'avail-hint err';
+        hint.innerHTML = '<i class="fa-solid fa-ban" style="margin-right:4px;"></i>'
+                       + 'Not available this day. Available: <strong>' + availableDays.join(', ') + '</strong>';
+        dateEl.classList.add('input-error');
+        submitBtn.disabled = true;
+    } else {
+        const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        hint.className = 'avail-hint ok';
+        hint.innerHTML = '<i class="fa-solid fa-circle-check" style="margin-right:4px;"></i>'
+                       + '<strong>' + dayNames[dayNum] + '</strong> — Available ✓';
+        dateEl.classList.remove('input-error');
+        submitBtn.disabled = false;
+    }
+}
+
+// ── Working hours client-side check ───────────────────────────────────────
+function checkTimeValidity() {
+    const start     = document.getElementById('startTime').value;
+    const end       = document.getElementById('endTime').value;
+    const startEl   = document.getElementById('startTime');
+    const endEl     = document.getElementById('endTime');
+    const startHint = document.getElementById('startHint');
+    const endHint   = document.getElementById('endHint');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Reset
+    startEl.classList.remove('input-error');
+    endEl.classList.remove('input-error');
+    startHint.className = 'time-hint';
+    startHint.textContent = '';
+    endHint.className   = 'time-hint';
+    endHint.textContent = '';
+
+    let hasError = false;
+
+    // Check 1: Working hours
+    if (workFrom && workTill && start) {
+        if (start < workFrom) {
+            startEl.classList.add('input-error');
+            startHint.className   = 'time-hint err';
+            startHint.innerHTML   = '<i class="fa-solid fa-clock" style="margin-right:3px;"></i>'
+                                  + 'Helper starts at <strong>' + formatTime12(workFrom) + '</strong>';
+            hasError = true;
+        }
+    }
+    if (workFrom && workTill && end) {
+        if (end > workTill) {
+            endEl.classList.add('input-error');
+            endHint.className = 'time-hint err';
+            endHint.innerHTML = '<i class="fa-solid fa-clock" style="margin-right:3px;"></i>'
+                              + 'Helper ends at <strong>' + formatTime12(workTill) + '</strong>';
+            hasError = true;
+        }
+    }
+
+    // Check 2: end > start
+    if (start && end && end <= start) {
+        endEl.classList.add('input-error');
+        endHint.className = 'time-hint err';
+        endHint.textContent = 'End time must be after start time';
+        hasError = true;
+    }
+
+    // All good hint
+    if (!hasError && start && end && end > start) {
+        if (!workFrom || (start >= workFrom && end <= workTill)) {
+            endHint.className = 'time-hint ok';
+            endHint.innerHTML = '<i class="fa-solid fa-circle-check" style="margin-right:3px;"></i>Time slot looks good ✓';
+        }
+    }
+
+    document.getElementById('submitBtn').disabled = hasError;
+}
+
+// Convert "14:00" → "02:00 PM"
+function formatTime12(t) {
+    const [h, m] = t.split(':').map(Number);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const h12  = h % 12 || 12;
+    return h12 + ':' + String(m).padStart(2, '0') + ' ' + ampm;
+}
+
+// ── On page load ───────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+    const dv = document.getElementById('serviceDate').value;
+    if (dv) checkDayAvailability(dv);
+    if (disabledDays.length === 0 && availableDays.length === 0) {
+        document.getElementById('submitBtn').disabled = false;
+    }
+});
+
+function calculateTotal() {
+    const start   = document.getElementById('startTime').value;
+    const end     = document.getElementById('endTime').value;
+    const type    = document.getElementById('bookingType').value;
+    const display = document.getElementById('totalDisplay');
+    if (!start || !end) return;
+    const diffHours = (new Date('2000-01-01T' + end) - new Date('2000-01-01T' + start)) / 3600000;
+    if (diffHours <= 0) { display.innerText = 'Invalid time range'; document.getElementById('totalAmount').value = 0; return; }
+    let total = 0;
+    if (type === 'one_time') {
+        total = pricePerHour * diffHours;
+        display.innerText = 'Rs. ' + Math.round(total).toLocaleString();
+    } else {
+        const sm = document.getElementById('startMonth').value;
+        const em = document.getElementById('endMonth').value;
+        if (!sm || !em) { display.innerText = 'Select months'; return; }
+        const s = new Date(sm + '-01'), e = new Date(em + '-01');
+        if (e < s) { display.innerText = 'Invalid month range'; return; }
+        const months = (e.getFullYear() - s.getFullYear()) * 12 + (e.getMonth() - s.getMonth()) + 1;
+        total = pricePerHour * diffHours * 26 * months;
+        display.innerText = 'Rs. ' + Math.round(total).toLocaleString() + ' (' + months + ' month' + (months > 1 ? 's' : '') + ')';
+    }
+    document.getElementById('totalAmount').value = Math.round(total);
+}
+
+function toggleMonthly() {
+    const type = document.getElementById('bookingType').value;
+    document.getElementById('monthlyNote').classList.toggle('show', type === 'monthly');
+    calculateTotal();
+}
+
+function showError(msg) {
+    let alert = document.getElementById('errorAlert');
+    if (!alert) {
+        alert = document.createElement('div');
+        alert.id = 'errorAlert';
+        alert.className = 'error-alert';
+        const form = document.getElementById('bookingForm');
+        form.parentNode.insertBefore(alert, form);
+    }
+    alert.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> ' + msg;
+    alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ── Final submit validation ────────────────────────────────────────────────
+document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    const dateVal   = document.getElementById('serviceDate').value;
+    const start     = document.getElementById('startTime').value;
+    const end       = document.getElementById('endTime').value;
+    const startEl   = document.getElementById('startTime');
+    const endEl     = document.getElementById('endTime');
+    const dateEl    = document.getElementById('serviceDate');
+    startEl.classList.remove('input-error');
+    endEl.classList.remove('input-error');
+
+    // Day check
+    if (dateVal && availableDays.length > 0) {
+        const parts  = dateVal.split('-');
+        const d      = new Date(parts[0], parts[1] - 1, parts[2]);
+        const dayNum = d.getDay();
+        if (disabledDays.includes(dayNum)) {
+            e.preventDefault();
+            dateEl.classList.add('input-error');
+            showError('This helper is not available on the selected day. Available: ' + availableDays.join(', '));
+            return;
+        }
+    }
+
+    // Past time check
+    const today = new Date().toISOString().split('T')[0];
+    if (dateVal === today && start) {
+        const now    = new Date();
+        const nowStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+        if (start <= nowStr) {
+            e.preventDefault();
+            startEl.classList.add('input-error');
+            showError('Start time cannot be in the past. Please select a future time.');
+            return;
+        }
+    }
+
+    // Working hours check
+    if (workFrom && workTill) {
+        if (start < workFrom || end > workTill) {
+            e.preventDefault();
+            startEl.classList.add('input-error');
+            endEl.classList.add('input-error');
+            showError('Booking time must be within helper\'s working hours: '
+                     + formatTime12(workFrom) + ' – ' + formatTime12(workTill));
+            return;
+        }
+    }
+
+    // End > start
+    if (start && end && end <= start) {
+        e.preventDefault();
+        startEl.classList.add('input-error');
+        endEl.classList.add('input-error');
+        showError('End time must be after start time.');
+    }
+});
+
+
+// ── Address Auto-Fill via Reverse Geocoding ────────────────────────────────
+(function() {
+    // URL params se lat/lng lo (helpers.html ne pass kiye hain)
+    const params  = new URLSearchParams(window.location.search);
+    const urlLat  = params.get('ulat');
+    const urlLng  = params.get('ulng');
+
+    // Agar URL mein lat/lng hain to page load pe auto-fill karo
+    if (urlLat && urlLng) {
+        reverseGeocode(parseFloat(urlLat), parseFloat(urlLng), true);
+    }
+})();
+
+function autoFillAddress() {
+    const status = document.getElementById('addrStatus');
+    const btn    = document.getElementById('autoFillBtn');
+
+    if (!navigator.geolocation) {
+        showAddrStatus('error', 'Geolocation is not supported by your browser.');
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting...';
+    showAddrStatus('loading', 'Getting your location...');
+
+    navigator.geolocation.getCurrentPosition(
+        function(pos) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Use My Current Location';
+            reverseGeocode(pos.coords.latitude, pos.coords.longitude, false);
+        },
+        function(err) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Use My Current Location';
+            if (err.code === 1) {
+                showAddrStatus('error', 'Location permission denied. Please allow access in browser settings.');
+            } else {
+                showAddrStatus('error', 'Could not get your location. Please try again.');
+            }
+        },
+        { timeout: 8000, maximumAge: 60000 }
+    );
+}
+
+function reverseGeocode(lat, lng, silent) {
+    if (!silent) showAddrStatus('loading', 'Fetching your address...');
+
+    // OpenStreetMap Nominatim — free, no API key required
+    const url = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng + '&addressdetails=1';
+
+    fetch(url, { headers: { 'Accept-Language': 'en' } })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            if (!data || !data.address) {
+                if (!silent) showAddrStatus('error', 'Could not fetch address. Please type manually.');
+                return;
+            }
+
+            // Address parts assemble karo — Pakistan style
+            const a     = data.address;
+            const parts = [];
+
+            if (a.house_number)           parts.push('House #' + a.house_number);
+            if (a.road || a.street)       parts.push(a.road || a.street);
+            if (a.neighbourhood || a.suburb || a.residential) parts.push(a.neighbourhood || a.suburb || a.residential);
+            if (a.village || a.town || a.city_district)       parts.push(a.village || a.town || a.city_district);
+            if (a.city || a.county)       parts.push(a.city || a.county);
+            if (a.state)                  parts.push(a.state);
+
+            const addressText = parts.filter(Boolean).join(', ');
+
+            const field = document.getElementById('addressField');
+            if (field) {
+                field.value = addressText;
+                field.classList.add('input-success');
+                // Visual flash
+                field.style.borderColor = 'var(--green)';
+                setTimeout(function() { field.style.borderColor = ''; }, 2000);
+            }
+
+            if (!silent) {
+                showAddrStatus('ok', '✓ Address filled automatically. You can edit if needed.');
+            } else {
+                // Silent auto-fill — small hint neeche
+                showAddrStatus('ok', '✓ Location detected automatically from previous search. Edit if needed.');
+            }
+        })
+        .catch(function() {
+            if (!silent) showAddrStatus('error', 'Address lookup failed. Please type your address manually.');
+        });
+}
+
+function showAddrStatus(type, msg) {
+    const el = document.getElementById('addrStatus');
+    if (!el) return;
+    const styles = {
+        loading: 'background:#fff8e8;color:#e67e22;',
+        error:   'background:#fff2f2;color:#c0392b;',
+        ok:      'background:#f0f9ee;color:#5a7a52;'
+    };
+    el.style.cssText = 'font-size:0.75rem;margin-top:5px;display:flex;padding:5px 10px;border-radius:7px;align-items:center;gap:6px;' + (styles[type] || '');
+    el.innerHTML = msg;
+}
+</script>
+</body>
+</html>

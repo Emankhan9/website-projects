@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="";window.HN_PAGE="explore.html";</script>
+<script src="js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Helpers | HelpNest</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/explore.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* ── Near Me Section ── */
+    .near-me-section {
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
+      background: linear-gradient(135deg, #f0f7ee, #e8f5e3);
+      border: 1.5px solid #c5dac0;
+      border-radius: 20px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .near-me-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #7C9473, #5a7a52);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(124,148,115,0.3);
+    }
+    .near-me-text { flex: 1; min-width: 160px; }
+    .near-me-text h3 {
+      font-family: 'Playfair Display', serif;
+      color: #5B4636;
+      font-size: 1.05rem;
+      margin-bottom: 3px;
+    }
+    .near-me-text p {
+      color: #888;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .near-me-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px;
+      border-radius: 50px;
+      border: none;
+      background: linear-gradient(135deg, #5B4636, #7a5c47);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+      box-shadow: 0 3px 12px rgba(91,70,54,0.25);
+    }
+    .near-me-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(91,70,54,0.3); }
+    .near-me-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .near-me-status {
+      width: 100%;
+      font-size: 0.78rem;
+      display: none;
+      padding: 7px 12px;
+      border-radius: 8px;
+      align-items: center;
+      gap: 6px;
+    }
+    .near-me-status.loading { display:flex; background:#fff8e8; color:#e67e22; }
+    .near-me-status.error   { display:flex; background:#fff2f2; color:#c0392b; }
+    .near-me-status.success { display:flex; background:#f0f9ee; color:#5a7a52; }
+
+    /* ── Search bar ── */
+    .explore-search { position: relative; max-width: 520px; margin: 0 auto 2rem; }
+    .explore-search i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #bbb;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .explore-search i:hover { color: #7C9473; }
+    .explore-search input {
+      width: 100%;
+      padding: 13px 16px 13px 44px;
+      border: 1.5px solid #ede8e0;
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.88rem;
+      background: #fff;
+      color: #333;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      transition: all 0.25s;
+    }
+    .explore-search input:focus {
+      outline: none;
+      border-color: #7C9473;
+      box-shadow: 0 0 0 3px rgba(124,148,115,0.12);
+    }
+  </style>
+</head>
+<body>
+
+  
+  <nav id="mainNav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="explore.html" class="active"><i class="fa-solid fa-compass"></i> Explore</a></li>
+              <li><a href="common/login.html" class="sidebar-login-btn">Login</a></li>
+          </ul>
+  </nav>
+
+  
+  <div id="navOverlay" class="nav-overlay"></div>
+
+  
+  <header class="navbar">
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="logo">Help<span>Nest</span></div>
+    <nav class="desktop-nav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="explore.html" class="active"><i class="fa-solid fa-compass"></i> Explore</a></li>
+                  <li><a href="common/login.html" class="btn">Login</a></li>
+              </ul>
+    </nav>
+  </header>
+
+  
+  <section class="explore">
+    <h1>Explore Services</h1>
+    <p>Choose a category to find trusted helpers near you</p>
+
+    
+    <div class="explore-search">
+      <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+      <input type="text" id="searchInput" placeholder="Search helpers by service (e.g. Maid, Cook, Driver)">
+    </div>
+
+    
+    <div class="near-me-section">
+      <div class="near-me-icon">
+        <i class="fa-solid fa-location-crosshairs"></i>
+      </div>
+      <div class="near-me-text">
+        <h3>Find Helpers Near You</h3>
+        <p>Allow location access to see helpers sorted by distance from your location.</p>
+      </div>
+      <button class="near-me-btn" id="nearMeBtn" onclick="findNearMe()">
+        <i class="fa-solid fa-location-dot"></i> Near Me
+      </button>
+      <div class="near-me-status" id="nearMeStatus"></div>
+    </div>
+
+    
+    <div class="categories" id="categoriesGrid">
+      <a href="helpers.html?category=Home Cleaning" class="category-card">
+        <img src="assets/1.avif" alt="Home Cleaning">
+        <h3>Home Cleaning</h3>
+        <span>Dusting, Mopping, Deep Cleaning</span>
+      </a>
+      <a href="helpers.html?category=Cooking" class="category-card">
+        <img src="assets/2.avif" alt="Cooking">
+        <h3>Cooking</h3>
+        <span>Daily Meals & Party Cooking</span>
+      </a>
+      <a href="helpers.html?category=Babysitting" class="category-card">
+        <img src="assets/3.avif" alt="Babysitting">
+        <h3>Babysitting</h3>
+        <span>Child Care & Supervision</span>
+      </a>
+      <a href="helpers.html?category=Elder Care" class="category-card">
+        <img src="assets/4.avif" alt="Elder Care">
+        <h3>Elder Care</h3>
+        <span>Support & Assistance</span>
+      </a>
+      <a href="helpers.html?category=Laundry & Ironing" class="category-card">
+        <img src="assets/5.webp" alt="Laundry">
+        <h3>Laundry & Ironing</h3>
+        <span>Washing & Ironing Clothes</span>
+      </a>
+      <a href="helpers.html?category=Driver" class="category-card">
+        <img src="assets/6.avif" alt="Driver">
+        <h3>Driver</h3>
+        <span>Daily & On-Demand Driving</span>
+      </a>
+      <a href="helpers.html?category=Gardener" class="category-card">
+        <img src="assets/7.jpg" alt="Gardener">
+        <h3>Gardener</h3>
+        <span>Mali, Lawn Mowing & Plants</span>
+      </a>
+      <a href="helpers.html?category=Car Washer" class="category-card">
+        <img src="assets/8.jpg" alt="Car Washer">
+        <h3>Car Washer</h3>
+        <span>Exterior Wash & Interior Cleaning</span>
+      </a>
+      <a href="helpers.html?category=Gatekeeper" class="category-card">
+        <img src="assets/9.jpg" alt="Gatekeeper">
+        <h3>Gatekeeper</h3>
+        <span>Security & House Watchman</span>
+      </a>
+      <a href="helpers.html?category=Pet Sitter" class="category-card">
+        <img src="assets/10.jpg" alt="Pet Sitter">
+        <h3>Pet Sitter</h3>
+        <span>Feeding & Walking Your Pets</span>
+      </a>
+      <a href="helpers.html?category=Event Server" class="category-card">
+        <img src="assets/11.jpg" alt="Event Server">
+        <h3>Event Server</h3>
+        <span>Help for Daawat & Home Events</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div style="background:#5B4636; text-align:center; padding:1.2rem; color:rgba(255,255,255,0.5); font-size:0.85rem;">
+      &copy; 2025 HelpNest. All rights reserved.
+    </div>
+  </footer>
+
+<script>
+// ── Search functionality ──
+document.addEventListener("DOMContentLoaded", function () {
+    var searchInput = document.getElementById("searchInput");
+    var searchIcon  = document.getElementById("searchIcon");
+
+    function doSearch() {
+        var q = searchInput.value.toLowerCase().trim();
+        if (!q) return;
+        var base = 'helpers.html?category=';
+
+        // Saved location attach karo search mein bhi
+        var locSuffix = '';
+        var saved = getSavedLocation();
+        if (saved) locSuffix = '&ulat=' + saved.lat + '&ulng=' + saved.lng;
+
+        if      (q.includes("clean") || q.includes("maid"))                               window.location.href = base + encodeURIComponent("Home Cleaning")     + locSuffix;
+        else if (q.includes("cook")  || q.includes("chef"))                               window.location.href = base + encodeURIComponent("Cooking")            + locSuffix;
+        else if (q.includes("baby")  || q.includes("child") || q.includes("nanny"))      window.location.href = base + encodeURIComponent("Babysitting")         + locSuffix;
+        else if (q.includes("elder") || q.includes("old")   || q.includes("care"))       window.location.href = base + encodeURIComponent("Elder Care")          + locSuffix;
+        else if (q.includes("laundry") || q.includes("iron") || q.includes("wash"))      window.location.href = base + encodeURIComponent("Laundry & Ironing")   + locSuffix;
+        else if (q.includes("driver") || q.includes("drive") || q.includes("chauffeur")) window.location.href = base + encodeURIComponent("Driver")              + locSuffix;
+        else if (q.includes("garden") || q.includes("mali")  || q.includes("plant"))     window.location.href = base + encodeURIComponent("Gardener")            + locSuffix;
+        else if (q.includes("car wash") || q.includes("washer"))                          window.location.href = base + encodeURIComponent("Car Washer")          + locSuffix;
+        else if (q.includes("guard") || q.includes("gate") || q.includes("chowkidar"))   window.location.href = base + encodeURIComponent("Gatekeeper")          + locSuffix;
+        else if (q.includes("pet")   || q.includes("dog")  || q.includes("cat"))         window.location.href = base + encodeURIComponent("Pet Sitter")          + locSuffix;
+        else if (q.includes("event") || q.includes("waiter") || q.includes("party") || q.includes("server")) window.location.href = base + encodeURIComponent("Event Server") + locSuffix;
+        else window.location.href = 'helpers.html?search=' + encodeURIComponent(searchInput.value.trim()) + locSuffix;
+    }
+
+    searchInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") { e.preventDefault(); doSearch(); }
+    });
+    searchIcon.addEventListener("click", doSearch);
+
+    // ── Agar location pehle se saved hai to button update karo ──
+    var saved = getSavedLocation();
+    if (saved) updateNearMeBtnActive();
+
+    // ── Category cards mein location attach karo ──
+    attachLocationToCards();
+});
+
+// ── Location save/get — sessionStorage + localStorage + DB ──
+function getSavedLocation() {
+    // sessionStorage pehle check karo (same tab)
+    var lat = sessionStorage.getItem('hn_lat');
+    var lng = sessionStorage.getItem('hn_lng');
+    if (lat && lng) return { lat: parseFloat(lat), lng: parseFloat(lng) };
+
+    // localStorage fallback (browser band ho tab bhi rahe)
+    lat = localStorage.getItem('hn_lat');
+    lng = localStorage.getItem('hn_lng');
+    if (lat && lng) return { lat: parseFloat(lat), lng: parseFloat(lng) };
+
+    return null;
+}
+
+function saveLocation(lat, lng) {
+    // sessionStorage — current tab
+    sessionStorage.setItem('hn_lat', lat);
+    sessionStorage.setItem('hn_lng', lng);
+
+    // localStorage — browser band ho tab bhi rahe (7 days)
+    localStorage.setItem('hn_lat', lat);
+    localStorage.setItem('hn_lng', lng);
+    localStorage.setItem('hn_loc_time', Date.now());
+
+    // DB mein save karo agar logged in hai
+    saveLocationToDB(lat, lng);
+}
+
+function saveLocationToDB(lat, lng) {
+    // Sirf logged-in users ke liye
+    fetch('/HelpNest/BackEnd/save-user-location.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'lat=' + lat + '&lng=' + lng
+    }).catch(function() {}); // Silent fail — location feature block na ho
+}
+
+// ── localStorage stale check — 7 din se purani location remove karo ──
+(function() {
+    var t = localStorage.getItem('hn_loc_time');
+    if (t && (Date.now() - parseInt(t)) > 7 * 24 * 60 * 60 * 1000) {
+        localStorage.removeItem('hn_lat');
+        localStorage.removeItem('hn_lng');
+        localStorage.removeItem('hn_loc_time');
+    }
+})();
+
+// ── Category cards ke hrefs mein lat/lng add karo ──
+function attachLocationToCards() {
+    var saved = getSavedLocation();
+    if (!saved) return;
+    var cards = document.querySelectorAll('.category-card');
+    cards.forEach(function(card) {
+        var href = card.getAttribute('href');
+        if (href && !href.includes('ulat=')) {
+            card.setAttribute('href', href + '&ulat=' + saved.lat + '&ulng=' + saved.lng);
+        }
+    });
+}
+
+// ── Near Me button active state ──
+function updateNearMeBtnActive() {
+    var btn    = document.getElementById('nearMeBtn');
+    var status = document.getElementById('nearMeStatus');
+    btn.innerHTML  = '<i class="fa-solid fa-circle-check"></i> Location Active';
+    btn.style.background = 'linear-gradient(135deg, #7C9473, #5a7a52)';
+    status.className   = 'near-me-status success';
+    status.innerHTML   = '<i class="fa-solid fa-circle-check"></i> Location saved — helpers will be sorted by distance';
+    status.style.display = 'flex';
+}
+
+// ── Near Me click ──
+function findNearMe() {
+    var btn    = document.getElementById('nearMeBtn');
+    var status = document.getElementById('nearMeStatus');
+
+    if (!navigator.geolocation) {
+        status.className = 'near-me-status error';
+        status.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Geolocation is not supported by your browser';
+        status.style.display = 'flex';
+        return;
+    }
+
+    // Loading state
+    btn.disabled   = true;
+    btn.innerHTML  = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting...';
+    status.className = 'near-me-status loading';
+    status.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Getting your location...';
+    status.style.display = 'flex';
+
+    navigator.geolocation.getCurrentPosition(
+        function(pos) {
+            var lat = pos.coords.latitude;
+            var lng = pos.coords.longitude;
+
+            // Location save karo
+            saveLocation(lat, lng);
+
+            // Button + status update
+            btn.disabled = false;
+            updateNearMeBtnActive();
+
+            // Category cards update
+            attachLocationToCards();
+        },
+        function(err) {
+            btn.disabled  = false;
+            btn.innerHTML = '<i class="fa-solid fa-location-dot"></i> Near Me';
+            status.className = 'near-me-status error';
+            if (err.code === 1) {
+                status.innerHTML = '<i class="fa-solid fa-ban"></i> Location permission denied. Please allow location access in browser settings.';
+            } else if (err.code === 2) {
+                status.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Location unavailable. Please try again.';
+            } else {
+                status.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Location request timed out. Please try again.';
+            }
+            status.style.display = 'flex';
+        },
+        { timeout: 8000, maximumAge: 60000 }
+    );
+}
+</script>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
