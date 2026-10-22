@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="admin/housekeepers__status-pending-verification.html";</script>
+<script src="../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Housekeepers | HelpNest Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .tab-count { background:rgba(255,255,255,0.3); padding:1px 7px; border-radius:10px; font-size:0.72rem; margin-left:4px; }
+
+    .user-cell   { display:flex; align-items:center; gap:10px; }
+    .user-avatar { width:34px; height:34px; border-radius:50%; object-fit:cover; border:2px solid #A8BFA1; flex-shrink:0; }
+    .user-initial { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,#7C9473,#A8BFA1); color:#fff; font-weight:700; font-size:0.85rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+    .status-pill { padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:600; display:inline-block; white-space:nowrap; }
+    .status-pill.active  { background:#d4edda; color:#155724; }
+    .status-pill.blocked { background:#f8d7da; color:#842029; }
+    .status-pill.offline { background:#e2e3e5; color:#383d41; }
+    .status-pill.pending { background:#fff3cd; color:#856404; }
+
+    .rating-cell { display:flex; align-items:center; gap:4px; font-weight:600; color:#5B4636; }
+
+    /* Action cell — wrap properly */
+    .hk-action-cell { display:flex; gap:5px; flex-wrap:wrap; align-items:center; }
+
+    /* Mobile responsive */
+    @media (max-width: 1100px) { .hide-1100 { display:none !important; } }
+    @media (max-width: 900px)  { .hide-900  { display:none !important; } }
+    @media (max-width: 768px) {
+      .hide-mobile { display:none !important; }
+      .table-wrap table { font-size:0.78rem; }
+      .filter-tabs { overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+      .filter-tabs::-webkit-scrollbar { display:none; }
+      .filter-tab { white-space:nowrap; flex-shrink:0; }
+      .hk-action-cell { flex-direction:column; gap:4px; }
+      .hk-action-cell .action-btn { font-size:0.73rem; padding:5px 8px; width:100%; justify-content:center; }
+    }
+  </style>
+</head>
+<body>
+
+
+<div class="admin-mob-topbar">
+  <span class="mob-logo">Help<span style="color:#A8BFA1;">Nest</span></span>
+  <button class="admin-hamburger" onclick="document.getElementById('adminMobNav').classList.add('open')" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+
+<div class="admin-mob-overlay" id="adminMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="admin-mob-panel">
+    <button class="admin-mob-close" onclick="document.getElementById('adminMobNav').classList.remove('open')">✕</button>
+    <div class="mob-panel-logo">Help<span>Nest</span></div>
+    <div class="mob-panel-label">Admin Panel</div>
+    <nav class="mob-nav" id="mobNavLinks"></nav>
+    <div class="mob-logout">
+      <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var mobNav = document.getElementById('mobNavLinks');
+  if (mobNav && document.querySelector('.admin-nav')) {
+    mobNav.innerHTML = document.querySelector('.admin-nav').innerHTML;
+  }
+});
+</script>
+
+<div class="admin-wrapper">
+
+<aside class="admin-sidebar">
+  <div class="admin-logo">Help<span>Nest</span></div>
+  <p class="admin-label">Admin Panel</p>
+  <nav class="admin-nav">
+    <a href="dashboard.html" class="">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+    <a href="bookings.html" class="">
+      <i class="fa-solid fa-calendar-check"></i> Bookings
+    </a>
+    <a href="users.html" class="">
+      <i class="fa-solid fa-users"></i> Users
+    </a>
+    <a href="housekeepers.html" class="active">
+      <i class="fa-solid fa-broom"></i> Housekeepers
+      <span class="nav-badge">1</span>    </a>
+
+    <a href="payments.html" class="">
+      <i class="fa-solid fa-money-bill-wave"></i> Payments
+      <span class="nav-badge">1</span>    </a>
+    <a href="contact-messages.html" class="">
+      <i class="fa-solid fa-envelope"></i> Messages
+      <span class="nav-badge">2</span>    </a>
+    <a href="disputes.html" class="">
+      <i class="fa-solid fa-scale-balanced"></i> Disputes
+      <span class="nav-badge">1</span>    </a>
+        <a href="settings.html" class="">
+      <i class="fa-solid fa-gear"></i> Settings
+    </a>
+      </nav>
+  <div class="admin-logout">
+    <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+</aside>  <main class="admin-main">
+
+    
+    <div class="admin-topbar">
+      <div>
+        <h1>Housekeepers</h1>
+        <p>Manage all registered housekeepers on HelpNest</p>
+      </div>
+      <div class="topbar-date">
+        <i class="fa-solid fa-calendar"></i>
+        Wednesday, 21 Oct 2026      </div>
+    </div>
+
+    
+    
+    
+    <div class="filter-tabs">
+      <a href="housekeepers__status-all.html"                  class="filter-tab ">All <span class="tab-count">8</span></a>
+      <a href="housekeepers__status-pending-verification.html" class="filter-tab active" style="color:#856404;border-color:#f0c040;">
+        ⏳ Pending Review <span class="tab-count" style="background:#f0c040;color:#5B4636;">1</span>
+      </a>
+      <a href="housekeepers__status-available.html" class="filter-tab ">Available <span class="tab-count">7</span></a>
+      <a href="housekeepers__status-offline.html"   class="filter-tab ">Offline <span class="tab-count">0</span></a>
+      <a href="housekeepers__status-blocked.html"   class="filter-tab ">Blocked <span class="tab-count">0</span></a>
+    </div>
+
+    
+    <div class="admin-card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Housekeeper</th>
+              <th>Email</th>
+              <th class="hide-900">Phone</th>
+              <th class="hide-1100">Guardian Ph.</th>
+              <th class="hide-mobile">Address</th>
+              <th class="hide-900">Category</th>
+              <th class="hide-1100">Exp.</th>
+              <th class="hide-1100">Rate/hr</th>
+              <th class="hide-mobile">Availability</th>
+              <th class="hide-900">Rating</th>
+              <th>Verified</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+                        <tr>
+              <td>1</td>
+
+              
+              <td>
+                <div class="user-cell">
+                                      <img src="../Uploads/profiles/mehwish.svg"
+                         class="user-avatar"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="user-initial" style="display:none;">M</div>
+                                    <span>Mehwish Iqbal</span>
+                </div>
+              </td>
+
+              <td>mehwish.i@example.com</td>
+              <td class="hide-900">0308-8889990</td>
+
+              
+              <td class="hide-1100">
+                <span style="color:#bbb;">N/A</span>              </td>
+
+              
+              <td class="hide-mobile">
+                <span style="font-size:0.82rem;color:#5B4636;">Bahadurabad, Karachi</span>              </td>
+
+              <td class="hide-900">Pet Sitter, Event Server</td>
+
+              <td class="hide-1100">2 yrs</td>
+
+              <td class="hide-1100">Rs. 650</td>
+
+              
+              <td class="hide-mobile">
+                <span style="font-size:0.78rem;color:#5B4636;font-weight:500;line-height:1.6;">Fri, Sat, Sun</span>              </td>
+
+              
+              <td class="hide-900">
+                <span class="rating-cell">
+                  <i class="fa-solid fa-star" style="color:#f1c40f;font-size:0.8rem;"></i>
+                  0.0                </span>
+              </td>
+
+              
+              <td>
+                                  <span style="background:#fff3cd;color:#856404;padding:4px 10px;border-radius:20px;font-size:0.73rem;font-weight:600;white-space:nowrap;">
+                    <i class="fa-solid fa-clock"></i> Pending
+                  </span>
+                              </td>
+
+              
+              <td>
+                                <span class="status-pill pending">⏳ Pending Review</span>
+              </td>
+
+              
+              <td>
+                <div class="hk-action-cell">
+
+                  
+                  <button class="action-btn view"
+                    data-name="Mehwish Iqbal"
+                    data-front="cnic.svg"
+                    data-back="cnic.svg"
+                    data-cnic="42101-9876536-8"
+                    data-selfie="cnic.svg"
+                    data-profile="mehwish.svg"
+                    onclick="viewCnic(this)">
+                    <i class="fa-solid fa-id-card"></i> Docs
+                  </button>
+
+                  
+                                      <button class="action-btn approve"
+                      data-id="8"
+                      data-name="Mehwish Iqbal"
+                      data-action="verify"
+                      onclick="confirmVerify(this)">
+                      <i class="fa-solid fa-circle-check"></i> Verify
+                    </button>
+                  
+                  
+                                      <button class="action-btn block"
+                      data-id="8"
+                      data-name="Mehwish Iqbal"
+                      data-action="block"
+                      onclick="confirmHK(this)">
+                      <i class="fa-solid fa-ban"></i> Block
+                    </button>
+                  
+                </div>
+              </td>
+            </tr>
+                                  </tbody>
+        </table>
+      </div>
+    </div>
+
+    
+    <form id="hkActionForm" method="POST" action="housekeepers.html" style="display:none;">
+      <input type="hidden" name="csrf_token"    value="static-demo-token">
+      <input type="hidden" name="action"        id="hkAction">
+      <input type="hidden" name="hk_id"         id="hkActionId">
+      <input type="hidden" name="reject_reason" id="hkRejectReason">
+    </form>
+
+  </main>
+</div>
+
+<style>
+  .swal-close-white { color:#fff !important; font-size:1.5rem; }
+</style>
+
+<script>
+// ── DOCS POPUP — CNIC + Selfie + Profile ──
+function viewCnic(btn) {
+  const name    = btn.dataset.name;
+  const front   = btn.dataset.front;
+  const back    = btn.dataset.back;
+  const cnic    = btn.dataset.cnic;
+  const selfie  = btn.dataset.selfie;
+  const profile = btn.dataset.profile;
+  const hkId    = btn.closest('tr').querySelector('[data-id]')?.dataset?.id ?? '';
+
+  const cnicNumHtml = cnic
+    ? `<div style="text-align:center;margin-bottom:16px;padding:10px 16px;background:#f8f4ee;border-radius:10px;border:1px solid #ede8e0;">
+         <span style="font-size:0.72rem;color:#999;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px;">CNIC Number</span>
+         <span style="font-size:1rem;font-weight:700;color:#5B4636;letter-spacing:1px;">
+           <i class="fa-solid fa-id-card" style="color:#7C9473;margin-right:6px;"></i>${cnic}
+         </span>
+       </div>` : '';
+
+  // Row 1: Profile photo + Selfie with CNIC (face match karo)
+  const profileHtml = profile
+    ? `<img src="../Uploads/profiles/${profile}"
+            style="width:100%;border-radius:10px;border:2px solid #A8BFA1;cursor:zoom-in;object-fit:cover;max-height:180px;"
+            onclick="openLightbox(this.src)"
+            onerror="this.outerHTML='<p style=color:#bbb;text-align:center>No profile photo</p>'">`
+    : `<p style="color:#bbb;text-align:center;padding:20px 0;">No profile photo</p>`;
+
+  const selfieHtml = selfie
+    ? `<img src="../Uploads/selfie_cnic/${selfie}"
+            style="width:100%;border-radius:10px;border:2px solid #f0c040;cursor:zoom-in;object-fit:cover;max-height:180px;"
+            onclick="openLightbox(this.src)"
+            onerror="this.outerHTML='<p style=color:#bbb;text-align:center>No selfie uploaded</p>'">`
+    : `<p style="color:#bbb;text-align:center;padding:20px 0;">No selfie uploaded</p>`;
+
+  const frontHtml = front
+    ? `<img src="../Uploads/cnic_front/${front}"
+            style="width:100%;border-radius:10px;border:1px solid #eee;cursor:zoom-in;"
+            onclick="openLightbox(this.src)"
+            onerror="this.outerHTML='<p style=color:#bbb;text-align:center>Image not found</p>'">`
+    : `<p style="color:#bbb;text-align:center;">No front image</p>`;
+
+  const backHtml = back
+    ? `<img src="../Uploads/cnic_back/${back}"
+            style="width:100%;border-radius:10px;border:1px solid #eee;cursor:zoom-in;"
+            onclick="openLightbox(this.src)"
+            onerror="this.outerHTML='<p style=color:#bbb;text-align:center>Image not found</p>'">`
+    : `<p style="color:#bbb;text-align:center;">No back image</p>`;
+
+  Swal.fire({
+    title: `<span style="font-size:1rem;">${name} — Identity Verification</span>`,
+    html: `
+      <div style="text-align:left;">
+        ${cnicNumHtml}
+
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div>
+            <p style="color:#7C9473;font-weight:600;font-size:0.75rem;text-transform:uppercase;margin-bottom:6px;">
+              <i class="fa-solid fa-user"></i> Profile Photo
+            </p>
+            ${profileHtml}
+          </div>
+          <div>
+            <p style="color:#f0a500;font-weight:600;font-size:0.75rem;text-transform:uppercase;margin-bottom:6px;">
+              <i class="fa-solid fa-camera"></i> Selfie Holding CNIC
+            </p>
+            ${selfieHtml}
+          </div>
+        </div>
+        <div style="background:#fff8e8;border:1px solid #f0c040;border-radius:8px;padding:8px 12px;font-size:0.75rem;color:#856404;margin-bottom:14px;">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <strong>Face Match Check:</strong> The profile photo and selfie must show the same face. The CNIC must be clearly visible in the selfie.
+        </div>
+
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div>
+            <p style="color:#7C9473;font-weight:600;font-size:0.75rem;text-transform:uppercase;margin-bottom:6px;">CNIC Front</p>
+            ${frontHtml}
+          </div>
+          <div>
+            <p style="color:#7C9473;font-weight:600;font-size:0.75rem;text-transform:uppercase;margin-bottom:6px;">CNIC Back</p>
+            ${backHtml}
+          </div>
+        </div>
+
+        
+        <div id="rejectReasonWrap" style="display:none;margin-top:10px;">
+          <label style="font-size:0.78rem;font-weight:600;color:#c0392b;display:block;margin-bottom:5px;">
+            <i class="fa-solid fa-circle-exclamation"></i> Rejection Reason (helper ko bheja jaayega)
+          </label>
+          <textarea id="rejectReasonInput" rows="2" maxlength="500"
+            placeholder="e.g. Face in the selfie was not clearly visible..."
+            style="width:100%;border:1.5px solid #f5c6cb;border-radius:8px;padding:8px;font-size:0.82rem;font-family:Poppins,sans-serif;resize:none;"></textarea>
+        </div>
+
+        <p style="color:#aaa;font-size:0.72rem;text-align:center;margin-top:10px;">
+          <i class="fa-solid fa-magnifying-glass"></i> Click any image to view full size
+        </p>
+      </div>`,
+    confirmButtonColor: '#7C9473',
+    confirmButtonText: '<i class="fa-solid fa-circle-check"></i> Approve & Verify',
+    showDenyButton: true,
+    denyButtonText: '<i class="fa-solid fa-xmark"></i> Reject',
+    denyButtonColor: '#e74c3c',
+    showCancelButton: true,
+    cancelButtonText: 'Close',
+    cancelButtonColor: '#aaa',
+    width: '600px',
+    didOpen: () => {
+      // Deny button click → show reason input
+      const denyBtn = Swal.getDenyButton();
+      denyBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const wrap = document.getElementById('rejectReasonWrap');
+        if (wrap.style.display === 'none') {
+          wrap.style.display = 'block';
+          denyBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Rejection';
+          denyBtn.dataset.step = 'confirm';
+        } else {
+          // Second click — actually submit rejection
+          const reason = document.getElementById('rejectReasonInput').value.trim();
+          document.getElementById('hkAction').value       = 'reject_verify';
+          document.getElementById('hkActionId').value     = hkId;
+          document.getElementById('hkRejectReason').value = reason;
+          Swal.close();
+          document.getElementById('hkActionForm').submit();
+        }
+      });
+    },
+    preDeny: () => false, // prevent auto-close on deny
+  }).then(r => {
+    if (r.isConfirmed && hkId) {
+      document.getElementById('hkAction').value   = 'verify';
+      document.getElementById('hkActionId').value = hkId;
+      document.getElementById('hkActionForm').submit();
+    }
+  });
+}
+
+function openLightbox(src) {
+  Swal.fire({
+    imageUrl: src, imageAlt: 'CNIC Image', imageWidth: '100%',
+    showConfirmButton: false, showCloseButton: true,
+    width: '90%', padding: '1rem', background: '#000',
+    customClass: { closeButton: 'swal-close-white' }
+  });
+}
+
+// ── BLOCK / UNBLOCK — POST submit ──
+function confirmHK(btn) {
+  const action  = btn.dataset.action;
+  const id      = btn.dataset.id;
+  const name    = btn.dataset.name;
+  const isBlock = action === 'block';
+
+  Swal.fire({
+    title: isBlock ? 'Block Housekeeper?' : 'Unblock Housekeeper?',
+    html: `<p style="color:#666;font-size:0.88rem;">
+      Are you sure you want to ${isBlock ? 'block' : 'unblock'} <strong>${name}</strong>?
+      ${isBlock ? '<br><br><span style="color:#e74c3c;">They will not be able to login.</span>' : ''}
+    </p>`,
+    icon: isBlock ? 'warning' : 'question',
+    showCancelButton: true,
+    confirmButtonColor: isBlock ? '#e74c3c' : '#7C9473',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: isBlock
+      ? '<i class="fa-solid fa-ban"></i> Yes, Block'
+      : '<i class="fa-solid fa-unlock"></i> Yes, Unblock',
+    cancelButtonText: 'Cancel'
+  }).then(r => {
+    if (r.isConfirmed) {
+      document.getElementById('hkAction').value   = action;
+      document.getElementById('hkActionId').value = id;
+      document.getElementById('hkActionForm').submit();
+    }
+  });
+}
+
+// ── VERIFY / UNVERIFY — POST submit ──
+function confirmVerify(btn) {
+  const action   = btn.dataset.action;
+  const id       = btn.dataset.id;
+  const name     = btn.dataset.name;
+  const isVerify = action === 'verify';
+
+  Swal.fire({
+    title: isVerify ? 'Verify Housekeeper?' : 'Remove Verification?',
+    html: `<p style="color:#666;font-size:0.88rem;">
+      ${isVerify
+        ? `Are you sure you want to verify <strong>${name}</strong>? This confirms their CNIC is valid.`
+        : `Remove verification badge from <strong>${name}</strong>?`
+      }
+    </p>`,
+    icon: isVerify ? 'question' : 'warning',
+    showCancelButton: true,
+    confirmButtonColor: isVerify ? '#7C9473' : '#f39c12',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: isVerify
+      ? '<i class="fa-solid fa-circle-check"></i> Yes, Verify'
+      : '<i class="fa-solid fa-xmark"></i> Yes, Remove',
+    cancelButtonText: 'Cancel'
+  }).then(r => {
+    if (r.isConfirmed) {
+      document.getElementById('hkAction').value   = action;
+      document.getElementById('hkActionId').value = id;
+      document.getElementById('hkActionForm').submit();
+    }
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="admin/payments.html";</script>
+<script src="../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payments | HelpNest Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+
+<div class="admin-mob-topbar">
+  <span class="mob-logo">Help<span style="color:#A8BFA1;">Nest</span></span>
+  <button class="admin-hamburger" onclick="document.getElementById('adminMobNav').classList.add('open')" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+<div class="admin-mob-overlay" id="adminMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="admin-mob-panel">
+    <button class="admin-mob-close" onclick="document.getElementById('adminMobNav').classList.remove('open')">✕</button>
+    <div class="mob-panel-logo">Help<span>Nest</span></div>
+    <div class="mob-panel-label">Admin Panel</div>
+    <nav class="mob-nav" id="mobNavLinks"></nav>
+    <div class="mob-logout"><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var mobNav = document.getElementById('mobNavLinks');
+  if (mobNav && document.querySelector('.admin-nav')) mobNav.innerHTML = document.querySelector('.admin-nav').innerHTML;
+});
+</script>
+
+<div class="admin-wrapper">
+
+<aside class="admin-sidebar">
+  <div class="admin-logo">Help<span>Nest</span></div>
+  <p class="admin-label">Admin Panel</p>
+  <nav class="admin-nav">
+    <a href="dashboard.html" class="">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+    <a href="bookings.html" class="">
+      <i class="fa-solid fa-calendar-check"></i> Bookings
+    </a>
+    <a href="users.html" class="">
+      <i class="fa-solid fa-users"></i> Users
+    </a>
+    <a href="housekeepers.html" class="">
+      <i class="fa-solid fa-broom"></i> Housekeepers
+      <span class="nav-badge">1</span>    </a>
+
+    <a href="payments.html" class="active">
+      <i class="fa-solid fa-money-bill-wave"></i> Payments
+      <span class="nav-badge">1</span>    </a>
+    <a href="contact-messages.html" class="">
+      <i class="fa-solid fa-envelope"></i> Messages
+      <span class="nav-badge">2</span>    </a>
+    <a href="disputes.html" class="">
+      <i class="fa-solid fa-scale-balanced"></i> Disputes
+      <span class="nav-badge">1</span>    </a>
+        <a href="settings.html" class="">
+      <i class="fa-solid fa-gear"></i> Settings
+    </a>
+      </nav>
+  <div class="admin-logout">
+    <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+</aside>  <main class="admin-main">
+
+    
+    <div class="admin-topbar">
+      <div>
+        <h1>Payments</h1>
+        <p>Monitor and manage all payment transactions</p>
+      </div>
+      <div class="topbar-date">
+        <i class="fa-solid fa-calendar"></i>
+        Wednesday, 21 Oct 2026      </div>
+    </div>
+
+    
+    
+    
+    <div class="stats-grid" style="margin-bottom:1.5rem;">
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-money-bill-wave"></i></div>
+        <div class="stat-info"><h3>Rs. 125,100</h3><p>Total Amount</p></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="stat-info"><h3>Rs. 123,500</h3><p>Paid Amount</p></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon gold"><i class="fa-solid fa-clock"></i></div>
+        <div class="stat-info"><h3>Rs. 1,600</h3><p>Unpaid Amount</p></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon brown"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="stat-info"><h3>1</h3><p>Pending Payments</p></div>
+      </div>
+    </div>
+
+    
+    <div class="filter-tabs">
+      <a href="payments__status-all.html"    class="filter-tab active">All <span class="tab-count">7</span></a>
+      <a href="payments__status-unpaid.html" class="filter-tab ">Unpaid <span class="tab-count">1</span></a>
+      <a href="payments__status-paid.html"   class="filter-tab ">Paid <span class="tab-count">6</span></a>
+    </div>
+
+    
+    <div class="admin-card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User</th>
+              <th>Housekeeper</th>
+              <th>Service Date</th>
+              <th>Booking Type</th>
+              <th>Amount</th>
+              <th>Payment Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+                        <tr>
+              <td>1</td>
+              <td>
+                <div class="td-name">Sana Malik</div>
+                <div class="td-sub">0333-4455667</div>
+              </td>
+              <td>
+                <div class="td-name">Fatima Noor</div>
+                <div class="td-sub">0301-1112223</div>
+              </td>
+              <td>20 Oct 2026</td>
+              <td>
+                <span class="type-badge one_time">
+                  One Time                </span>
+              </td>
+              <td><strong>Rs. 1,600</strong></td>
+              <td>
+                                  <span class="pay-badge unpaid"><i class="fa-solid fa-clock"></i> Unpaid</span>
+                              </td>
+              <td>
+                                  <button class="action-btn approve"
+                    data-id="4"
+                    data-user="Sana Malik"
+                    data-helper="Fatima Noor"
+                    data-amount="1,600"
+                    onclick="confirmMarkPaid(this)">
+                    <i class="fa-solid fa-check"></i> Mark Paid
+                  </button>
+                              </td>
+            </tr>
+                        <tr>
+              <td>2</td>
+              <td>
+                <div class="td-name">Bilal Ahmed</div>
+                <div class="td-sub">0321-7654321</div>
+              </td>
+              <td>
+                <div class="td-name">Rukhsana Bibi</div>
+                <div class="td-sub">0303-3334445</div>
+              </td>
+              <td>13 Oct 2026</td>
+              <td>
+                <span class="type-badge one_time">
+                  One Time                </span>
+              </td>
+              <td><strong>Rs. 7,200</strong></td>
+              <td>
+                                  <span class="pay-badge paid"><i class="fa-solid fa-circle-check"></i> Paid</span>
+                              </td>
+              <td>
+                                  <span style="color:#bbb; font-size:0.82rem;"><i class="fa-solid fa-circle-check"></i> Done</span>
+                              </td>
+            </tr>
+                        <tr>
+              <td>3</td>
+              <td>
+                <div class="td-name">Ayesha Khan</div>
+                <div class="td-sub">0300-1234567</div>
+              </td>
+              <td>
+                <div class="td-name">Zainab Akhtar</div>
+                <div class="td-sub">0302-2223334</div>
+              </td>
+              <td>09 Oct 2026</td>
+              <td>
+                <span class="type-badge one_time">
+                  One Time                </span>
+              </td>
+              <td><strong>Rs. 3,000</strong></td>
+              <td>
+                                  <span class="pay-badge paid"><i class="fa-solid fa-circle-check"></i> Paid</span>
+                              </td>
+              <td>
+                                  <span style="color:#bbb; font-size:0.82rem;"><i class="fa-solid fa-circle-check"></i> Done</span>
+                              </td>
+            </tr>
+                        <tr>
+              <td>4</td>
+              <td>
+                <div class="td-name">Sana Malik</div>
+                <div class="td-sub">0333-4455667</div>
+              </td>
+              <td>
+                <div class="td-name">Asif Raza</div>
+                <div class="td-sub">0307-7778889</div>
+              </td>
+              <td>06 Oct 2026</td>
+              <td>
+                <span class="type-badge one_time">
+                  One Time                </span>
+              </td>
+              <td><strong>Rs. 500</strong></td>
+              <td>
+                                  <span class="pay-badge paid"><i class="fa-solid fa-circle-check"></i> Paid</span>
+                              </td>
+              <td>
+                                  <span style="color:#bbb; font-size:0.82rem;"><i class="fa-solid fa-circle-check"></i> Done</span>
+                              </td>
+            </tr>
+                        <tr>
+              <td>5</td>
+              <td>
+                <div class="td-name">Ayesha Khan</div>
+                <div class="td-sub">0300-1234567</div>
+              </td>
+              <td>
+                <div class="td-name">Fatima Noor</div>
+                <div class="td-sub">0301-1112223</div>
+              </td>
+              <td>01 Oct 2026</td>
+              <td>
+                <span class="type-badge one_time">
+                  One Time                </span>
+              </td>
+              <td><strong>Rs. 3,200</strong></td>
+              <td>
+                                  <span class="pay-badge paid"><i class="fa-solid fa-circle-check"></i> Paid</span>
+                              </td>
+              <td>
+                                  <span style="color:#bbb; font-size:0.82rem;"><i class="fa-solid fa-circle-check"></i> Done</span>
+                              </td>
+            </tr>
+                        <tr>
+              <td>6</td>
+              <td>
+                <div class="td-name">Hira Siddiqui</div>
+                <div class="td-sub">0312-3344556</div>
+              </td>
+              <td>
+                <div class="td-name">Rukhsana Bibi</div>
+                <div class="td-sub">0303-3334445</div>
+              </td>
+              <td>21 Sep 2026</td>
+              <td>
+                <span class="type-badge monthly">
+                  Monthly                </span>
+              </td>
+              <td><strong>Rs. 108,000</strong></td>
+              <td>
+                                  <span class="pay-badge paid"><i class="fa-solid fa-circle-check"></i> Paid</span>
+                              </td>
+              <td>
+                                  <span style="color:#bbb; font-size:0.82rem;"><i class="fa-solid fa-circle-check"></i> Done</span>
+                              </td>
+            </tr>
+                        <tr>
+              <td>7</td>
+              <td>
+                <div class="td-name">Ayesha Khan</div>
+                <div class="td-sub">0300-1234567</div>
+              </td>
+              <td>
+                <div class="td-name">Fatima Noor</div>
+                <div class="td-sub">0301-1112223</div>
+              </td>
+              <td>16 Sep 2026</td>
+              <td>
+                <span class="type-badge one_time">
+                  One Time                </span>
+              </td>
+              <td><strong>Rs. 1,600</strong></td>
+              <td>
+                                  <span class="pay-badge paid"><i class="fa-solid fa-circle-check"></i> Paid</span>
+                              </td>
+              <td>
+                                  <span style="color:#bbb; font-size:0.82rem;"><i class="fa-solid fa-circle-check"></i> Done</span>
+                              </td>
+            </tr>
+                      </tbody>
+        </table>
+      </div>
+    </div>
+
+    
+    <form id="paidForm" method="POST" action="payments.html" style="display:none;">
+      <input type="hidden" name="action"     value="mark_paid">
+      <input type="hidden" name="csrf_token" value="static-demo-token">
+      <input type="hidden" name="id"         id="paidBookingId">
+    </form>
+
+  </main>
+</div>
+
+<script>
+function confirmMarkPaid(btn) {
+  const id     = btn.dataset.id;
+  const user   = btn.dataset.user;
+  const helper = btn.dataset.helper;
+  const amount = btn.dataset.amount;
+
+  Swal.fire({
+    title: 'Mark as Paid?',
+    html: `
+      <div style="text-align:left; font-family:'Poppins',sans-serif; font-size:0.88rem;">
+        <div style="background:#fff3cd; border:1px solid #ffc107; padding:12px 16px; border-radius:10px; margin-bottom:14px; color:#856404;">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <strong> Only mark paid if you have confirmed cash was received!</strong>
+        </div>
+        <div style="background:#f8f4ee; padding:10px; border-radius:10px; margin-bottom:8px;">
+          <div style="color:#7C9473; font-weight:600; font-size:0.72rem; text-transform:uppercase;">User</div>
+          <div style="color:#333;">${user}</div>
+        </div>
+        <div style="background:#f8f4ee; padding:10px; border-radius:10px; margin-bottom:8px;">
+          <div style="color:#7C9473; font-weight:600; font-size:0.72rem; text-transform:uppercase;">Housekeeper</div>
+          <div style="color:#333;">${helper}</div>
+        </div>
+        <div style="background:#f8f4ee; padding:10px; border-radius:10px;">
+          <div style="color:#7C9473; font-weight:600; font-size:0.72rem; text-transform:uppercase;">Amount</div>
+          <div style="color:#333; font-weight:600;">Rs. ${amount}</div>
+        </div>
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonColor: '#7C9473',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: '<i class="fa-solid fa-check"></i> Yes, Mark Paid',
+    cancelButtonText: 'Cancel',
+    width: '480px'
+  }).then(result => {
+    if (result.isConfirmed) {
+      document.getElementById('paidBookingId').value = id;
+      document.getElementById('paidForm').submit();
+    }
+  });
+}
+</script>
+
+<style>
+  .td-name { font-weight:500; color:#333; font-size:0.85rem; }
+  .td-sub  { font-size:0.75rem; color:#999; margin-top:2px; }
+  .tab-count { background:rgba(255,255,255,0.3); padding:1px 7px; border-radius:10px; font-size:0.72rem; margin-left:4px; }
+  .type-badge { padding:4px 10px; border-radius:20px; font-size:0.72rem; font-weight:600; }
+  .type-badge.monthly  { background:#e8f0fe; color:#4285f4; }
+  .type-badge.one_time { background:#fef9e7; color:#D4A017; }
+  .pay-badge { padding:5px 12px; border-radius:20px; font-size:0.78rem; font-weight:600; display:inline-flex; align-items:center; gap:5px; }
+  .pay-badge.paid   { background:#d4edda; color:#155724; }
+  .pay-badge.unpaid { background:#fff3cd; color:#856404; }
+</style>
+
+</body>
+</html>

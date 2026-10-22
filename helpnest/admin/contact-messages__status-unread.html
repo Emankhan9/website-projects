@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="admin/contact-messages__status-unread.html";</script>
+<script src="../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Messages | HelpNest Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+
+<div class="admin-mob-topbar">
+  <span class="mob-logo">Help<span style="color:#A8BFA1;">Nest</span></span>
+  <button class="admin-hamburger" onclick="document.getElementById('adminMobNav').classList.add('open')" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+
+<div class="admin-mob-overlay" id="adminMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="admin-mob-panel">
+    <button class="admin-mob-close" onclick="document.getElementById('adminMobNav').classList.remove('open')">✕</button>
+    <div class="mob-panel-logo">Help<span>Nest</span></div>
+    <div class="mob-panel-label">Admin Panel</div>
+    <nav class="mob-nav" id="mobNavLinks"></nav>
+    <div class="mob-logout">
+      <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var mobNav = document.getElementById('mobNavLinks');
+  if (mobNav && document.querySelector('.admin-nav')) {
+    mobNav.innerHTML = document.querySelector('.admin-nav').innerHTML;
+  }
+});
+</script>
+
+<div class="admin-wrapper">
+
+<aside class="admin-sidebar">
+  <div class="admin-logo">Help<span>Nest</span></div>
+  <p class="admin-label">Admin Panel</p>
+  <nav class="admin-nav">
+    <a href="dashboard.html" class="">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+    <a href="bookings.html" class="">
+      <i class="fa-solid fa-calendar-check"></i> Bookings
+    </a>
+    <a href="users.html" class="">
+      <i class="fa-solid fa-users"></i> Users
+    </a>
+    <a href="housekeepers.html" class="">
+      <i class="fa-solid fa-broom"></i> Housekeepers
+      <span class="nav-badge">1</span>    </a>
+
+    <a href="payments.html" class="">
+      <i class="fa-solid fa-money-bill-wave"></i> Payments
+      <span class="nav-badge">1</span>    </a>
+    <a href="contact-messages.html" class="active">
+      <i class="fa-solid fa-envelope"></i> Messages
+      <span class="nav-badge">2</span>    </a>
+    <a href="disputes.html" class="">
+      <i class="fa-solid fa-scale-balanced"></i> Disputes
+      <span class="nav-badge">1</span>    </a>
+        <a href="settings.html" class="">
+      <i class="fa-solid fa-gear"></i> Settings
+    </a>
+      </nav>
+  <div class="admin-logout">
+    <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+</aside>  <main class="admin-main">
+
+    
+    <div class="admin-topbar">
+      <div>
+        <h1>Contact Messages</h1>
+        <p>View and manage messages sent from the contact page</p>
+      </div>
+      <div class="topbar-right">
+                  <button class="mark-all-btn" onclick="confirmMarkAll()">
+            <i class="fa-solid fa-check-double"></i> Mark All Read
+          </button>
+                <div class="topbar-date">
+          <i class="fa-solid fa-calendar"></i>
+          Wednesday, 21 Oct 2026        </div>
+      </div>
+    </div>
+
+    
+    
+    
+    <div class="filter-tabs">
+      <a href="contact-messages__status-all.html"     class="filter-tab ">All <span class="tab-count">4</span></a>
+      <a href="contact-messages__status-unread.html"  class="filter-tab active">Unread <span class="tab-count">2</span></a>
+      <a href="contact-messages__status-read.html"    class="filter-tab ">Read <span class="tab-count">2</span></a>
+      <a href="contact-messages__status-replied.html" class="filter-tab ">Replied <span class="tab-count">1</span></a>
+    </div>
+
+    
+    <div class="messages-list">
+                      <div class="msg-card unread-card">
+
+          
+          <div class="msg-left">
+            <div class="msg-avatar-lg">A</div>
+            <div class="msg-meta">
+              <h3>
+                Ali Hassan                                  <span class="new-badge">New</span>
+                                              </h3>
+              <p class="msg-email"><i class="fa-solid fa-envelope"></i> ali.hassan@example.com</p>
+              <p class="msg-subject"><i class="fa-solid fa-tag"></i> Becoming a helper</p>
+              <p class="msg-time"><i class="fa-solid fa-clock"></i> 21 Oct 2026, 11:20 AM</p>
+            </div>
+          </div>
+
+          
+          <div class="msg-right">
+            <p class="msg-preview">How long does verification take after I register as a housekeeper?</p>
+            <div class="msg-actions">
+
+              
+              <button class="action-btn view"
+                data-name="Ali Hassan"
+                data-email="ali.hassan@example.com"
+                data-subject="Becoming a helper"
+                data-message="How long does verification take after I register as a housekeeper?"
+                data-time="21 Oct 2026, 11:20 AM"
+                onclick="viewMessage(this)">
+                <i class="fa-solid fa-eye"></i> View
+              </button>
+
+              
+              <a href="reply-message.html" class="action-btn approve">
+                <i class="fa-solid fa-reply"></i> Reply
+              </a>
+
+              
+                            <button class="action-btn"
+                style="background:#eef4eb;color:#7C9473;border:1px solid #c3d9bc;"
+                onclick="markRead(1)">
+                <i class="fa-solid fa-check"></i> Mark Read
+              </button>
+              
+              
+              <button class="action-btn block"
+                onclick="confirmDelete(1, 'Ali Hassan')">
+                <i class="fa-solid fa-trash"></i> Delete
+              </button>
+
+            </div>
+          </div>
+
+        </div>
+                <div class="msg-card unread-card">
+
+          
+          <div class="msg-left">
+            <div class="msg-avatar-lg">M</div>
+            <div class="msg-meta">
+              <h3>
+                Maria Joseph                                  <span class="new-badge">New</span>
+                                              </h3>
+              <p class="msg-email"><i class="fa-solid fa-envelope"></i> maria.j@example.com</p>
+              <p class="msg-subject"><i class="fa-solid fa-tag"></i> Booking question</p>
+              <p class="msg-time"><i class="fa-solid fa-clock"></i> 20 Oct 2026, 05:45 PM</p>
+            </div>
+          </div>
+
+          
+          <div class="msg-right">
+            <p class="msg-preview">Can I book a cook for an event of 30 people?</p>
+            <div class="msg-actions">
+
+              
+              <button class="action-btn view"
+                data-name="Maria Joseph"
+                data-email="maria.j@example.com"
+                data-subject="Booking question"
+                data-message="Can I book a cook for an event of 30 people?"
+                data-time="20 Oct 2026, 05:45 PM"
+                onclick="viewMessage(this)">
+                <i class="fa-solid fa-eye"></i> View
+              </button>
+
+              
+              <a href="reply-message__id-2.html" class="action-btn approve">
+                <i class="fa-solid fa-reply"></i> Reply
+              </a>
+
+              
+                            <button class="action-btn"
+                style="background:#eef4eb;color:#7C9473;border:1px solid #c3d9bc;"
+                onclick="markRead(2)">
+                <i class="fa-solid fa-check"></i> Mark Read
+              </button>
+              
+              
+              <button class="action-btn block"
+                onclick="confirmDelete(2, 'Maria Joseph')">
+                <i class="fa-solid fa-trash"></i> Delete
+              </button>
+
+            </div>
+          </div>
+
+        </div>
+                  </div>
+
+  </main>
+</div>
+
+
+
+
+<form id="markReadForm" method="POST" action="contact-messages.html" style="display:none;">
+  <input type="hidden" name="csrf_token" value="static-demo-token">
+  <input type="hidden" name="action"  value="read">
+  <input type="hidden" name="msg_id"  id="markReadId">
+</form>
+
+
+<form id="markAllForm" method="POST" action="contact-messages.html" style="display:none;">
+  <input type="hidden" name="csrf_token" value="static-demo-token">
+  <input type="hidden" name="action"  value="read_all">
+</form>
+
+
+<form id="deleteForm" method="POST" action="contact-messages.html" style="display:none;">
+  <input type="hidden" name="csrf_token" value="static-demo-token">
+  <input type="hidden" name="action"  value="delete">
+  <input type="hidden" name="msg_id"  id="deleteId">
+</form>
+
+<script>
+function viewMessage(btn) {
+  const { name, email, subject, message, time } = btn.dataset;
+  Swal.fire({
+    title: 'Message from ' + name,
+    html: `
+      <div style="text-align:left;font-family:'Poppins',sans-serif;font-size:0.88rem;">
+        <div style="background:#f8f4ee;padding:10px 14px;border-radius:10px;margin-bottom:10px;">
+          <span style="color:#7C9473;font-weight:600;font-size:0.75rem;text-transform:uppercase;">From</span>
+          <p style="color:#333;margin-top:3px;">${name} &lt;${email}&gt;</p>
+        </div>
+        <div style="background:#f8f4ee;padding:10px 14px;border-radius:10px;margin-bottom:10px;">
+          <span style="color:#7C9473;font-weight:600;font-size:0.75rem;text-transform:uppercase;">Subject</span>
+          <p style="color:#333;margin-top:3px;">${subject}</p>
+        </div>
+        <div style="background:#f8f4ee;padding:10px 14px;border-radius:10px;margin-bottom:10px;">
+          <span style="color:#7C9473;font-weight:600;font-size:0.75rem;text-transform:uppercase;">Message</span>
+          <p style="color:#333;margin-top:3px;line-height:1.7;">${message}</p>
+        </div>
+        <div style="background:#f8f4ee;padding:10px 14px;border-radius:10px;">
+          <span style="color:#7C9473;font-weight:600;font-size:0.75rem;text-transform:uppercase;">Received</span>
+          <p style="color:#333;margin-top:3px;">${time}</p>
+        </div>
+      </div>
+    `,
+    confirmButtonColor: '#7C9473',
+    confirmButtonText: 'Close',
+    width: '520px'
+  });
+}
+
+function markRead(id) {
+  document.getElementById('markReadId').value = id;
+  document.getElementById('markReadForm').submit();
+}
+
+function confirmMarkAll() {
+  Swal.fire({
+    title: 'Mark All as Read?',
+    text: 'All unread messages will be marked as read.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#7C9473',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: '<i class="fa-solid fa-check-double"></i> Yes, Mark All',
+    cancelButtonText: 'Cancel'
+  }).then(result => {
+    if (result.isConfirmed) {
+      document.getElementById('markAllForm').submit();
+    }
+  });
+}
+
+function confirmDelete(id, name) {
+  Swal.fire({
+    title: 'Delete Message?',
+    html: `<p style="color:#666;font-size:0.88rem;">Delete message from <strong>${name}</strong>? This cannot be undone.</p>`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#e74c3c',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: '<i class="fa-solid fa-trash"></i> Yes, Delete',
+    cancelButtonText: 'Cancel'
+  }).then(result => {
+    if (result.isConfirmed) {
+      document.getElementById('deleteId').value = id;
+      document.getElementById('deleteForm').submit();
+    }
+  });
+}
+</script>
+
+<style>
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .mark-all-btn {
+    background: #eef4eb;
+    color: #7C9473;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s;
+    font-family: "Poppins", sans-serif;
+  }
+  .mark-all-btn:hover { background: #7C9473; color: #fff; }
+
+  .tab-count {
+    background: rgba(255,255,255,0.3);
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 0.72rem;
+    margin-left: 4px;
+  }
+
+  .messages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .msg-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 1.4rem 1.6rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    border-left: 4px solid #e8e0d5;
+    transition: 0.25s;
+  }
+  .msg-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,0.09); }
+  .msg-card.unread-card { border-left-color: #7C9473; background: #fdfaf5; }
+
+  .msg-left {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    flex: 1;
+  }
+
+  .msg-avatar-lg {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7C9473, #A8BFA1);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .msg-meta h3 {
+    font-size: 0.95rem;
+    color: #5B4636;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+
+  .new-badge {
+    background: #e74c3c;
+    color: #fff;
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .replied-badge {
+    background: #d4edda;
+    color: #155724;
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .msg-email, .msg-subject, .msg-time {
+    font-size: 0.78rem;
+    color: #888;
+    margin: 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .msg-email i, .msg-subject i, .msg-time i { color: #A8BFA1; width: 12px; }
+
+  .msg-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.8rem;
+    min-width: 260px;
+  }
+
+  .msg-preview {
+    font-size: 0.82rem;
+    color: #666;
+    line-height: 1.6;
+    text-align: right;
+  }
+
+  .msg-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .empty-messages {
+    text-align: center;
+    padding: 4rem;
+    color: #ccc;
+  }
+  .empty-messages i { font-size: 3rem; display: block; margin-bottom: 1rem; }
+  .empty-messages p { font-size: 0.95rem; }
+
+  @media (max-width: 768px) {
+    .msg-card { flex-direction: column; }
+    .msg-right { align-items: flex-start; min-width: unset; }
+    .msg-preview { text-align: left; }
+    .msg-actions { justify-content: flex-start; }
+    .filter-tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .filter-tab { white-space: nowrap; flex-shrink: 0; }
+  }
+</style>
+
+</body>
+</html>

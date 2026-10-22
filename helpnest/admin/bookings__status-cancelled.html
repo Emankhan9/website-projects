@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="admin/bookings__status-cancelled.html";</script>
+<script src="../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookings | HelpNest Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+
+<div class="admin-mob-topbar">
+  <span class="mob-logo">Help<span style="color:#A8BFA1;">Nest</span></span>
+  <button class="admin-hamburger" onclick="document.getElementById('adminMobNav').classList.add('open')" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+
+<div class="admin-mob-overlay" id="adminMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="admin-mob-panel">
+    <button class="admin-mob-close" onclick="document.getElementById('adminMobNav').classList.remove('open')">✕</button>
+    <div class="mob-panel-logo">Help<span>Nest</span></div>
+    <div class="mob-panel-label">Admin Panel</div>
+    <nav class="mob-nav" id="mobNavLinks"></nav>
+    <div class="mob-logout">
+      <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var mobNav = document.getElementById('mobNavLinks');
+  if (mobNav && document.querySelector('.admin-nav')) {
+    mobNav.innerHTML = document.querySelector('.admin-nav').innerHTML;
+  }
+});
+</script>
+
+<div class="admin-wrapper">
+
+<aside class="admin-sidebar">
+  <div class="admin-logo">Help<span>Nest</span></div>
+  <p class="admin-label">Admin Panel</p>
+  <nav class="admin-nav">
+    <a href="dashboard.html" class="">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+    <a href="bookings.html" class="active">
+      <i class="fa-solid fa-calendar-check"></i> Bookings
+    </a>
+    <a href="users.html" class="">
+      <i class="fa-solid fa-users"></i> Users
+    </a>
+    <a href="housekeepers.html" class="">
+      <i class="fa-solid fa-broom"></i> Housekeepers
+      <span class="nav-badge">1</span>    </a>
+
+    <a href="payments.html" class="">
+      <i class="fa-solid fa-money-bill-wave"></i> Payments
+      <span class="nav-badge">1</span>    </a>
+    <a href="contact-messages.html" class="">
+      <i class="fa-solid fa-envelope"></i> Messages
+      <span class="nav-badge">2</span>    </a>
+    <a href="disputes.html" class="">
+      <i class="fa-solid fa-scale-balanced"></i> Disputes
+      <span class="nav-badge">1</span>    </a>
+        <a href="settings.html" class="">
+      <i class="fa-solid fa-gear"></i> Settings
+    </a>
+      </nav>
+  <div class="admin-logout">
+    <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+</aside>  <main class="admin-main">
+
+    
+    <div class="admin-topbar">
+      <div>
+        <h1>Bookings</h1>
+        <p>Manage and monitor all service bookings</p>
+      </div>
+      <div class="topbar-date">
+        <i class="fa-solid fa-calendar"></i>
+        Wednesday, 21 Oct 2026      </div>
+    </div>
+
+    
+    
+    
+    <div class="filter-tabs">
+      <a href="bookings__status-all.html"       class="filter-tab ">All <span class="tab-count">14</span></a>
+      <a href="bookings__status-pending.html"   class="filter-tab ">Pending <span class="tab-count">2</span></a>
+      <a href="bookings__status-accepted.html"  class="filter-tab ">Accepted <span class="tab-count">3</span></a>
+      <a href="bookings__status-completed.html" class="filter-tab ">Completed <span class="tab-count">7</span></a>
+      <a href="bookings__status-cancelled.html" class="filter-tab active">Cancelled <span class="tab-count">1</span></a>
+      <a href="bookings__status-disputed.html"  class="filter-tab ">Disputed <span class="tab-count">1</span></a>
+      <a href="bookings__status-expired.html"   class="filter-tab ">Expired <span class="tab-count">0</span></a>
+    </div>
+
+    
+    <div class="admin-card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User</th>
+              <th>Housekeeper</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+                        <tr>
+              <td>1</td>
+              <td>
+                <div class="td-name">Hira Siddiqui</div>
+                <div class="td-sub">0312-3344556</div>
+              </td>
+              <td>
+                <div class="td-name">Kashif Mehmood</div>
+                <div class="td-sub">0305-5556667</div>
+              </td>
+              <td>16 Oct 2026</td>
+              <td>08:00 AM</td>
+              <td>
+                <span class="type-badge one_time">
+                  One Time                </span>
+              </td>
+              <td>Rs. 1,800</td>
+              <td><span class="badge cancelled">Cancelled</span></td>
+              <td>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+
+                  
+                  <button class="action-btn view"
+                    data-user="Hira Siddiqui"
+                    data-user-phone="0312-3344556"
+                    data-helper="Kashif Mehmood"
+                    data-helper-phone="0305-5556667"
+                    data-date="16 Oct 2026"
+                    data-time="08:00 AM"
+                    data-end-time="11:00 AM"
+                    data-duration="3 hrs"
+                    data-address="PECHS Block 6, Karachi"
+                    data-message="N/A"
+                    data-status="Cancelled"
+                    data-amount="1,800"
+                    data-type="One Time"
+                    data-reason=""
+                    data-is-monthly="0"
+                    data-start-month=""
+                    data-end-month=""
+                    onclick="showDetails(this)">
+                    <i class="fa-solid fa-eye"></i> View
+                  </button>
+
+                  
+                  
+                </div>
+              </td>
+            </tr>
+                      </tbody>
+        </table>
+      </div>
+    </div>
+
+    
+    <form id="cancelForm" method="POST" action="bookings.html" style="display:none;">
+      <input type="hidden" name="action"     value="cancel">
+      <input type="hidden" name="csrf_token" value="static-demo-token">
+      <input type="hidden" name="id"         id="cancelId">
+      <input type="hidden" name="reason"     id="cancelReason">
+    </form>
+
+  </main>
+</div>
+
+<script>
+// ── Month format helper ──
+function formatMonth(ym) {
+  if (!ym) return '—';
+  const [year, month] = ym.split('-');
+  if (!year || !month) return ym;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return (months[parseInt(month, 10) - 1] || month) + ' ' + year;
+}
+
+// ── VIEW DETAILS — data attributes se ──
+function showDetails(btn) {
+  const d = btn.dataset;
+
+  const monthlyRow = d.isMonthly === '1' ? `
+    <div style="background:#e8f0fe; padding:10px; border-radius:10px; grid-column:1/-1;">
+      <div style="color:#4285f4; font-weight:600; font-size:0.72rem; text-transform:uppercase;">Service Duration (Monthly)</div>
+      <div style="color:#333; font-weight:500; margin-top:3px;">
+        <i class="fa-solid fa-calendar-range" style="color:#4285f4;margin-right:4px;"></i>
+        ${formatMonth(d.startMonth)} &nbsp;→&nbsp; ${formatMonth(d.endMonth)}
+      </div>
+    </div>` : '';
+
+  const reasonHtml = d.reason
+    ? `<div style="background:#fde8e8; padding:10px; border-radius:10px; margin-top:8px;">
+         <div style="color:#e74c3c; font-weight:600; font-size:0.75rem; text-transform:uppercase;">Cancel Reason</div>
+         <div style="color:#333;">${d.reason}</div>
+       </div>`
+    : '';
+
+  const timeRange = d.endTime
+    ? `${d.time} &nbsp;→&nbsp; ${d.endTime}${d.duration ? ' <span style="color:#999;font-size:0.78rem;">(' + d.duration + ')</span>' : ''}`
+    : d.time;
+
+  Swal.fire({
+    title: 'Booking Details',
+    html: `
+      <div style="text-align:left; font-family:'Poppins',sans-serif; font-size:0.88rem;">
+
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+          <div style="background:#f8f4ee; padding:10px; border-radius:10px;">
+            <div style="color:#7C9473; font-weight:600; font-size:0.72rem; text-transform:uppercase; margin-bottom:4px;">👤 User</div>
+            <div style="color:#333; font-weight:600;">${d.user}</div>
+            <div style="color:#777; font-size:0.78rem; margin-top:2px;"><i class="fa-solid fa-phone" style="margin-right:4px;"></i>${d.userPhone}</div>
+          </div>
+          <div style="background:#f8f4ee; padding:10px; border-radius:10px;">
+            <div style="color:#7C9473; font-weight:600; font-size:0.72rem; text-transform:uppercase; margin-bottom:4px;">🧹 Housekeeper</div>
+            <div style="color:#333; font-weight:600;">${d.helper}</div>
+            <div style="color:#777; font-size:0.78rem; margin-top:2px;"><i class="fa-solid fa-phone" style="margin-right:4px;"></i>${d.helperPhone}</div>
+          </div>
+        </div>
+
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+          <div style="background:#f8f4ee; padding:10px; border-radius:10px;">
+            <div style="color:#7C9473; font-weight:600; font-size:0.72rem; text-transform:uppercase;">Date</div>
+            <div style="color:#333; font-weight:500;">${d.date}</div>
+          </div>
+          <div style="background:#f8f4ee; padding:10px; border-radius:10px;">
+            <div style="color:#7C9473; font-weight:600; font-size:0.72rem; text-transform:uppercase;">Service Time</div>
+            <div style="color:#333; font-weight:500;">${timeRange}</div>
+          </div>
+          <div style="background:#f8f4ee; padding:10px; border-radius:10px;">
+            <div style="color:#7C9473; font-weight:600; font-size:0.72rem; text-transform:uppercase;">Amount</div>
+            <div style="color:#333; font-weight:500;">Rs. ${d.amount}</div>
+          </div>
+          <div style="background:#f8f4ee; padding:10px; border-radius:10px;">
+            <div style="color:#7C9473; font-weight:600; font-size:0.72rem; text-transform:uppercase;">Type</div>
+            <div style="color:#333; font-weight:500;">${d.type}</div>
+          </div>
+          <div style="background:#f8f4ee; padding:10px; border-radius:10px; grid-column:1/-1;">
+            <div style="color:#7C9473; font-weight:600; font-size:0.72rem; text-transform:uppercase;">Status</div>
+            <div style="color:#333; font-weight:500;">${d.status}</div>
+          </div>
+          ${monthlyRow}
+        </div>
+
+        
+        <div style="background:#f8f4ee; padding:10px; border-radius:10px; margin-bottom:8px;">
+          <div style="color:#7C9473; font-weight:600; font-size:0.72rem; text-transform:uppercase;">Address</div>
+          <div style="color:#333;">${d.address || '—'}</div>
+        </div>
+
+        
+        <div style="background:#f8f4ee; padding:10px; border-radius:10px;">
+          <div style="color:#7C9473; font-weight:600; font-size:0.72rem; text-transform:uppercase;">Message</div>
+          <div style="color:#333;">${d.message || '—'}</div>
+        </div>
+
+        ${reasonHtml}
+      </div>
+    `,
+    confirmButtonColor: '#7C9473',
+    confirmButtonText: 'Close',
+    width: '560px'
+  });
+}
+
+// ── CANCEL — POST form submit ──
+function confirmCancel(btn) {
+  const id       = btn.dataset.id;
+  const status   = btn.dataset.status;
+  const isAccepted = status === 'accepted';
+
+  Swal.fire({
+    title: 'Cancel Booking?',
+    html: `
+      <p style="color:#666; font-size:0.88rem; margin-bottom:1rem;">
+        ${isAccepted ? '<span style="color:#e74c3c; font-weight:600;">⚠️ This booking is already accepted by housekeeper.</span><br><br>' : ''}
+        Please select a reason for cancellation:
+      </p>
+      <select id="cancelReasonSelect" style="width:100%; padding:10px; border:1.5px solid #e8e0d5; border-radius:10px; font-family:Poppins,sans-serif; font-size:0.88rem;">
+        <option value="Housekeeper did not show up">Housekeeper did not show up</option>
+        <option value="User complaint received">User complaint received</option>
+        <option value="Housekeeper complaint received">Housekeeper complaint received</option>
+        <option value="Emergency situation">Emergency situation</option>
+        <option value="Fraudulent booking">Fraudulent booking</option>
+        <option value="Admin decision">Admin decision</option>
+      </select>
+    `,
+    showCancelButton: true,
+    confirmButtonColor: '#e74c3c',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: '<i class="fa-solid fa-ban"></i> Yes, Cancel',
+    cancelButtonText: 'Go Back',
+    preConfirm: () => document.getElementById('cancelReasonSelect').value
+  }).then(result => {
+    if (result.isConfirmed) {
+      document.getElementById('cancelId').value     = id;
+      document.getElementById('cancelReason').value = result.value;
+      document.getElementById('cancelForm').submit();
+    }
+  });
+}
+</script>
+
+<style>
+  .td-name { font-weight:500; color:#333; font-size:0.85rem; }
+  .td-sub  { font-size:0.75rem; color:#999; margin-top:2px; }
+  .tab-count { background:rgba(255,255,255,0.3); padding:1px 7px; border-radius:10px; font-size:0.72rem; margin-left:4px; }
+  .type-badge { padding:4px 10px; border-radius:20px; font-size:0.72rem; font-weight:600; }
+  .type-badge.monthly  { background:#e8f0fe; color:#4285f4; }
+  .type-badge.one_time { background:#fef9e7; color:#D4A017; }
+</style>
+
+</body>
+</html>

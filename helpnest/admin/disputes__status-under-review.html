@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="admin/disputes__status-under-review.html";</script>
+<script src="../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disputes | HelpNest Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .tab-count { background:rgba(255,255,255,0.3); padding:1px 7px; border-radius:10px; font-size:0.72rem; margin-left:4px; }
+
+    .d-badge { padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:600; display:inline-flex; align-items:center; gap:5px; white-space:nowrap; }
+    .d-badge.open         { background:#fff3cd; color:#856404; }
+    .d-badge.under_review { background:#cce5ff; color:#004085; }
+    .d-badge.resolved     { background:#d4edda; color:#155724; }
+    .d-badge.closed       { background:#e2e3e5; color:#383d41; }
+
+    .raiser-badge { padding:3px 10px; border-radius:12px; font-size:0.72rem; font-weight:600; white-space:nowrap; }
+    .raiser-badge.user        { background:#f0f7ff; color:#2980b9; }
+    .raiser-badge.housekeeper { background:#f0faf4; color:#27ae60; }
+
+    .reason-cell { max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:0.83rem; color:#555; }
+
+    /* Stats strip */
+    .dispute-stats { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+    .d-stat { background:#fff; border-radius:14px; padding:14px 20px; box-shadow:0 3px 12px rgba(0,0,0,0.06); display:flex; align-items:center; gap:14px; flex:1; min-width:130px; }
+    .d-stat-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+    .d-stat-icon.orange { background:#fff3cd; color:#e67e22; }
+    .d-stat-icon.blue   { background:#cce5ff; color:#2980b9; }
+    .d-stat-icon.green  { background:#d4edda; color:#27ae60; }
+    .d-stat-icon.grey   { background:#e2e3e5; color:#555; }
+    .d-stat h3 { font-size:1.3rem; font-weight:700; color:#5B4636; margin:0; }
+    .d-stat p  { font-size:0.75rem; color:#999; margin:0; }
+
+    .td-name { font-weight:500; color:#333; font-size:0.85rem; }
+    .td-sub  { font-size:0.75rem; color:#999; margin-top:2px; }
+
+    /* Action buttons row */
+    .action-cell { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+
+    /* ── Mobile improvements ── */
+    @media (max-width: 900px) {
+      .hide-900 { display:none !important; }
+    }
+    @media (max-width: 768px) {
+      .hide-mobile { display:none !important; }
+      .table-wrap table { font-size:0.8rem; }
+      .reason-cell { max-width:120px; }
+      .d-stat { min-width:110px; padding:10px 12px; }
+      .d-stat h3 { font-size:1.1rem; }
+      .dispute-stats { gap:0.5rem; }
+      .filter-tabs { gap:5px; overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+      .filter-tabs::-webkit-scrollbar { display:none; }
+      .filter-tab { padding:6px 10px !important; font-size:0.75rem !important; white-space:nowrap; flex-shrink:0; }
+      .action-cell { flex-direction:column; gap:4px; }
+      .action-cell .action-btn { width:100%; justify-content:center; font-size:0.75rem; padding:6px 8px; }
+    }
+    @media (max-width: 520px) {
+      .d-stat-icon { width:34px; height:34px; font-size:0.9rem; }
+      .d-badge { padding:3px 8px; font-size:0.7rem; }
+      .dispute-stats { display:grid; grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="admin-mob-topbar">
+  <span class="mob-logo">Help<span style="color:#A8BFA1;">Nest</span></span>
+  <button class="admin-hamburger" onclick="document.getElementById('adminMobNav').classList.add('open')" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+<div class="admin-mob-overlay" id="adminMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="admin-mob-panel">
+    <button class="admin-mob-close" onclick="document.getElementById('adminMobNav').classList.remove('open')">✕</button>
+    <div class="mob-panel-logo">Help<span>Nest</span></div>
+    <div class="mob-panel-label">Admin Panel</div>
+    <nav class="mob-nav" id="mobNavLinks"></nav>
+    <div class="mob-logout"><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var mobNav = document.getElementById('mobNavLinks');
+  if (mobNav && document.querySelector('.admin-nav')) mobNav.innerHTML = document.querySelector('.admin-nav').innerHTML;
+});
+</script>
+
+<div class="admin-wrapper">
+  
+<aside class="admin-sidebar">
+  <div class="admin-logo">Help<span>Nest</span></div>
+  <p class="admin-label">Admin Panel</p>
+  <nav class="admin-nav">
+    <a href="dashboard.html" class="">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+    <a href="bookings.html" class="">
+      <i class="fa-solid fa-calendar-check"></i> Bookings
+    </a>
+    <a href="users.html" class="">
+      <i class="fa-solid fa-users"></i> Users
+    </a>
+    <a href="housekeepers.html" class="">
+      <i class="fa-solid fa-broom"></i> Housekeepers
+      <span class="nav-badge">1</span>    </a>
+
+    <a href="payments.html" class="">
+      <i class="fa-solid fa-money-bill-wave"></i> Payments
+      <span class="nav-badge">1</span>    </a>
+    <a href="contact-messages.html" class="">
+      <i class="fa-solid fa-envelope"></i> Messages
+      <span class="nav-badge">2</span>    </a>
+    <a href="disputes.html" class="active">
+      <i class="fa-solid fa-scale-balanced"></i> Disputes
+      <span class="nav-badge">1</span>    </a>
+        <a href="settings.html" class="">
+      <i class="fa-solid fa-gear"></i> Settings
+    </a>
+      </nav>
+  <div class="admin-logout">
+    <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+</aside>
+  <main class="admin-main">
+
+    <div class="admin-topbar">
+      <div>
+        <h1>Disputes</h1>
+        <p>Review and resolve disputes raised by users and helpers</p>
+      </div>
+      <div class="topbar-date">
+        <i class="fa-solid fa-calendar"></i>
+        Wednesday, 21 Oct 2026      </div>
+    </div>
+
+        
+    
+    <div class="dispute-stats">
+      <div class="d-stat">
+        <div class="d-stat-icon orange"><i class="fa-solid fa-circle-exclamation"></i></div>
+        <div><h3>0</h3><p>Open</p></div>
+      </div>
+      <div class="d-stat">
+        <div class="d-stat-icon blue"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <div><h3>1</h3><p>Under Review</p></div>
+      </div>
+      <div class="d-stat">
+        <div class="d-stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+        <div><h3>1</h3><p>Resolved</p></div>
+      </div>
+      <div class="d-stat">
+        <div class="d-stat-icon grey"><i class="fa-solid fa-lock"></i></div>
+        <div><h3>0</h3><p>Closed</p></div>
+      </div>
+    </div>
+
+    
+    <div class="filter-tabs">
+      <a href="disputes__status-all.html"          class="filter-tab ">All <span class="tab-count">2</span></a>
+      <a href="disputes__status-open.html"         class="filter-tab ">Open <span class="tab-count">0</span></a>
+      <a href="disputes__status-under-review.html" class="filter-tab active">Under Review <span class="tab-count">1</span></a>
+      <a href="disputes__status-resolved.html"     class="filter-tab ">Resolved <span class="tab-count">1</span></a>
+      <a href="disputes__status-closed.html"       class="filter-tab ">Closed <span class="tab-count">0</span></a>
+    </div>
+
+    
+    <div class="admin-card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Booking</th>
+              <th class="hide-mobile">Raised By</th>
+              <th>Parties</th>
+              <th class="hide-900">Reason</th>
+              <th>Status</th>
+              <th class="hide-mobile">Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+                        <tr>
+              <td>1</td>
+              <td>
+                <div class="td-name">HN-2026-00010</div>
+                <div class="td-sub">19 Oct 2026</div>
+              </td>
+              <td class="hide-mobile">
+                <span class="raiser-badge user">
+                  <i class="fa-solid fa-user"></i>
+                  User                </span>
+              </td>
+              <td>
+                <div class="td-name" style="font-size:0.8rem;">
+                  <i class="fa-solid fa-user" style="color:#A8BFA1;font-size:0.7rem;"></i>
+                  Bilal Ahmed                </div>
+                <div class="td-sub">
+                  <i class="fa-solid fa-broom" style="color:#A8BFA1;font-size:0.7rem;"></i>
+                  Nadia Parveen                </div>
+              </td>
+              <td class="hide-900">
+                <div class="reason-cell" title="Service not completed">
+                  Service not completed                </div>
+              </td>
+              <td>
+                <span class="d-badge under_review">
+                  Under Review                </span>
+              </td>
+              <td class="hide-mobile" style="font-size:0.8rem;color:#888;">
+                20 Oct 2026                              </td>
+              <td>
+                <div class="action-cell">
+                  
+                  <a href="view-dispute.html" class="action-btn view">
+                    <i class="fa-solid fa-eye"></i> <span class="hide-mobile">View</span>
+                  </a>
+
+                  
+                                    <button class="action-btn approve"
+                    data-id="1"
+                    data-status="under_review"
+                    data-sid="HN-2026-00010"
+                    onclick="quickResolve(this)">
+                    <i class="fa-solid fa-scale-balanced"></i> <span class="hide-mobile">Resolve</span>
+                  </button>
+                                  </div>
+              </td>
+            </tr>
+                      </tbody>
+        </table>
+      </div>
+    </div>
+
+    
+<form id="resolveForm" method="POST" action="#" style="display:none;">
+      <input type="hidden" name="csrf_token"  value="static-demo-token">
+      <input type="hidden" name="dispute_id"  id="resolveDisputeId">
+      <input type="hidden" name="new_status"  id="resolveStatus">
+      <input type="hidden" name="admin_note"  id="resolveNote">
+      <input type="hidden" name="from"        value="list">
+    </form>
+
+  </main>
+</div>
+
+<script>
+function quickResolve(btn) {
+  const id     = btn.dataset.id;
+  const curr   = btn.dataset.status;
+  const sid    = btn.dataset.sid;
+
+  Swal.fire({
+    title: 'Update Dispute',
+    html: `
+      <div style="text-align:left;font-family:'Poppins',sans-serif;font-size:0.88rem;">
+        <div style="background:#f8f4ee;padding:8px 12px;border-radius:8px;margin-bottom:12px;font-size:0.8rem;color:#5B4636;">
+          <i class="fa-solid fa-hashtag" style="color:#A8BFA1;"></i> <strong>${sid}</strong>
+        </div>
+        <div style="margin-bottom:12px;">
+          <label style="font-size:0.8rem;font-weight:600;color:#5B4636;display:block;margin-bottom:5px;">New Status</label>
+          <select id="newStatus" style="width:100%;padding:10px;border:1.5px solid #e8e0d5;border-radius:10px;font-family:Poppins,sans-serif;font-size:0.88rem;background:#fdfaf5;">
+            <option value="under_review" ${curr==='under_review'?'selected':''}>Under Review</option>
+            <option value="resolved">Resolved</option>
+            <option value="closed">Closed</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:0.8rem;font-weight:600;color:#5B4636;display:block;margin-bottom:5px;">
+            Admin Note <span style="color:#bbb;font-weight:400;">(sent to both parties)</span>
+          </label>
+          <textarea id="adminNote" placeholder="e.g. We reviewed the case. The helper has been warned..."
+            style="width:100%;padding:11px 14px;border:1.5px solid #e8e0d5;border-radius:10px;
+            font-family:Poppins,sans-serif;font-size:0.85rem;resize:vertical;min-height:90px;box-sizing:border-box;"></textarea>
+        </div>
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonColor: '#7C9473',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: '<i class="fa-solid fa-check"></i> Update',
+    cancelButtonText: 'Cancel',
+    width: '480px',
+    preConfirm: () => {
+      const status = document.getElementById('newStatus').value;
+      const note   = document.getElementById('adminNote').value.trim();
+      if (!note) {
+        Swal.showValidationMessage('<i class="fa-solid fa-circle-exclamation"></i> Admin note is required.');
+        return false;
+      }
+      return { status, note };
+    }
+  }).then(result => {
+    if (result.isConfirmed) {
+      document.getElementById('resolveDisputeId').value = id;
+      document.getElementById('resolveStatus').value    = result.value.status;
+      document.getElementById('resolveNote').value      = result.value.note;
+      document.getElementById('resolveForm').submit();
+    }
+  });
+}
+</script>
+
+</body>
+</html>

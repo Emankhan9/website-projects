@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="admin/reply-message__id-3.html";</script>
+<script src="../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reply to Message | HelpNest Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <style>
+    .reply-wrapper {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* ORIGINAL MESSAGE */
+    .original-msg {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.6rem 2rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      margin-bottom: 1.5rem;
+      border-left: 4px solid #A8BFA1;
+    }
+
+    .original-msg .msg-from {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #f0ebe0;
+    }
+
+    .msg-from-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7C9473, #A8BFA1);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .msg-from-info h3 {
+      font-size: 0.95rem;
+      color: #5B4636;
+      font-weight: 600;
+    }
+
+    .msg-from-info p {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .msg-from-time {
+      margin-left: auto;
+      font-size: 0.78rem;
+      color: #bbb;
+    }
+
+    .original-subject {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #7C9473;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .original-subject span {
+      color: #5B4636;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 0.88rem;
+    }
+
+    .original-body {
+      font-size: 0.88rem;
+      color: #555;
+      line-height: 1.8;
+      background: #fdfaf5;
+      padding: 1rem 1.2rem;
+      border-radius: 10px;
+      margin-top: 0.8rem;
+      border: 1px solid #f0ebe0;
+    }
+
+    /* REPLY FORM */
+    .reply-form-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.6rem 2rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+
+    .reply-form-card h2 {
+      font-family: "Playfair Display", serif;
+      color: #5B4636;
+      font-size: 1.3rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .reply-form-card h2 i { color: #7C9473; font-size: 1rem; }
+
+    .to-field {
+      background: #f8f4ee;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: #555;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .to-field strong { color: #5B4636; }
+
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #5B4636;
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #e8e0d5;
+      border-radius: 10px;
+      font-family: "Poppins", sans-serif;
+      font-size: 0.88rem;
+      background: #fdfaf5;
+      color: #333;
+      transition: 0.2s;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #7C9473;
+      box-shadow: 0 0 0 3px rgba(124,148,115,0.15);
+      background: #fff;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 180px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .send-btn {
+      background: linear-gradient(135deg, #5B4636, #7a5c47);
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .send-btn:hover {
+      background: linear-gradient(135deg, #7C9473, #5a7a52);
+      transform: translateY(-2px);
+    }
+
+    .back-btn {
+      color: #888;
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.2s;
+    }
+    .back-btn:hover { color: #5B4636; }
+
+    /* ALERTS */
+    .alert {
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert.success { background: #d4edda; color: #155724; }
+    .alert.error   { background: #f8d7da; color: #842029; }
+  </style>
+</head>
+<body>
+
+<div class="admin-mob-topbar">
+  <span class="mob-logo">Help<span style="color:#A8BFA1;">Nest</span></span>
+  <button class="admin-hamburger" onclick="document.getElementById('adminMobNav').classList.add('open')" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+
+<div class="admin-mob-overlay" id="adminMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="admin-mob-panel">
+    <button class="admin-mob-close" onclick="document.getElementById('adminMobNav').classList.remove('open')">✕</button>
+    <div class="mob-panel-logo">Help<span>Nest</span></div>
+    <div class="mob-panel-label">Admin Panel</div>
+    <nav class="mob-nav" id="mobNavLinks">
+    </nav>
+    <div class="mob-logout">
+      <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// Copy desktop nav links into mobile nav
+document.addEventListener('DOMContentLoaded', function() {
+  var desktopLinks = document.querySelectorAll('.admin-nav a, .admin-nav');
+  var mobNav = document.getElementById('mobNavLinks');
+  if (mobNav && document.querySelector('.admin-nav')) {
+    mobNav.innerHTML = document.querySelector('.admin-nav').innerHTML;
+  }
+});
+</script>
+
+
+<div class="admin-wrapper">
+
+<aside class="admin-sidebar">
+  <div class="admin-logo">Help<span>Nest</span></div>
+  <p class="admin-label">Admin Panel</p>
+  <nav class="admin-nav">
+    <a href="dashboard.html" class="">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+    <a href="bookings.html" class="">
+      <i class="fa-solid fa-calendar-check"></i> Bookings
+    </a>
+    <a href="users.html" class="">
+      <i class="fa-solid fa-users"></i> Users
+    </a>
+    <a href="housekeepers.html" class="">
+      <i class="fa-solid fa-broom"></i> Housekeepers
+      <span class="nav-badge">1</span>    </a>
+
+    <a href="payments.html" class="">
+      <i class="fa-solid fa-money-bill-wave"></i> Payments
+      <span class="nav-badge">1</span>    </a>
+    <a href="contact-messages.html" class="">
+      <i class="fa-solid fa-envelope"></i> Messages
+      <span class="nav-badge">2</span>    </a>
+    <a href="disputes.html" class="">
+      <i class="fa-solid fa-scale-balanced"></i> Disputes
+      <span class="nav-badge">1</span>    </a>
+        <a href="settings.html" class="">
+      <i class="fa-solid fa-gear"></i> Settings
+    </a>
+      </nav>
+  <div class="admin-logout">
+    <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+</aside>  <main class="admin-main">
+
+    
+    <div class="admin-topbar">
+      <div>
+        <h1>Reply to Message</h1>
+        <p>Respond directly to the user's query</p>
+      </div>
+      <a href="contact-messages.html" class="back-btn" style="margin-top:0.5rem;">
+        <i class="fa-solid fa-arrow-left"></i> Back to Messages
+      </a>
+    </div>
+
+    <div class="reply-wrapper">
+
+      
+            
+      
+      <div class="original-msg">
+        <div class="msg-from">
+          <div class="msg-from-avatar">H</div>
+          <div class="msg-from-info">
+            <h3>Hamza Qureshi</h3>
+            <p>hamza.q@example.com</p>
+          </div>
+          <div class="msg-from-time">
+            <i class="fa-solid fa-clock"></i>
+            17 Oct 2026, 09:10 AM          </div>
+        </div>
+        <div class="original-subject">Subject: <span>Feedback</span></div>
+        <div class="original-body">Great platform! Found an excellent driver within a day.</div>
+      </div>
+
+      
+      <div class="reply-form-card">
+        <h2><i class="fa-solid fa-reply"></i> Write Your Reply</h2>
+
+        <div class="to-field">
+          <i class="fa-solid fa-user" style="color:#A8BFA1;"></i>
+          <strong>To:</strong> Hamza Qureshi &lt;hamza.q@example.com&gt;
+        </div>
+
+        <form method="POST" action="#">
+          <input type="hidden" name="csrf_token"   value="static-demo-token">
+          <input type="hidden" name="msg_id"       value="3">
+          <input type="hidden" name="to_email"    value="hamza.q@example.com">
+          <input type="hidden" name="to_name"     value="Hamza Qureshi">
+          <input type="hidden" name="orig_subject" value="Feedback">
+
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" name="subject" value="Re: Feedback" required>
+          </div>
+
+          <div class="form-group">
+            <label>Message</label>
+            <textarea name="reply_message" placeholder="Write your reply here..." required></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="send-btn">
+              <i class="fa-solid fa-paper-plane"></i> Send Reply
+            </button>
+            <a href="contact-messages.html" class="back-btn">
+              <i class="fa-solid fa-xmark"></i> Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

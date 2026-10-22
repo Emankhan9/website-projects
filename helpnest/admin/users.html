@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="admin/users.html";</script>
+<script src="../js/static-demo.js"></script>
+
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users | HelpNest Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .tab-count { background:rgba(255,255,255,0.3); padding:1px 7px; border-radius:10px; font-size:0.72rem; margin-left:4px; }
+
+    .user-cell  { display:flex; align-items:center; gap:10px; }
+    .user-avatar { width:34px; height:34px; border-radius:50%; object-fit:cover; border:2px solid #A8BFA1; flex-shrink:0; }
+    .user-initial { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,#7C9473,#A8BFA1); color:#fff; font-weight:700; font-size:0.85rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+    .status-pill { padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:600; display:inline-block; white-space:nowrap; }
+    .status-pill.active  { background:#d4edda; color:#155724; }
+    .status-pill.blocked { background:#f8d7da; color:#842029; }
+
+    /* Mobile responsive table */
+    @media (max-width: 900px) {
+      .hide-900 { display:none !important; }
+    }
+    @media (max-width: 768px) {
+      .hide-mobile { display:none !important; }
+      .table-wrap table { font-size:0.8rem; }
+      .filter-tabs { overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+      .filter-tabs::-webkit-scrollbar { display:none; }
+      .filter-tab { white-space:nowrap; flex-shrink:0; }
+    }
+  </style>
+</head>
+<body>
+
+
+<div class="admin-mob-topbar">
+  <span class="mob-logo">Help<span style="color:#A8BFA1;">Nest</span></span>
+  <button class="admin-hamburger" onclick="document.getElementById('adminMobNav').classList.add('open')" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+
+<div class="admin-mob-overlay" id="adminMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="admin-mob-panel">
+    <button class="admin-mob-close" onclick="document.getElementById('adminMobNav').classList.remove('open')">✕</button>
+    <div class="mob-panel-logo">Help<span>Nest</span></div>
+    <div class="mob-panel-label">Admin Panel</div>
+    <nav class="mob-nav" id="mobNavLinks"></nav>
+    <div class="mob-logout"><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var mobNav = document.getElementById('mobNavLinks');
+  if (mobNav && document.querySelector('.admin-nav')) {
+    mobNav.innerHTML = document.querySelector('.admin-nav').innerHTML;
+  }
+});
+</script>
+
+<div class="admin-wrapper">
+
+<aside class="admin-sidebar">
+  <div class="admin-logo">Help<span>Nest</span></div>
+  <p class="admin-label">Admin Panel</p>
+  <nav class="admin-nav">
+    <a href="dashboard.html" class="">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+    <a href="bookings.html" class="">
+      <i class="fa-solid fa-calendar-check"></i> Bookings
+    </a>
+    <a href="users.html" class="active">
+      <i class="fa-solid fa-users"></i> Users
+    </a>
+    <a href="housekeepers.html" class="">
+      <i class="fa-solid fa-broom"></i> Housekeepers
+      <span class="nav-badge">1</span>    </a>
+
+    <a href="payments.html" class="">
+      <i class="fa-solid fa-money-bill-wave"></i> Payments
+      <span class="nav-badge">1</span>    </a>
+    <a href="contact-messages.html" class="">
+      <i class="fa-solid fa-envelope"></i> Messages
+      <span class="nav-badge">2</span>    </a>
+    <a href="disputes.html" class="">
+      <i class="fa-solid fa-scale-balanced"></i> Disputes
+      <span class="nav-badge">1</span>    </a>
+        <a href="settings.html" class="">
+      <i class="fa-solid fa-gear"></i> Settings
+    </a>
+      </nav>
+  <div class="admin-logout">
+    <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+</aside>  <main class="admin-main">
+
+    <div class="admin-topbar">
+      <div><h1>Users</h1><p>Manage all registered users on HelpNest</p></div>
+      <div class="topbar-date"><i class="fa-solid fa-calendar"></i> Wednesday, 21 Oct 2026</div>
+    </div>
+
+    
+    <div class="filter-tabs">
+      <a href="users__status-all.html"     class="filter-tab active">All <span class="tab-count">5</span></a>
+      <a href="users__status-active.html"  class="filter-tab ">Active <span class="tab-count">4</span></a>
+      <a href="users__status-blocked.html" class="filter-tab ">Blocked <span class="tab-count">1</span></a>
+    </div>
+
+    <div class="admin-card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User</th>
+              <th>Email</th>
+              <th class="hide-900">Phone</th>
+              <th class="hide-mobile">Address</th>
+              <th>Status</th>
+              <th class="hide-mobile">Joined</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+                        <tr>
+              <td>1</td>
+              <td>
+                <div class="user-cell">
+                                      <img src="../Uploads/profiles/hira.svg" class="user-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="user-initial" style="display:none;">H</div>
+                                    <span>Hira Siddiqui</span>
+                </div>
+              </td>
+              <td>hira.s@example.com</td>
+              <td class="hide-900">0312-3344556</td>
+              <td class="hide-mobile">PECHS Block 6, Karachi</td>
+              <td><span class="status-pill active">Active</span></td>
+              <td class="hide-mobile">21 Sep 2026</td>
+              <td>
+                                  <button class="action-btn block"
+                    data-id="5"
+                    data-name="Hira Siddiqui"
+                    data-action="block"
+                    onclick="confirmAction(this)">
+                    <i class="fa-solid fa-ban"></i> Block
+                  </button>
+                              </td>
+            </tr>
+                        <tr>
+              <td>2</td>
+              <td>
+                <div class="user-cell">
+                                      <img src="../Uploads/profiles/usman.svg" class="user-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="user-initial" style="display:none;">U</div>
+                                    <span>Usman Tariq</span>
+                </div>
+              </td>
+              <td>usman.tariq@example.com</td>
+              <td class="hide-900">0345-9988776</td>
+              <td class="hide-mobile">House 44, North Nazimabad, Karachi</td>
+              <td><span class="status-pill blocked">Blocked</span></td>
+              <td class="hide-mobile">22 Aug 2026</td>
+              <td>
+                                  <button class="action-btn unblock"
+                    data-id="4"
+                    data-name="Usman Tariq"
+                    data-action="unblock"
+                    onclick="confirmAction(this)">
+                    <i class="fa-solid fa-unlock"></i> Unblock
+                  </button>
+                              </td>
+            </tr>
+                        <tr>
+              <td>3</td>
+              <td>
+                <div class="user-cell">
+                                      <img src="../Uploads/profiles/sana.svg" class="user-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="user-initial" style="display:none;">S</div>
+                                    <span>Sana Malik</span>
+                </div>
+              </td>
+              <td>sana.malik@example.com</td>
+              <td class="hide-900">0333-4455667</td>
+              <td class="hide-mobile">Street 7, DHA Phase 6, Karachi</td>
+              <td><span class="status-pill active">Active</span></td>
+              <td class="hide-mobile">02 Aug 2026</td>
+              <td>
+                                  <button class="action-btn block"
+                    data-id="3"
+                    data-name="Sana Malik"
+                    data-action="block"
+                    onclick="confirmAction(this)">
+                    <i class="fa-solid fa-ban"></i> Block
+                  </button>
+                              </td>
+            </tr>
+                        <tr>
+              <td>4</td>
+              <td>
+                <div class="user-cell">
+                                      <img src="../Uploads/profiles/bilal.svg" class="user-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="user-initial" style="display:none;">B</div>
+                                    <span>Bilal Ahmed</span>
+                </div>
+              </td>
+              <td>bilal.ahmed@example.com</td>
+              <td class="hide-900">0321-7654321</td>
+              <td class="hide-mobile">Flat 3B, Clifton Block 2, Karachi</td>
+              <td><span class="status-pill active">Active</span></td>
+              <td class="hide-mobile">18 Jul 2026</td>
+              <td>
+                                  <button class="action-btn block"
+                    data-id="2"
+                    data-name="Bilal Ahmed"
+                    data-action="block"
+                    onclick="confirmAction(this)">
+                    <i class="fa-solid fa-ban"></i> Block
+                  </button>
+                              </td>
+            </tr>
+                        <tr>
+              <td>5</td>
+              <td>
+                <div class="user-cell">
+                                      <img src="../Uploads/profiles/ayesha.svg" class="user-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="user-initial" style="display:none;">A</div>
+                                    <span>Ayesha Khan</span>
+                </div>
+              </td>
+              <td>ayesha.khan@example.com</td>
+              <td class="hide-900">0300-1234567</td>
+              <td class="hide-mobile">House 12, Block 5, Gulshan-e-Iqbal, Karachi</td>
+              <td><span class="status-pill active">Active</span></td>
+              <td class="hide-mobile">23 Jun 2026</td>
+              <td>
+                                  <button class="action-btn block"
+                    data-id="1"
+                    data-name="Ayesha Khan"
+                    data-action="block"
+                    onclick="confirmAction(this)">
+                    <i class="fa-solid fa-ban"></i> Block
+                  </button>
+                              </td>
+            </tr>
+                      </tbody>
+        </table>
+      </div>
+    </div>
+
+    
+    <form id="userActionForm" method="POST" action="users.html" style="display:none;">
+      <input type="hidden" name="csrf_token" value="static-demo-token">
+      <input type="hidden" name="action"  id="userAction">
+      <input type="hidden" name="user_id" id="userActionId">
+    </form>
+
+  </main>
+</div>
+
+<script>
+function confirmAction(btn) {
+  const action = btn.dataset.action;
+  const id     = btn.dataset.id;
+  const name   = btn.dataset.name;
+  const isBlock = action === 'block';
+
+  Swal.fire({
+    title: isBlock ? 'Block User?' : 'Unblock User?',
+    html: `<p style="color:#666;font-size:0.88rem;">
+      Are you sure you want to ${isBlock ? 'block' : 'unblock'} <strong>${name}</strong>?
+      ${isBlock ? '<br><br><span style="color:#e74c3c;">They will not be able to login.</span>' : ''}
+    </p>`,
+    icon: isBlock ? 'warning' : 'question',
+    showCancelButton: true,
+    confirmButtonColor: isBlock ? '#e74c3c' : '#7C9473',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: isBlock
+      ? '<i class="fa-solid fa-ban"></i> Yes, Block'
+      : '<i class="fa-solid fa-unlock"></i> Yes, Unblock',
+    cancelButtonText: 'Cancel'
+  }).then(r => {
+    if (r.isConfirmed) {
+      document.getElementById('userAction').value   = action;
+      document.getElementById('userActionId').value = id;
+      document.getElementById('userActionForm').submit();
+    }
+  });
+}
+</script>
+
+</body>
+</html>

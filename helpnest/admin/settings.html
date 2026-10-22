@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="admin/settings.html";</script>
+<script src="../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings | HelpNest Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .settings-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 1.8rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+    .settings-card.full-width { grid-column: 1 / -1; }
+    .settings-card h2 {
+      font-family: "Playfair Display", serif;
+      color: #5B4636;
+      font-size: 1.15rem;
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #f0ebe0;
+    }
+    .settings-card h2 i { color: #7C9473; font-size: 1rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #5B4636;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #e8e0d5;
+      border-radius: 10px;
+      font-family: "Poppins", sans-serif;
+      font-size: 0.88rem;
+      background: #fdfaf5;
+      color: #333;
+      transition: 0.2s;
+      box-sizing: border-box;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #7C9473;
+      box-shadow: 0 0 0 3px rgba(124,148,115,0.15);
+      background: #fff;
+    }
+    .save-btn {
+      background: linear-gradient(135deg, #5B4636, #7a5c47);
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 10px;
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 0.5rem;
+    }
+    .save-btn:hover { background: linear-gradient(135deg, #7C9473, #5a7a52); transform: translateY(-2px); }
+    .login-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .login-info-item { background: #f8f4ee; padding: 1rem; border-radius: 12px; }
+    .login-info-item .label {
+      font-size: 0.72rem; color: #7C9473; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3rem;
+    }
+    .login-info-item .value { font-size: 0.9rem; color: #5B4636; font-weight: 600; }
+    .system-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .system-info-item {
+      background: #f8f4ee; padding: 1rem 1.2rem; border-radius: 12px;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .system-info-item i {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, #7C9473, #A8BFA1);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; flex-shrink: 0;
+    }
+    .system-info-item .si-label { font-size: 0.72rem; color: #999; margin-bottom: 2px; }
+    .system-info-item .si-value { font-size: 0.88rem; color: #5B4636; font-weight: 600; }
+    .admins-table-wrap { overflow-x: auto; margin-top: 0.5rem; }
+    .alert {
+      padding: 11px 16px; border-radius: 10px; font-size: 0.85rem;
+      margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px;
+    }
+    .alert.success { background: #d4edda; color: #155724; }
+    .alert.error   { background: #fde8e8; color: #c0392b; }
+    @media (max-width: 768px) {
+      .settings-grid { grid-template-columns: 1fr; }
+      .settings-card.full-width { grid-column: 1; }
+      .login-info-grid, .system-info-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="admin-mob-topbar">
+  <span class="mob-logo">Help<span style="color:#A8BFA1;">Nest</span></span>
+  <button class="admin-hamburger" onclick="document.getElementById('adminMobNav').classList.add('open')" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+
+<div class="admin-mob-overlay" id="adminMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="admin-mob-panel">
+    <button class="admin-mob-close" onclick="document.getElementById('adminMobNav').classList.remove('open')">✕</button>
+    <div class="mob-panel-logo">Help<span>Nest</span></div>
+    <div class="mob-panel-label">Admin Panel</div>
+    <nav class="mob-nav" id="mobNavLinks"></nav>
+    <div class="mob-logout">
+      <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var mobNav = document.getElementById('mobNavLinks');
+  if (mobNav && document.querySelector('.admin-nav')) {
+    mobNav.innerHTML = document.querySelector('.admin-nav').innerHTML;
+  }
+});
+</script>
+
+<div class="admin-wrapper">
+  
+<aside class="admin-sidebar">
+  <div class="admin-logo">Help<span>Nest</span></div>
+  <p class="admin-label">Admin Panel</p>
+  <nav class="admin-nav">
+    <a href="dashboard.html" class="">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+    <a href="bookings.html" class="">
+      <i class="fa-solid fa-calendar-check"></i> Bookings
+    </a>
+    <a href="users.html" class="">
+      <i class="fa-solid fa-users"></i> Users
+    </a>
+    <a href="housekeepers.html" class="">
+      <i class="fa-solid fa-broom"></i> Housekeepers
+      <span class="nav-badge">1</span>    </a>
+
+    <a href="payments.html" class="">
+      <i class="fa-solid fa-money-bill-wave"></i> Payments
+      <span class="nav-badge">1</span>    </a>
+    <a href="contact-messages.html" class="">
+      <i class="fa-solid fa-envelope"></i> Messages
+      <span class="nav-badge">2</span>    </a>
+    <a href="disputes.html" class="">
+      <i class="fa-solid fa-scale-balanced"></i> Disputes
+      <span class="nav-badge">1</span>    </a>
+        <a href="settings.html" class="active">
+      <i class="fa-solid fa-gear"></i> Settings
+    </a>
+      </nav>
+  <div class="admin-logout">
+    <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+</aside>
+  <main class="admin-main">
+
+    
+    <div class="admin-topbar">
+      <div>
+        <h1>Settings</h1>
+        <p>Manage your account and system preferences</p>
+      </div>
+      <div class="topbar-date">
+        <i class="fa-solid fa-calendar"></i>
+        Wednesday, 21 Oct 2026      </div>
+    </div>
+
+    
+            
+    <div class="settings-grid">
+
+      
+      <div class="settings-card">
+        <h2><i class="fa-solid fa-user-pen"></i> Profile Settings</h2>
+        <form method="POST">
+          <input type="hidden" name="csrf_token" value="static-demo-token">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="name" value="Admin" required>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" value="admin@helpnest.pk" required>
+          </div>
+          <button type="submit" name="update_profile" class="save-btn">
+            <i class="fa-solid fa-floppy-disk"></i> Save Changes
+          </button>
+        </form>
+      </div>
+
+      
+      <div class="settings-card">
+        <h2><i class="fa-solid fa-lock"></i> Change Password</h2>
+        <form method="POST">
+          <input type="hidden" name="csrf_token" value="static-demo-token">
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" name="current_password" placeholder="Enter current password" required>
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" name="new_password" placeholder="Min. 8 chars + special character" required>
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input type="password" name="confirm_password" placeholder="Repeat new password" required>
+          </div>
+          <button type="submit" name="change_password" class="save-btn">
+            <i class="fa-solid fa-key"></i> Update Password
+          </button>
+        </form>
+      </div>
+
+      
+      <div class="settings-card">
+        <h2><i class="fa-solid fa-clock-rotate-left"></i> Last Login Info</h2>
+        <div class="login-info-grid">
+          <div class="login-info-item">
+            <div class="label">Logged In As</div>
+            <div class="value">Admin</div>
+          </div>
+          <div class="login-info-item">
+            <div class="label">Email</div>
+            <div class="value">admin@helpnest.pk</div>
+          </div>
+          <div class="login-info-item">
+            <div class="label">Last Login</div>
+            <div class="value">
+              21 Oct 2026            </div>
+          </div>
+          <div class="login-info-item">
+            <div class="label">Last Login Time</div>
+            <div class="value">
+              09:15 AM            </div>
+          </div>
+          <div class="login-info-item">
+            <div class="label">Account Created</div>
+            <div class="value">04 Apr 2026</div>
+          </div>
+          <div class="login-info-item">
+            <div class="label">Session Status</div>
+            <div class="value" style="color:#7C9473;"><i class="fa-solid fa-circle" style="font-size:0.6rem;"></i> Active</div>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="settings-card">
+        <h2><i class="fa-solid fa-gear"></i> System Info</h2>
+        <div class="system-info-grid">
+          <div class="system-info-item">
+            <i class="fa-solid fa-house"></i>
+            <div><div class="si-label">Platform</div><div class="si-value">HelpNest</div></div>
+          </div>
+          <div class="system-info-item">
+            <i class="fa-solid fa-location-dot"></i>
+            <div><div class="si-label">City</div><div class="si-value">Sialkot</div></div>
+          </div>
+          <div class="system-info-item">
+            <i class="fa-solid fa-envelope"></i>
+            <div><div class="si-label">Contact Email</div><div class="si-value">helpnestofficals@gmail.com</div></div>
+          </div>
+          <div class="system-info-item">
+            <i class="fa-solid fa-code"></i>
+            <div><div class="si-label">Version</div><div class="si-value">1.0.0</div></div>
+          </div>
+          <div class="system-info-item">
+            <i class="fa-solid fa-server"></i>
+            <div><div class="si-label">Server</div><div class="si-value">Apache / PHP 8.1</div></div>
+          </div>
+          <div class="system-info-item">
+            <i class="fa-solid fa-database"></i>
+            <div><div class="si-label">Database</div><div class="si-value">MySQL</div></div>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="settings-card full-width">
+        <h2><i class="fa-solid fa-users-gear"></i> Manage Admins</h2>
+
+        
+        <form method="POST" style="background:#f8f4ee; padding:1.2rem; border-radius:14px; margin-bottom:1.5rem;">
+          <input type="hidden" name="csrf_token" value="static-demo-token">
+          <p style="font-size:0.85rem; font-weight:600; color:#5B4636; margin-bottom:1rem;">
+            <i class="fa-solid fa-user-plus" style="color:#7C9473;"></i> Add New Admin
+          </p>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem;">
+            <div class="form-group" style="margin:0;">
+              <label>Full Name</label>
+              <input type="text" name="new_name" placeholder="Admin name" required>
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label>Email</label>
+              <input type="email" name="new_email" placeholder="admin@email.com" required>
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label>Password</label>
+              <input type="password" name="new_pwd" placeholder="Min. 8 chars + special character" required>
+            </div>
+          </div>
+          <button type="submit" name="add_admin" class="save-btn" style="margin-top:1rem;">
+            <i class="fa-solid fa-user-plus"></i> Add Admin
+          </button>
+        </form>
+
+        
+        <div class="admins-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th><th>Name</th><th>Email</th><th>Created</th><th>Last Login</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+                            <tr>
+                <td>1</td>
+                <td>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#7C9473,#A8BFA1); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.8rem; flex-shrink:0;">
+                      A                    </div>
+                    Admin                                          <span style="background:#eef4eb; color:#7C9473; font-size:0.68rem; padding:2px 8px; border-radius:10px; font-weight:700;">You</span>
+                                      </div>
+                </td>
+                <td>admin@helpnest.pk</td>
+                <td>04 Apr 2026</td>
+                <td>21 Oct 2026, 09:15 AM</td>
+                <td>
+                                      <span style="color:#bbb; font-size:0.82rem;">Current</span>
+                                  </td>
+              </tr>
+                          </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+
+<form id="deleteAdminForm" method="POST" action="settings.html" style="display:none;">
+  <input type="hidden" name="csrf_token" value="static-demo-token">
+  <input type="hidden" name="action"    value="delete_admin">
+  <input type="hidden" name="del_id"    id="deleteAdminId">
+</form>
+
+<script>
+function confirmDelete(id, name) {
+  Swal.fire({
+    title: 'Delete Admin?',
+    html: `<p style="color:#666; font-size:0.88rem;">Are you sure you want to delete <strong>${name}</strong>? This cannot be undone.</p>`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#e74c3c',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: '<i class="fa-solid fa-trash"></i> Yes, Delete',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      document.getElementById('deleteAdminId').value = id;
+      document.getElementById('deleteAdminForm').submit();
+    }
+  });
+}
+
+setTimeout(() => {
+  document.querySelectorAll('.alert').forEach(a => {
+    a.style.transition = '0.5s';
+    a.style.opacity = '0';
+    setTimeout(() => a.remove(), 500);
+  });
+}, 4000);
+</script>
+
+</body>
+</html>

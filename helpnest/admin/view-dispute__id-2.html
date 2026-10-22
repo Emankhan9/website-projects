@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="admin/view-dispute__id-2.html";</script>
+<script src="../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dispute #2 | HelpNest Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    /* ── Grid ── */
+    .vd-grid { display:grid; grid-template-columns:1fr 320px; gap:1.2rem; align-items:start; }
+    @media (max-width:900px) { .vd-grid { grid-template-columns:1fr; } }
+
+    /* ── Cards ── */
+    .vd-card { background:#fff; border-radius:16px; padding:1.4rem 1.6rem; box-shadow:0 4px 16px rgba(0,0,0,0.06); margin-bottom:1.1rem; }
+    .vd-card-title { font-family:"Playfair Display",serif; color:#5B4636; font-size:1rem; font-weight:700; display:flex; align-items:center; gap:8px; margin-bottom:1rem; padding-bottom:0.7rem; border-bottom:1px solid #f0ebe0; }
+    .vd-card-title i { color:#7C9473; font-size:0.88rem; }
+
+    /* ── Status banner ── */
+    .status-banner { display:flex; align-items:center; gap:12px; padding:14px 18px; border-radius:14px; margin-bottom:1.2rem; border:1.5px solid transparent; flex-wrap:wrap; }
+    .sb-icon { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
+    .sb-text h3 { font-size:0.95rem; font-weight:700; margin:0; }
+    .sb-text p  { font-size:0.78rem; margin:2px 0 0; opacity:0.75; }
+    .sb-badge { margin-left:auto; padding:5px 14px; border-radius:20px; font-size:0.76rem; font-weight:700; }
+
+    /* ── Info grid ── */
+    .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+    @media (max-width:500px) { .info-grid { grid-template-columns:1fr; } }
+    .info-item { background:#fdfaf5; border:1px solid #f0ebe0; border-radius:11px; padding:11px 13px; }
+    .info-item.full { grid-column:1/-1; }
+    .info-label { font-size:0.7rem; font-weight:700; color:#7C9473; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+    .info-value { font-size:0.86rem; color:#333; line-height:1.5; }
+    .info-value.bold { font-weight:600; color:#5B4636; }
+
+    /* ── Person card ── */
+    .person-card { display:flex; align-items:center; gap:11px; padding:12px; background:#fdfaf5; border:1px solid #f0ebe0; border-radius:13px; margin-bottom:9px; }
+    .p-avatar { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#7C9473,#A8BFA1); color:#fff; font-weight:700; font-size:1rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; border:2px solid #A8BFA1; overflow:hidden; }
+    .p-avatar img { width:100%; height:100%; object-fit:cover; }
+    .p-info h4 { font-size:0.88rem; font-weight:600; color:#5B4636; margin:0 0 2px; }
+    .p-info p  { font-size:0.76rem; color:#888; margin:1px 0; }
+    .p-role { margin-left:auto; padding:3px 9px; border-radius:10px; font-size:0.68rem; font-weight:700; flex-shrink:0; }
+    .p-role.user        { background:#e8f4fd; color:#2980b9; }
+    .p-role.housekeeper { background:#eaf5ea; color:#27ae60; }
+    .p-role.raiser      { background:#fff3e0; color:#e67e22; }
+
+    /* ── Reason box ── */
+    .reason-box { background:#fff8e1; border:1px solid #f5c842; border-radius:11px; padding:13px 15px; font-size:0.86rem; color:#4a3800; line-height:1.8; margin-bottom:1rem; }
+
+    /* ── Note box ── */
+    .note-box { background:#eef4eb; border:1px solid #c3dbb8; border-radius:11px; padding:13px 15px; font-size:0.86rem; color:#2d5a1e; line-height:1.7; }
+    .note-label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#5a9148; margin-bottom:5px; }
+
+    /* ── Timeline ── */
+    .timeline { list-style:none; padding:0; margin:0; position:relative; }
+    .timeline::before { content:''; position:absolute; left:15px; top:0; bottom:0; width:2px; background:#f0ebe0; z-index:0; }
+    .tl-item { display:flex; gap:12px; align-items:flex-start; margin-bottom:1.1rem; position:relative; }
+    .tl-dot { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.72rem; flex-shrink:0; z-index:1; border:2px solid #fff; position:relative; }
+    .tl-dot.open         { background:#fff3cd; color:#856404; }
+    .tl-dot.under_review { background:#cce5ff; color:#004085; }
+    .tl-dot.resolved     { background:#d4edda; color:#155724; }
+    .tl-dot.closed       { background:#e2e3e5; color:#383d41; }
+    /* Current dispute highlight */
+    .tl-item.is-current .tl-dot { box-shadow:0 0 0 3px #7C9473, 0 0 0 5px rgba(124,148,115,0.2); }
+    .tl-item.is-current .tl-body { background:#f5fbf3; border:1px solid #c8e6c0; border-radius:10px; padding:10px 12px; }
+    .tl-body { flex:1; }
+    .tl-title { font-size:0.82rem; font-weight:600; color:#5B4636; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+    .tl-date  { font-size:0.71rem; color:#bbb; margin-top:2px; }
+    .tl-note  { font-size:0.78rem; color:#666; margin-top:5px; background:#fdfaf5; padding:7px 10px; border-radius:7px; line-height:1.6; }
+    .tl-note.admin { background:#eef4eb; color:#2d5a1e; }
+    .current-pill { background:#7C9473; color:#fff; font-size:0.62rem; padding:2px 7px; border-radius:6px; font-weight:700; }
+
+    /* ── Resolve form ── */
+    .resolve-section { background:#fff; border-radius:16px; padding:1.4rem 1.6rem; box-shadow:0 4px 16px rgba(0,0,0,0.06); border-top:3px solid #7C9473; margin-bottom:1.1rem; }
+    .rs-title { font-family:"Playfair Display",serif; color:#5B4636; font-size:1rem; font-weight:700; display:flex; align-items:center; gap:8px; margin-bottom:1rem; }
+    .rs-group { margin-bottom:1rem; }
+    .rs-group label { display:block; font-size:0.78rem; font-weight:600; color:#5B4636; margin-bottom:5px; }
+    .rs-group select, .rs-group textarea { width:100%; padding:10px 13px; border:1.5px solid #e8e0d5; border-radius:10px; font-family:"Poppins",sans-serif; font-size:0.86rem; background:#fdfaf5; color:#333; transition:0.2s; box-sizing:border-box; }
+    .rs-group select:focus, .rs-group textarea:focus { outline:none; border-color:#7C9473; box-shadow:0 0 0 3px rgba(124,148,115,0.15); background:#fff; }
+    .rs-group textarea { resize:vertical; min-height:110px; }
+    .rs-submit { width:100%; background:linear-gradient(135deg,#5B4636,#7a5c47); color:#fff; border:none; padding:12px; border-radius:11px; font-family:"Poppins",sans-serif; font-weight:600; font-size:0.9rem; cursor:pointer; transition:0.25s; display:flex; align-items:center; justify-content:center; gap:7px; }
+    .rs-submit:hover { background:linear-gradient(135deg,#7C9473,#5a7a52); transform:translateY(-2px); }
+    .char-counter { text-align:right; font-size:0.7rem; color:#bbb; margin-top:3px; }
+
+    /* ── Resolved note ── */
+    .resolved-note { background:#f8f4ee; border-radius:11px; padding:14px; text-align:center; color:#888; font-size:0.84rem; }
+    .resolved-note i { display:block; font-size:1.6rem; margin-bottom:7px; }
+
+    /* ── Alerts ── */
+    .vd-alert { padding:11px 15px; border-radius:10px; font-size:0.86rem; margin-bottom:1.1rem; display:flex; align-items:center; gap:8px; }
+    .vd-alert.success { background:#d4edda; color:#155724; }
+    .vd-alert.error   { background:#f8d7da; color:#842029; }
+
+    /* ── Quick links ── */
+    .quick-link { display:flex; align-items:center; gap:8px; padding:9px 11px; background:#fdfaf5; border:1px solid #f0ebe0; border-radius:9px; text-decoration:none; font-size:0.83rem; color:#5B4636; font-weight:500; transition:0.2s; margin-bottom:7px; }
+    .quick-link:hover { background:#f0ebe0; }
+    .quick-link i { color:#7C9473; width:14px; }
+
+    /* ── Chip ── */
+    .chip { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:18px; font-size:0.73rem; font-weight:600; }
+  </style>
+</head>
+<body>
+
+<div class="admin-mob-topbar">
+  <span class="mob-logo">Help<span style="color:#A8BFA1;">Nest</span></span>
+  <button class="admin-hamburger" onclick="document.getElementById('adminMobNav').classList.add('open')" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+<div class="admin-mob-overlay" id="adminMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="admin-mob-panel">
+    <button class="admin-mob-close" onclick="document.getElementById('adminMobNav').classList.remove('open')">✕</button>
+    <div class="mob-panel-logo">Help<span>Nest</span></div>
+    <div class="mob-panel-label">Admin Panel</div>
+    <nav class="mob-nav" id="mobNavLinks"></nav>
+    <div class="mob-logout"><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var mobNav = document.getElementById('mobNavLinks');
+  if (mobNav && document.querySelector('.admin-nav')) mobNav.innerHTML = document.querySelector('.admin-nav').innerHTML;
+});
+</script>
+
+<div class="admin-wrapper">
+  
+<aside class="admin-sidebar">
+  <div class="admin-logo">Help<span>Nest</span></div>
+  <p class="admin-label">Admin Panel</p>
+  <nav class="admin-nav">
+    <a href="dashboard.html" class="">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+    <a href="bookings.html" class="">
+      <i class="fa-solid fa-calendar-check"></i> Bookings
+    </a>
+    <a href="users.html" class="">
+      <i class="fa-solid fa-users"></i> Users
+    </a>
+    <a href="housekeepers.html" class="">
+      <i class="fa-solid fa-broom"></i> Housekeepers
+      <span class="nav-badge">1</span>    </a>
+
+    <a href="payments.html" class="">
+      <i class="fa-solid fa-money-bill-wave"></i> Payments
+      <span class="nav-badge">1</span>    </a>
+    <a href="contact-messages.html" class="">
+      <i class="fa-solid fa-envelope"></i> Messages
+      <span class="nav-badge">2</span>    </a>
+    <a href="disputes.html" class="">
+      <i class="fa-solid fa-scale-balanced"></i> Disputes
+      <span class="nav-badge">1</span>    </a>
+        <a href="settings.html" class="">
+      <i class="fa-solid fa-gear"></i> Settings
+    </a>
+      </nav>
+  <div class="admin-logout">
+    <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+</aside>
+  <main class="admin-main">
+
+    
+    <div class="admin-topbar">
+      <div>
+        <h1>Dispute #2</h1>
+        <p>Booking <strong>HN-2026-00012</strong></p>
+      </div>
+      <a href="disputes.html" style="display:inline-flex;align-items:center;gap:6px;color:#888;font-size:0.84rem;text-decoration:none;transition:0.2s;" onmouseover="this.style.color='#5B4636'" onmouseout="this.style.color='#888'">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </a>
+    </div>
+
+    
+        
+    
+        <div class="status-banner" style="background:#f0faf3;border-color:#81c784;">
+      <div class="sb-icon" style="background:#d4edda;color:#155724;">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <div class="sb-text" style="color:#155724;">
+        <h3>Resolved</h3>
+        <p>
+          Raised 07 Oct 2026, 12:00 PM                      &nbsp;·&nbsp; Resolved 09 Oct 2026                  </p>
+      </div>
+      <span class="sb-badge" style="background:#d4edda;color:#155724;">
+        <i class="fa-solid fa-circle-check"></i> Resolved      </span>
+    </div>
+
+    <div class="vd-grid">
+
+      
+      <div>
+
+        
+        <div class="vd-card">
+          <div class="vd-card-title"><i class="fa-solid fa-scale-balanced"></i> Dispute Information</div>
+
+          
+          <p style="font-size:0.72rem;font-weight:700;color:#7C9473;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px;">
+            <i class="fa-solid fa-hand-point-right"></i> Raised By
+          </p>
+          <div class="person-card" style="border-left:3px solid #e67e22;margin-bottom:1rem;">
+            <div class="p-avatar">
+                              <img src="../Uploads/profiles/asif.svg"
+                     onerror="this.style.display='none';this.parentElement.textContent='A'">
+                          </div>
+            <div class="p-info">
+              <h4>Asif Raza</h4>
+              <p><i class="fa-solid fa-envelope" style="color:#A8BFA1;"></i> asif.raza@example.com</p>
+              <p><i class="fa-solid fa-phone" style="color:#A8BFA1;"></i> 0307-7778889</p>
+            </div>
+            <span class="p-role raiser">Housekeeper</span>
+          </div>
+
+          <p style="font-size:0.72rem;font-weight:700;color:#7C9473;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px;">
+            <i class="fa-solid fa-comment-dots"></i> Dispute Reason
+          </p>
+          <div class="reason-box">
+            Payment issue          </div>
+
+                    <p style="font-size:0.72rem;font-weight:700;color:#7C9473;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px;">
+            <i class="fa-solid fa-lock"></i> Internal Note (Admin Only)
+          </p>
+          <div class="note-box" style="background:#fff8e1;border-color:#f5c842;color:#4a3800;">
+            <div class="note-label" style="color:#856404;"><i class="fa-solid fa-lock"></i> Private — Not visible to parties</div>
+            Verified with both parties; remaining amount settled.          </div>
+                  </div>
+
+        
+        <div class="vd-card">
+          <div class="vd-card-title"><i class="fa-solid fa-calendar-check"></i> Booking Details</div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Booking ID</div>
+              <div class="info-value bold">HN-2026-00012</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Booking Status</div>
+              <div class="info-value">
+                <span class="chip" style="background:#d4edda;color:#155724;">Completed</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Service Date</div>
+              <div class="info-value bold">06 Oct 2026</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Service Time</div>
+              <div class="info-value">08:00 AM</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Type</div>
+              <div class="info-value">
+                                  <span class="chip" style="background:#fef9e7;color:#D4A017;">One Time</span>
+                              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Amount</div>
+              <div class="info-value bold">Rs. 500</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Payment</div>
+              <div class="info-value">
+                                  <span class="chip" style="background:#d4edda;color:#155724;"><i class="fa-solid fa-circle-check"></i> Paid</span>
+                              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Booking Created</div>
+              <div class="info-value">03 Oct 2026</div>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="vd-card">
+          <div class="vd-card-title"><i class="fa-solid fa-users"></i> People Involved</div>
+          
+          <div class="person-card">
+            <div class="p-avatar">
+                              <img src="../Uploads/profiles/sana.svg"
+                     onerror="this.style.display='none';this.parentElement.textContent='S'">
+                          </div>
+            <div class="p-info">
+              <h4>Sana Malik</h4>
+              <p><i class="fa-solid fa-envelope" style="color:#A8BFA1;"></i> sana.malik@example.com</p>
+              <p><i class="fa-solid fa-phone" style="color:#A8BFA1;"></i> 0333-4455667</p>
+            </div>
+            <span class="p-role user">User</span>
+          </div>
+          
+          <div class="person-card">
+            <div class="p-avatar" style="background:linear-gradient(135deg,#5B4636,#7a5c47);">
+                              <img src="../Uploads/profiles/asif.svg"
+                     onerror="this.style.display='none';this.parentElement.textContent='A'">
+                          </div>
+            <div class="p-info">
+              <h4>Asif Raza</h4>
+              <p><i class="fa-solid fa-envelope" style="color:#A8BFA1;"></i> asif.raza@example.com</p>
+              <p><i class="fa-solid fa-phone" style="color:#A8BFA1;"></i> 0307-7778889</p>
+                            <p><i class="fa-solid fa-broom" style="color:#A8BFA1;"></i> Car Washer, Gatekeeper</p>
+                          </div>
+            <span class="p-role housekeeper">Helper</span>
+          </div>
+        </div>
+
+      </div>
+
+      
+      <div>
+
+        
+                <div class="vd-card" style="margin-bottom:1.1rem;">
+          <div class="vd-card-title"><i class="fa-solid fa-scale-balanced"></i> Resolution</div>
+          <div class="resolved-note">
+            <i class="fa-solid fa-circle-check" style="color:#155724;"></i>
+            This dispute is <strong>Resolved</strong>.
+                          <p style="margin:6px 0 0;font-size:0.78rem;">
+                Resolved on 09 Oct 2026, 10:00 AM              </p>
+                      </div>
+                    <div class="note-box" style="margin-top:1rem;background:#fff8e1;border-color:#f5c842;color:#4a3800;">
+            <div class="note-label" style="color:#856404;"><i class="fa-solid fa-lock"></i> Internal Note (Admin Only)</div>
+            Verified with both parties; remaining amount settled.          </div>
+                  </div>
+        
+        
+                <div class="vd-card">
+          <div class="vd-card-title">
+            <i class="fa-solid fa-timeline"></i> History
+            <span style="margin-left:auto;font-size:0.72rem;color:#bbb;font-family:'Poppins',sans-serif;font-weight:400;">
+              Booking #12            </span>
+          </div>
+          <ul class="timeline">
+                        <li class="tl-item is-current">
+              <div class="tl-dot resolved">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div class="tl-body">
+                <div class="tl-title">
+                  Dispute #2                                      <span class="current-pill">NOW</span>
+                                    <span style="color:#155724;font-size:0.78rem;font-weight:500;">— Resolved</span>
+                </div>
+                <div class="tl-date">
+                  By Housekeeper                  · 07 Oct 2026, 12:00 PM                                      · Done: 09 Oct 2026                                  </div>
+                                  <div class="tl-note">Payment issue</div>
+                                                  <div class="tl-note admin">
+                    <i class="fa-solid fa-shield-halved" style="color:#7C9473;"></i>
+                    Verified with both parties; remaining amount settled.                  </div>
+                                              </div>
+            </li>
+                      </ul>
+        </div>
+        
+        
+        <div class="vd-card">
+          <div class="vd-card-title"><i class="fa-solid fa-paper-plane"></i> Request Clarification</div>
+          <p style="font-size:0.8rem;color:#888;margin-bottom:1rem;line-height:1.6;">
+            Ask either party for more details before making a decision. They will receive an in-app notification + email.
+          </p>
+<form method="POST" action="#" id="clarifyForm">
+            <input type="hidden" name="csrf_token" value="static-demo-token">
+            <input type="hidden" name="dispute_id" value="2">
+            <input type="hidden" name="booking_id" value="12">
+            <input type="hidden" name="booking_ref" value="HN-2026-00012">
+            <input type="hidden" name="user_id"   value="3">
+            <input type="hidden" name="helper_id" value="7">
+
+            <div class="rs-group">
+              <label style="font-size:0.78rem;font-weight:600;color:#5B4636;display:block;margin-bottom:5px;">Send To</label>
+              <select name="send_to" id="sendToSelect" style="width:100%;padding:10px 13px;border:1.5px solid #e8e0d5;border-radius:10px;font-family:'Poppins',sans-serif;font-size:0.86rem;background:#fdfaf5;color:#333;box-sizing:border-box;">
+                <option value="user">User — Sana Malik</option>
+                <option value="housekeeper">Housekeeper — Asif Raza</option>
+                <option value="both">Both Parties</option>
+              </select>
+            </div>
+
+            <div class="rs-group">
+              <label style="font-size:0.78rem;font-weight:600;color:#5B4636;display:block;margin-bottom:5px;">Message</label>
+              <textarea name="clarification_message" maxlength="1000" rows="4"
+                placeholder="e.g. Please provide any photos or evidence related to this booking..."
+                style="width:100%;padding:10px 13px;border:1.5px solid #e8e0d5;border-radius:10px;font-family:'Poppins',sans-serif;font-size:0.86rem;background:#fdfaf5;color:#333;resize:vertical;box-sizing:border-box;"
+                required></textarea>
+              <div style="text-align:right;font-size:0.7rem;color:#bbb;margin-top:3px;"><span id="clarifyCount">0</span> / 1000</div>
+            </div>
+
+            <button type="button"
+              onclick="confirmClarify()"
+              style="width:100%;background:linear-gradient(135deg,#2980b9,#1a6a9a);color:#fff;border:none;padding:11px;border-radius:11px;font-family:'Poppins',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;transition:0.25s;display:flex;align-items:center;justify-content:center;gap:7px;">
+              <i class="fa-solid fa-paper-plane"></i> Send Clarification Request
+            </button>
+          </form>
+
+                  </div>
+
+        
+        <div class="vd-card">
+          <div class="vd-card-title"><i class="fa-solid fa-arrow-up-right-from-square"></i> Quick Links</div>
+          <a href="disputes.html"     class="quick-link"><i class="fa-solid fa-scale-balanced"></i> All Disputes</a>
+          <a href="bookings.html"     class="quick-link"><i class="fa-solid fa-calendar-check"></i> All Bookings</a>
+          <a href="users.html"        class="quick-link"><i class="fa-solid fa-users"></i> Manage Users</a>
+          <a href="housekeepers.html" class="quick-link"><i class="fa-solid fa-broom"></i> Manage Helpers</a>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── Character counter ──
+const noteField = document.getElementById('adminNoteField');
+const charCount = document.getElementById('charCount');
+if (noteField && charCount) {
+  charCount.textContent = noteField.value.length;
+  noteField.addEventListener('input', () => { charCount.textContent = noteField.value.length; });
+}
+
+// ── Messages per scenario ──
+const raiserType = 'housekeeper';
+const otherType  = raiserType === 'user' ? 'housekeeper' : 'user';
+const bookingId  = 'HN-2026-00012';
+
+const messages = {
+  under_review: {
+    raiser: {
+      user:        `We have received your dispute for booking ${bookingId}. Our team is carefully reviewing your complaint. You will be notified once a decision has been made. Thank you for your patience.`,
+      housekeeper: `We have received your dispute for booking ${bookingId}. Our team is reviewing your case in detail. You will be informed once a decision has been reached. Thank you for bringing this to our attention.`,
+    },
+    other: {
+      housekeeper: `A complaint has been filed regarding booking ${bookingId}. Our team is currently reviewing the matter. Please ensure your records are accurate. You will be notified once a decision has been made.`,
+      user:        `A dispute has been filed regarding booking ${bookingId}. Our team is looking into the details. You will be informed once a decision has been reached.`,
+    }
+  },
+  resolved: {
+    favor_raiser: {
+      raiser: {
+        user:        `✅ Good news! Your dispute for booking ${bookingId} has been resolved in your favor. Our team reviewed your complaint thoroughly and appropriate action has been taken. We apologize for the inconvenience caused.`,
+        housekeeper: `✅ Good news! Your dispute for booking ${bookingId} has been resolved in your favor. Our team reviewed the matter and your case has been upheld. Thank you for your patience.`,
+      },
+      other: {
+        housekeeper: `✅ The dispute regarding booking ${bookingId} has been reviewed. After careful consideration, appropriate action has been taken. Please ensure future services meet our quality standards to avoid further disputes.`,
+        user:        `✅ The dispute regarding booking ${bookingId} has been reviewed and resolved. Our team has completed the assessment and necessary steps have been taken. Thank you for your cooperation.`,
+      }
+    },
+    favor_other: {
+      raiser: {
+        user:        `✅ Your dispute for booking ${bookingId} has been reviewed. After a thorough assessment, our team was unable to uphold your complaint. The case has been closed. If you have further concerns, please contact our support team.`,
+        housekeeper: `✅ Your dispute for booking ${bookingId} has been reviewed. After careful consideration, our team could not uphold your claim. The case has been resolved. Please contact support if you need further assistance.`,
+      },
+      other: {
+        housekeeper: `✅ The dispute filed against you for booking ${bookingId} has been reviewed and resolved in your favor. Our team found no grounds for the complaint. Thank you for your cooperation throughout this process.`,
+        user:        `✅ The dispute filed against you for booking ${bookingId} has been reviewed and resolved in your favor. No further action will be taken. Thank you for your patience.`,
+      }
+    },
+    neutral: {
+      raiser: {
+        user:        `✅ Your dispute for booking ${bookingId} has been resolved. Our team has reviewed both sides and taken appropriate steps to address the matter. We appreciate your patience throughout this process.`,
+        housekeeper: `✅ Your dispute for booking ${bookingId} has been resolved. Our team carefully reviewed both perspectives and the matter has been addressed fairly. Thank you for your cooperation.`,
+      },
+      other: {
+        housekeeper: `✅ The dispute regarding booking ${bookingId} has been resolved. Our team reviewed all details and the matter has been addressed. Please maintain high service standards going forward.`,
+        user:        `✅ The dispute regarding booking ${bookingId} has been resolved. Our team reviewed both sides and the matter has been fairly addressed. Thank you for your understanding.`,
+      }
+    }
+  },
+  closed: {
+    favor_raiser: {
+      raiser: {
+        user:        `Your dispute for booking ${bookingId} has been reviewed and closed. While we acknowledge your concern, our team was unable to find sufficient evidence for further action. If you believe this is an error, please contact our support team.`,
+        housekeeper: `Your dispute for booking ${bookingId} has been reviewed and closed. Our team carefully considered your case but could not find grounds for further action. Thank you for your patience.`,
+      },
+      other: {
+        housekeeper: `The dispute regarding booking ${bookingId} has been closed. Our team reviewed the matter and no further action will be taken against you. Please maintain quality standards in your future services.`,
+        user:        `The dispute regarding booking ${bookingId} has been closed. Our team reviewed all aspects and no further action will be taken. Thank you for your understanding.`,
+      }
+    },
+    favor_other: {
+      raiser: {
+        user:        `Your dispute for booking ${bookingId} has been closed. After a thorough review, our team was unable to uphold your complaint. No further action will be taken. For additional support, please reach out to our team.`,
+        housekeeper: `Your dispute for booking ${bookingId} has been closed. Our team reviewed the case thoroughly but could not uphold your claim. No further action will be taken. Thank you for your patience.`,
+      },
+      other: {
+        housekeeper: `The dispute filed against you for booking ${bookingId} has been reviewed and closed in your favor. Our team found no sufficient grounds for the complaint. No further action will be taken.`,
+        user:        `The dispute filed against you for booking ${bookingId} has been closed. Our team found no sufficient grounds for the complaint and no action will be taken. Thank you for your cooperation.`,
+      }
+    },
+    neutral: {
+      raiser: {
+        user:        `Your dispute for booking ${bookingId} has been closed. After careful review, our team was unable to find sufficient evidence to take further action. We appreciate your understanding and patience throughout this process.`,
+        housekeeper: `Your dispute for booking ${bookingId} has been closed. Our team reviewed the matter carefully but insufficient evidence was found for further action. Thank you for bringing this to our attention.`,
+      },
+      other: {
+        housekeeper: `The dispute regarding booking ${bookingId} has been closed. After reviewing all details, no further action will be taken. Please continue to maintain professional service standards.`,
+        user:        `The dispute regarding booking ${bookingId} has been closed. After reviewing all aspects, no further action will be taken. Thank you for your understanding.`,
+      }
+    }
+  }
+};
+
+function getMessages() {
+  const status     = document.getElementById('newStatusSelect').value;
+  const resolution = document.getElementById('resolutionSelect')?.value || 'neutral';
+
+  let raiserMsg = '', otherMsg = '';
+
+  if (status === 'under_review') {
+    raiserMsg = messages.under_review.raiser[raiserType] || '';
+    otherMsg  = messages.under_review.other[otherType]  || '';
+  } else {
+    raiserMsg = messages[status]?.[resolution]?.raiser?.[raiserType] || '';
+    otherMsg  = messages[status]?.[resolution]?.other?.[otherType]  || '';
+  }
+  return { raiserMsg, otherMsg };
+}
+
+function updateResolutionOptions() {
+  const status = document.getElementById('newStatusSelect').value;
+  const resGroup = document.getElementById('resolutionGroup');
+  const preview  = document.getElementById('messagePreview');
+
+  if (status === 'under_review') {
+    resGroup.style.display = 'none';
+    preview.style.display  = 'none';
+  } else {
+    resGroup.style.display = 'block';
+    preview.style.display  = 'block';
+    updatePreview();
+  }
+}
+
+function updatePreview() {
+  const { raiserMsg, otherMsg } = getMessages();
+  document.getElementById('previewRaiser').textContent = raiserMsg;
+  document.getElementById('previewOther').textContent  = otherMsg;
+}
+
+// Init on load
+updateResolutionOptions();
+
+function confirmResolve() {
+  const noteEl   = document.getElementById('adminNoteField');
+  const statusEl = document.getElementById('newStatusSelect');
+
+  if (!noteEl.value.trim()) {
+    Swal.fire({ icon:'warning', title:'Note Required', text:'Please write an internal note before updating.', confirmButtonColor:'#7C9473' });
+    noteEl.focus();
+    return;
+  }
+
+  const { raiserMsg, otherMsg } = getMessages();
+  const labels = { under_review:'Under Review', resolved:'Resolved', closed:'Closed' };
+
+  Swal.fire({
+    title: 'Confirm Update?',
+    html: `
+      <div style="text-align:left;font-family:'Poppins',sans-serif;font-size:0.83rem;">
+        <div style="background:#f8f4ee;padding:9px;border-radius:9px;margin-bottom:8px;">
+          <div style="color:#7C9473;font-size:0.68rem;font-weight:700;text-transform:uppercase;">New Status</div>
+          <div style="color:#333;font-weight:600;">${labels[statusEl.value] || statusEl.value}</div>
+        </div>
+        <div style="background:#f0f7ee;padding:9px;border-radius:9px;margin-bottom:6px;border-left:3px solid #7C9473;">
+          <div style="color:#7C9473;font-size:0.68rem;font-weight:700;text-transform:uppercase;margin-bottom:3px;">
+            ${raiserType.charAt(0).toUpperCase()+raiserType.slice(1)} will receive:
+          </div>
+          <div style="color:#333;line-height:1.5;font-size:0.8rem;">${raiserMsg}</div>
+        </div>
+        <div style="background:#f0f4ff;padding:9px;border-radius:9px;border-left:3px solid #2980b9;">
+          <div style="color:#2980b9;font-size:0.68rem;font-weight:700;text-transform:uppercase;margin-bottom:3px;">
+            ${otherType.charAt(0).toUpperCase()+otherType.slice(1)} will receive:
+          </div>
+          <div style="color:#333;line-height:1.5;font-size:0.8rem;">${otherMsg}</div>
+        </div>
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonColor: '#7C9473',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: '<i class="fa-solid fa-check"></i> Yes, Update',
+    cancelButtonText: 'Cancel',
+    width: '500px'
+  }).then(result => {
+    if (result.isConfirmed) {
+      // Hidden fields for resolution + messages
+      const form = document.getElementById('resolveForm');
+      const addHidden = (name, val) => {
+        const el = document.createElement('input');
+        el.type = 'hidden'; el.name = name; el.value = val;
+        form.appendChild(el);
+      };
+      addHidden('msg_raiser', raiserMsg);
+      addHidden('msg_other',  otherMsg);
+      const res = document.getElementById('resolutionSelect');
+      if (res) addHidden('resolution', res.value);
+      form.submit();
+    }
+  });
+}
+
+// ── Clarification char counter ──
+const clarifyField = document.querySelector('textarea[name="clarification_message"]');
+const clarifyCount = document.getElementById('clarifyCount');
+if (clarifyField && clarifyCount) {
+  clarifyCount.textContent = clarifyField.value.length;
+  clarifyField.addEventListener('input', () => { clarifyCount.textContent = clarifyField.value.length; });
+}
+
+function confirmClarify() {
+  const msgEl    = document.querySelector('textarea[name="clarification_message"]');
+  const sendToEl = document.getElementById('sendToSelect');
+  if (!msgEl || !msgEl.value.trim()) {
+    Swal.fire({ icon:'warning', title:'Message Required', text:'Please write a message before sending.', confirmButtonColor:'#2980b9' });
+    return;
+  }
+  const sendLabels = { user:'User', housekeeper:'Housekeeper', both:'Both Parties' };
+  Swal.fire({
+    title: 'Send Clarification?',
+    html: `
+      <div style="text-align:left;font-family:'Poppins',sans-serif;font-size:0.84rem;">
+        <div style="background:#f0f6ff;border-left:3px solid #2980b9;border-radius:0 9px 9px 0;padding:10px 13px;margin-bottom:8px;">
+          <div style="color:#2980b9;font-size:0.68rem;font-weight:700;text-transform:uppercase;margin-bottom:3px;">Sending To</div>
+          <div style="color:#333;font-weight:600;">${sendLabels[sendToEl.value] || sendToEl.value}</div>
+        </div>
+        <div style="background:#f8f4ee;border-radius:9px;padding:10px 13px;">
+          <div style="color:#7C9473;font-size:0.68rem;font-weight:700;text-transform:uppercase;margin-bottom:3px;">Your Message</div>
+          <div style="color:#333;line-height:1.6;">${msgEl.value.trim()}</div>
+        </div>
+        <div style="font-size:0.75rem;color:#999;margin-top:9px;">
+          <i class="fa-solid fa-bell" style="color:#A8BFA1;"></i>
+          They will receive an in-app notification and email.
+        </div>
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonColor: '#2980b9',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: '<i class="fa-solid fa-paper-plane"></i> Yes, Send',
+    cancelButtonText: 'Cancel',
+    width: '460px'
+  }).then(result => {
+    if (result.isConfirmed) document.getElementById('clarifyForm').submit();
+  });
+}
+</script>
+
+</body>
+</html>

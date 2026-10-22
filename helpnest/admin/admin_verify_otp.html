@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="admin/admin_verify_otp.html";</script>
+<script src="../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Verify OTP — HelpNest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root { --brown: #5B4636; --brown-dark: #3d2e22; --green: #7C9473; --light-green: #A8BFA1; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+    body { min-height: 100vh; background: linear-gradient(135deg, #5B4636, #7a5c47); display: flex; justify-content: center; align-items: center; padding: 2rem; }
+    .wrapper { display: flex; width: 100%; max-width: 900px; background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.25); animation: fadeUp 0.6s ease both; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+    /* LEFT */
+    .login-left { flex: 1; background: linear-gradient(135deg, #5B4636, #7a5c47); padding: 3rem 2.5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .logo { font-family: "Playfair Display", serif; font-size: 2rem; color: #fff; margin-bottom: 0.5rem; }
+    .logo span { color: var(--light-green); }
+    .admin-badge { background: rgba(168,191,161,0.2); color: var(--light-green); border: 1px solid rgba(168,191,161,0.4); padding: 5px 16px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2rem; }
+    .login-left .main-icon { font-size: 3.5rem; color: rgba(255,255,255,0.15); margin-bottom: 1.5rem; }
+    .login-left h2 { font-family: "Playfair Display", serif; color: #fff; font-size: 1.5rem; margin-bottom: 0.8rem; }
+    .login-left p { color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.7; }
+    .email-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 10px; margin-top: 1.5rem; }
+    .email-badge i { color: var(--light-green); font-size: 0.85rem; }
+    .email-badge span { color: rgba(255,255,255,0.75); font-size: 0.8rem; word-break: break-all; }
+    .timer-wrap { margin-top: 1.5rem; background: rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+    .timer-wrap i { color: var(--light-green); font-size: 1.1rem; }
+    .timer-info { font-size: 0.82rem; color: rgba(255,255,255,0.6); }
+    .timer-info strong { color: #fff; font-size: 1rem; }
+
+    /* RIGHT */
+    .login-right { flex: 1; padding: 3rem 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+    .login-right h2 { font-family: "Playfair Display", serif; color: var(--brown); font-size: 1.8rem; margin-bottom: 0.4rem; }
+    .login-right p.sub { color: #999; font-size: 0.85rem; margin-bottom: 1.5rem; }
+    .masked-email { background: #f0ede6; color: var(--brown); padding: 5px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; display: inline-block; margin-bottom: 1.5rem; }
+
+    .error-msg { background: #fde8e8; color: #c0392b; padding: 10px 14px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 8px; animation: shake 0.4s ease; }
+    .error-msg a { color: #c0392b; font-weight: 600; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+    .otp-label { font-size: 0.82rem; font-weight: 600; color: var(--brown); margin-bottom: 10px; display: block; }
+    .otp-boxes { display: flex; gap: 5px; margin-bottom: 1.5rem; }
+    .otp-box { flex: 1; min-width: 0; width: 0; height: 50px; border: 1.5px solid #e8e0d5; border-radius: 10px; text-align: center; font-size: 1.2rem; font-weight: 700; font-family: "Poppins", sans-serif; color: var(--brown); background: #fdfaf5; transition: all 0.25s; outline: none; padding: 0; box-sizing: border-box; }
+    .otp-box:focus { border-color: var(--green); background: #fff; box-shadow: 0 0 0 3px rgba(124,148,115,0.15); }
+    .otp-box.filled { border-color: var(--light-green); background: #f5faf4; }
+
+    .submit-btn { width: 100%; background: linear-gradient(135deg, var(--brown), #7a5c47); color: #fff; border: none; padding: 13px; border-radius: 12px; font-family: "Poppins", sans-serif; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: 0.25s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .submit-btn:hover { background: linear-gradient(135deg, var(--green), #5a7a52); transform: translateY(-2px); }
+    .resend-wrap { text-align: center; margin-top: 1.2rem; font-size: 0.82rem; color: #999; }
+    .resend-wrap a { color: var(--green); font-weight: 600; text-decoration: none; }
+    .resend-wrap a:hover { text-decoration: underline; }
+    .back-link { text-align: center; margin-top: 0.8rem; font-size: 0.78rem; }
+    .back-link a { color: #bbb; text-decoration: none; }
+    .back-link a:hover { color: var(--brown); }
+
+    @media (max-width: 650px) { .login-left { display: none; } .login-right { padding: 2rem 1.5rem; } }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="login-left">
+    <div class="logo">Help<span>Nest</span></div>
+    <div class="admin-badge">Admin Panel</div>
+    <i class="fa-solid fa-shield-halved main-icon"></i>
+    <h2>Check Your Inbox!</h2>
+    <p>A 6-digit OTP has been sent to your admin email address.</p>
+        <div class="email-badge">
+      <i class="fa-solid fa-envelope"></i>
+      <span>admin@helpnest.pk</span>
+    </div>
+        <div class="timer-wrap">
+      <i class="fa-solid fa-clock"></i>
+      <div class="timer-info">OTP expires in <strong id="countdown">10:00</strong></div>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <h2>Enter OTP</h2>
+    <p class="sub">Check your email for the 6-digit code</p>
+
+        <div class="masked-email">
+      <i class="fa-solid fa-envelope"></i>&nbsp;admin@helpnest.pk    </div>
+    
+    
+    <form method="POST" autocomplete="off" id="otpForm">
+      <input type="hidden" name="csrf_token" value="static-demo-token">
+      <input type="hidden" name="otp" id="otpHidden">
+
+      <label class="otp-label">Enter your 6-digit OTP</label>
+      <div class="otp-boxes">
+                <input type="text" class="otp-box" maxlength="1" inputmode="numeric"
+               data-index="1" id="box1">
+                <input type="text" class="otp-box" maxlength="1" inputmode="numeric"
+               data-index="2" id="box2">
+                <input type="text" class="otp-box" maxlength="1" inputmode="numeric"
+               data-index="3" id="box3">
+                <input type="text" class="otp-box" maxlength="1" inputmode="numeric"
+               data-index="4" id="box4">
+                <input type="text" class="otp-box" maxlength="1" inputmode="numeric"
+               data-index="5" id="box5">
+                <input type="text" class="otp-box" maxlength="1" inputmode="numeric"
+               data-index="6" id="box6">
+              </div>
+
+      <button type="submit" class="submit-btn">
+        <i class="fa-solid fa-shield-check"></i> Verify OTP
+      </button>
+    </form>
+
+    <div class="resend-wrap">
+      Didn't receive it? <a href="admin_forgot_password.html">Resend OTP</a>
+    </div>
+    <div class="back-link">
+      <a href="login.html"><i class="fa-solid fa-arrow-left"></i> Back to Admin Login</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const boxes = document.querySelectorAll('.otp-box');
+boxes.forEach((box, idx) => {
+    box.addEventListener('input', e => {
+        const val = e.target.value.replace(/\D/g, '');
+        e.target.value = val;
+        if (val && idx < boxes.length - 1) boxes[idx + 1].focus();
+        updateFilled();
+    });
+    box.addEventListener('keydown', e => {
+        if (e.key === 'Backspace' && !box.value && idx > 0) {
+            boxes[idx - 1].focus();
+            boxes[idx - 1].value = '';
+            updateFilled();
+        }
+    });
+    box.addEventListener('paste', e => {
+        e.preventDefault();
+        const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6);
+        pasted.split('').forEach((ch, i) => { if (boxes[i]) boxes[i].value = ch; });
+        if (boxes[Math.min(pasted.length, 5)]) boxes[Math.min(pasted.length, 5)].focus();
+        updateFilled();
+    });
+});
+function updateFilled() {
+    boxes.forEach(b => b.classList.toggle('filled', b.value !== ''));
+}
+document.getElementById('otpForm').addEventListener('submit', function(e) {
+    const otp = Array.from(boxes).map(b => b.value).join('');
+    if (otp.length !== 6) { e.preventDefault(); alert('Please enter all 6 digits.'); return; }
+    document.getElementById('otpHidden').value = otp;
+});
+
+// Countdown timer
+let seconds = 600;
+const display = document.getElementById('countdown');
+const timer = setInterval(() => {
+    seconds--;
+    if (seconds <= 0) { clearInterval(timer); display.textContent = '00:00'; display.style.color = '#e74c3c'; return; }
+    const m = String(Math.floor(seconds / 60)).padStart(2,'0');
+    const s = String(seconds % 60).padStart(2,'0');
+    display.textContent = `${m}:${s}`;
+}, 1000);
+
+boxes[0].focus();
+</script>
+</body>
+</html>

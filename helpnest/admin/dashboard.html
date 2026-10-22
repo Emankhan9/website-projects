@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="admin/dashboard.html";</script>
+<script src="../js/static-demo.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | HelpNest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="admin-mob-topbar">
+  <span class="mob-logo">Help<span style="color:#A8BFA1;">Nest</span></span>
+  <button class="admin-hamburger" onclick="document.getElementById('adminMobNav').classList.add('open')" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+
+<div class="admin-mob-overlay" id="adminMobNav" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="admin-mob-panel">
+    <button class="admin-mob-close" onclick="document.getElementById('adminMobNav').classList.remove('open')">✕</button>
+    <div class="mob-panel-logo">Help<span>Nest</span></div>
+    <div class="mob-panel-label">Admin Panel</div>
+    <nav class="mob-nav" id="mobNavLinks"></nav>
+    <div class="mob-logout">
+      <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var mobNav = document.getElementById('mobNavLinks');
+  if (mobNav && document.querySelector('.admin-nav')) {
+    mobNav.innerHTML = document.querySelector('.admin-nav').innerHTML;
+  }
+});
+</script>
+
+<div class="admin-wrapper">
+
+<aside class="admin-sidebar">
+  <div class="admin-logo">Help<span>Nest</span></div>
+  <p class="admin-label">Admin Panel</p>
+  <nav class="admin-nav">
+    <a href="dashboard.html" class="active">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+    <a href="bookings.html" class="">
+      <i class="fa-solid fa-calendar-check"></i> Bookings
+    </a>
+    <a href="users.html" class="">
+      <i class="fa-solid fa-users"></i> Users
+    </a>
+    <a href="housekeepers.html" class="">
+      <i class="fa-solid fa-broom"></i> Housekeepers
+      <span class="nav-badge">1</span>    </a>
+
+    <a href="payments.html" class="">
+      <i class="fa-solid fa-money-bill-wave"></i> Payments
+      <span class="nav-badge">1</span>    </a>
+    <a href="contact-messages.html" class="">
+      <i class="fa-solid fa-envelope"></i> Messages
+      <span class="nav-badge">2</span>    </a>
+    <a href="disputes.html" class="">
+      <i class="fa-solid fa-scale-balanced"></i> Disputes
+      <span class="nav-badge">1</span>    </a>
+        <a href="settings.html" class="">
+      <i class="fa-solid fa-gear"></i> Settings
+    </a>
+      </nav>
+  <div class="admin-logout">
+    <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+</aside>  <main class="admin-main">
+
+    <div class="admin-topbar">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Welcome back, <strong>Admin</strong>! Here's what's happening today.</p>
+      </div>
+      <div class="topbar-date">
+        <i class="fa-solid fa-calendar"></i>
+        Wednesday, 21 Oct 2026      </div>
+    </div>
+
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="fa-solid fa-users"></i></div>
+        <div class="stat-info"><h3>5</h3><p>Total Users</p></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon brown"><i class="fa-solid fa-broom"></i></div>
+        <div class="stat-info"><h3>8</h3><p>Housekeepers</p></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-calendar-check"></i></div>
+        <div class="stat-info"><h3>14</h3><p>Total Bookings</p></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon gold"><i class="fa-solid fa-money-bill-wave"></i></div>
+        <div class="stat-info"><h3>Rs. 125,100</h3><p>Total Earnings</p></div>
+      </div>
+    </div>
+
+    
+    <div class="second-row">
+
+      
+      <div class="admin-card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-calendar-check"></i> Recent Bookings</h2>
+          <a href="bookings.html" class="view-all">View All</a>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>User</th><th>Helper</th><th>Date</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                              <tr>
+                  <td>Hira Siddiqui</td>
+                  <td>Fatima Noor</td>
+                  <td>26 Oct</td>
+                  <td><span class="badge accepted">Accepted</span></td>
+                </tr>
+                              <tr>
+                  <td>Bilal Ahmed</td>
+                  <td>Fatima Noor</td>
+                  <td>24 Oct</td>
+                  <td><span class="badge pending">Pending</span></td>
+                </tr>
+                              <tr>
+                  <td>Ayesha Khan</td>
+                  <td>Fatima Noor</td>
+                  <td>23 Oct</td>
+                  <td><span class="badge pending">Pending</span></td>
+                </tr>
+                              <tr>
+                  <td>Ayesha Khan</td>
+                  <td>Imran Ali</td>
+                  <td>21 Oct</td>
+                  <td><span class="badge accepted">Accepted</span></td>
+                </tr>
+                              <tr>
+                  <td>Sana Malik</td>
+                  <td>Zainab Akhtar</td>
+                  <td>21 Oct</td>
+                  <td><span class="badge accepted">Accepted</span></td>
+                </tr>
+                          </tbody>
+          </table>
+        </div>
+      </div>
+
+      
+      <div class="right-col">
+
+        
+        <div class="admin-card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-chart-pie"></i> Quick Stats</h2>
+          </div>
+          <div class="quick-stat-item">
+            <span><i class="fa-solid fa-clock"></i> Pending Bookings</span>
+            <strong class="gold">2</strong>
+          </div>
+          <div class="quick-stat-item">
+            <span><i class="fa-solid fa-envelope"></i> Unread Messages</span>
+            <strong class="red">2</strong>
+          </div>
+          <div class="quick-stat-item">
+            <span><i class="fa-solid fa-user-check"></i> Active Users</span>
+            <strong class="green">5</strong>
+          </div>
+          <div class="quick-stat-item">
+            <span><i class="fa-solid fa-broom"></i> Housekeepers</span>
+            <strong style="color:var(--brown);">8</strong>
+          </div>
+        </div>
+
+        
+        <div class="admin-card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-envelope"></i> Recent Messages</h2>
+            <a href="contact-messages.html" class="view-all">View All</a>
+          </div>
+                      <div class="msg-item unread">
+              <div class="msg-avatar">A</div>
+              <div class="msg-info">
+                <h4>Ali Hassan</h4>
+                <p>Becoming a helper</p>
+              </div>
+              <span class="unread-dot"></span>            </div>
+                      <div class="msg-item unread">
+              <div class="msg-avatar">M</div>
+              <div class="msg-info">
+                <h4>Maria Joseph</h4>
+                <p>Booking question</p>
+              </div>
+              <span class="unread-dot"></span>            </div>
+                      <div class="msg-item ">
+              <div class="msg-avatar">H</div>
+              <div class="msg-info">
+                <h4>Hamza Qureshi</h4>
+                <p>Feedback</p>
+              </div>
+                          </div>
+                      <div class="msg-item ">
+              <div class="msg-avatar">R</div>
+              <div class="msg-info">
+                <h4>Rabia Anwar</h4>
+                <p>Payment methods</p>
+              </div>
+                          </div>
+                  </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>
