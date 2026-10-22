@@ -1,0 +1,188 @@
+/* ===============================
+   🌿 HELPNEST - RESULT PAGE THEME
+================================= */
+
+:root {
+  --brown: #5B4636;
+  --cream: #F8F4E3;
+  --green: #7C9473;
+  --light-green: #A8BFA1;
+  --text-dark: #333333;
+  --text-light: #ffffff;
+}
+
+/* Global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: var(--cream);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* NAVBAR */
+.navbar {
+  background-color: var(--brown);
+  color: var(--text-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--cream);
+}
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.navbar a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.navbar a:hover,
+.navbar a.active {
+  color: var(--light-green);
+}
+
+.navbar .btn {
+  background-color: var(--green);
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+}
+
+.navbar .btn:hover {
+  background-color: var(--light-green);
+  color: var(--brown);
+}
+
+/* Explore icon */
+.explore-icon i {
+  font-size: 1.4rem;
+  transition: 0.3s;
+  color: var(--cream);
+}
+
+/* ===================================
+   🌟 RESULT PAGE
+=================================== */
+
+.results-section {
+  padding: 4rem 10%;
+  text-align: center;
+}
+
+.results-section h2 {
+  font-size: 2.4rem;
+  color: var(--brown);
+  margin-bottom: 0.5rem;
+  font-family: "Playfair Display", serif;
+}
+
+.result-subtext {
+  color: var(--text-dark);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+}
+
+/* GRID OF PROFILES */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+/* PROFILE CARD */
+.profile-card {
+  background: #ffffff;
+  padding: 1.8rem 1rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.profile-card img {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 3px solid var(--green);
+}
+
+.profile-card h3 {
+  font-size: 1.3rem;
+  color: var(--brown);
+  margin-bottom: 0.3rem;
+}
+
+.profile-card .role {
+  font-size: 0.95rem;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.profile-card .exp {
+  font-size: 0.9rem;
+  margin: 0.4rem 0 1rem;
+  color: var(--text-dark);
+}
+
+.view-btn {
+  background-color: var(--green);
+  color: var(--cream);
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.view-btn:hover {
+  background-color: var(--light-green);
+  color: var(--brown);
+}
+
+/* ===============================
+   📱 RESPONSIVE
+================================= */
+
+@media (max-width: 768px) {
+  .results-section h2 {
+    font-size: 2rem;
+  }
+
+  .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+}

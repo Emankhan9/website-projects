@@ -1,0 +1,167 @@
+/* 🌿 Base Styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #d4bca1, #c6a885);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🌿 Login Section Layout */
+.login-section {
+  display: flex;
+  width: 90%;
+  max-width: 1100px;
+  height: 80vh;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* 🌸 Left Text Side */
+.text-side {
+  flex: 1;
+  background: linear-gradient(to bottom right, #4a3b2e, #7a634e);
+  color: #fff;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.text-side h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.text-side span {
+  color: #f8e7c1;
+}
+
+.text-side p {
+  font-size: 1.1rem;
+  max-width: 500px;
+  color: #e9e9e9;
+  text-align: center;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* 🌼 Right Form Side */
+.form-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(12px);
+}
+
+/* 🌷 Form Container */
+.form-container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2rem 3rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 380px;
+  text-align: center;
+}
+
+.form-container h2 {
+  font-size: 2rem;
+  color: #4a3b2e;
+  margin-bottom: 1.5rem;
+  font-family: "Playfair Display", serif;
+}
+
+/* 🌱 Inputs */
+.input-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #b59f88;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.input-group input:hover {
+  border-color: #7a634e;
+}
+
+/* 🌻 Button */
+.btn {
+  width: 100%;
+  padding: 0.8rem;
+  background: #7C9473;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #5f7a5a;
+  transform: scale(1.03);
+}
+
+/* 🌿 Link */
+.signup-link {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.signup-link a {
+  color: #7a634e;
+  font-weight: 600;
+  text-decoration: none;
+}
+/* 🌿 Theme-Matched Toast Notifications */
+#loginToast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 28px;
+    border-radius: 10px;
+    color: #ffffff;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease-in-out;
+}
+
+#loginToast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+/* Success uses your Sage Green */
+#loginToast.success {
+    background-color: #7C9473; 
+    border-bottom: 4px solid #5f7a5a;
+}
+
+/* Error uses your Dark Brown */
+#loginToast.error {
+    background-color: #4a3b2e;
+    border-bottom: 4px solid #352a21;
+}
