@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="common/view-profile__id-5.html";</script>
+<script src="../js/static-demo.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kashif Mehmood | HelpNest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --green: #7C9473; --brown: #5B4636; --soft-bg: #F9F7F2; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #f0f0f0; margin: 0; padding: 40px 20px; }
+        .main-container { max-width: 950px; margin: 0 auto; background: #fff; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
+
+        /* Profile Hero */
+        .profile-hero { display: flex; padding: 50px; background: var(--soft-bg); align-items: center; gap: 40px; flex-wrap: wrap; }
+        .profile-hero img { width: 200px; height: 200px; border-radius: 25px; object-fit: cover; border: 5px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .hero-details { flex: 1; min-width: 200px; }
+        .hero-details h1 { font-size: 2.5rem; color: var(--brown); margin: 10px 0 5px; }
+        .cat-tag { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #7C9473, #5a7a52); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 12px rgba(124,148,115,0.4); }
+        .view-reviews-link { display: inline-flex; align-items: center; gap: 6px; color: var(--green); font-size: 0.82rem; font-weight: 600; text-decoration: none; margin-top: 12px; transition: color 0.2s; }
+        .view-reviews-link:hover { color: var(--brown); }
+
+        /* Info Grid */
+        .info-grid { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-top: 1px solid #eee; }
+        .info-item { padding: 30px 10px; text-align: center; border-right: 1px solid #eee; }
+        .info-item:last-child { border-right: none; }
+        .info-item i { color: var(--green); font-size: 1.5rem; margin-bottom: 10px; display: block; }
+        .info-item label { display: block; font-size: 0.75rem; color: #999; text-transform: uppercase; font-weight: 600; }
+        .info-item span { font-size: 1.05rem; color: var(--brown); font-weight: 600; }
+
+        /* Availability days styling inside info-item */
+        .avail-days { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 6px; }
+        .avail-pill { background: #eef5ec; color: var(--green); font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 20px; border: 1px solid #c8ddc4; }
+
+        /* Content Area */
+        .content-area { padding: 50px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; }
+        .section-h3 { font-size: 1.2rem; color: var(--brown); margin-bottom: 20px; border-bottom: 2px solid var(--green); display: inline-block; padding-bottom: 5px; }
+        .bio-p { line-height: 1.8; color: #666; font-size: 0.95rem; }
+
+        /* Booking Sidebar */
+        .booking-side { background: var(--soft-bg); padding: 30px; border-radius: 20px; text-align: center; }
+        .price-tag { font-size: 2rem; color: var(--green); font-weight: 700; display: block; margin-bottom: 20px; }
+        .btn-book { background: var(--brown); color: white; width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+        .btn-book:hover { background: var(--green); transform: translateY(-3px); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 20px 12px; }
+            .profile-hero { padding: 30px 20px; gap: 24px; flex-direction: column; align-items: flex-start; }
+            .profile-hero img { width: 140px; height: 140px; }
+            .hero-details h1 { font-size: 1.8rem; }
+            .info-grid { grid-template-columns: repeat(2, 1fr); }
+            .info-item { border-bottom: 1px solid #eee; }
+            .info-item:nth-child(2) { border-right: none; }
+            .info-item:nth-child(3) { border-bottom: none; }
+            .info-item:nth-child(4) { border-right: none; border-bottom: none; }
+            .content-area { grid-template-columns: 1fr; padding: 30px 20px; gap: 24px; }
+            #reviews { padding: 0 20px 30px !important; }
+        }
+        @media (max-width: 480px) {
+            .profile-hero { padding: 24px 16px; }
+            .profile-hero img { width: 110px; height: 110px; }
+            .hero-details h1 { font-size: 1.4rem; }
+            .info-grid { grid-template-columns: 1fr 1fr; }
+            .info-item { padding: 20px 8px; }
+            .content-area { padding: 20px 16px; }
+            .price-tag { font-size: 1.6rem; }
+            #reviews { padding: 0 16px 24px !important; }
+            .main-container { border-radius: 18px; }
+        }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+
+<div style="max-width:950px; margin:0 auto 15px;">
+    <a href="javascript:history.back()"
+       style="display:inline-flex; align-items:center; gap:8px; color:#5B4636;
+              text-decoration:none; font-size:0.88rem; font-weight:600;
+              background:#fff; padding:8px 18px; border-radius:10px;
+              box-shadow:0 2px 8px rgba(0,0,0,0.08); transition:0.2s;"
+       onmouseover="this.style.background='#5B4636'; this.style.color='#fff';"
+       onmouseout="this.style.background='#fff'; this.style.color='#5B4636';">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="main-container">
+
+    <div class="profile-hero">
+                <img src="../Uploads/profiles/kashif.svg"
+             onerror="this.src='../assets/default-avatar.png'"
+             alt="Kashif Mehmood's profile picture">
+
+        <div class="hero-details">
+            <span class="cat-tag">
+                <i class="fa fa-briefcase"></i>
+                Gardener            </span>
+            <h1>
+                Kashif Mehmood
+                                    <i class="fa-solid fa-circle-check"
+                       style="color:#7C9473; font-size:1.3rem; vertical-align:middle; margin-left:8px;"
+                       title="CNIC Verified by HelpNest"></i>
+                            </h1>
+
+            
+                        <div style="display:inline-flex;align-items:center;gap:6px;background:#f0f7ee;border:1.5px solid #c5dac0;border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:600;color:#3a6a35;margin-top:8px;">
+                <i class="fa-solid fa-shield-halved"></i>
+                Identity Verified — CNIC checked by HelpNest Admin
+            </div>
+            
+            
+            <div style="display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap;">
+                                
+                <div id="distanceBadge" style="display:none;align-items:center;gap:5px;background:#f0f7ee;border:1.5px solid #c5dac0;border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:600;color:#3a6a35;">
+                    <i class="fa-solid fa-route"></i>
+                    <span id="distanceText">Calculating...</span>
+                </div>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap;">
+                <span style="color:#f1c40f;">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-stroke"></i>                </span>
+                <span style="font-weight:700; color:#5B4636;">4.5</span>
+                <span style="color:#999; font-size:0.85rem;">(0 reviews)</span>
+            </div>
+
+            
+                    </div>
+    </div>
+
+    
+    <div class="info-grid">
+        <div class="info-item">
+            <i class="fa fa-medal"></i>
+            <label>Experience</label>
+            <span>6 Years</span>
+        </div>
+        <div class="info-item">
+            <i class="fa fa-venus-mars"></i>
+            <label>Gender / Age</label>
+            <span>Male (35)</span>
+        </div>
+        <div class="info-item">
+            <i class="fa fa-wallet"></i>
+            <label>Price Type</label>
+            <span>Fixed Rate</span>
+        </div>
+
+        
+        <div class="info-item">
+            <i class="fa fa-calendar-check"></i>
+            <label>Availability</label>
+                            <div class="avail-days">
+                                            <span class="avail-pill">Tue</span>
+                                            <span class="avail-pill">Thu</span>
+                                            <span class="avail-pill">Sat</span>
+                                    </div>
+                    </div>
+    </div>
+
+    <div class="content-area">
+        <div class="main-info">
+            <h3 class="section-h3">About Specialist</h3>
+            <p class="bio-p">
+                Passionate gardener — lawn care, seasonal planting, pruning and indoor plants.            </p>
+        </div>
+
+        <div class="booking-side">
+            <label style="color:#888; font-size:0.9rem;">Service Starts From</label>
+            <span class="price-tag">
+                Rs. 600                <small style="font-size:1rem;">/hr</small>
+            </span>
+
+                            <button class="btn-book"
+                        onclick="window.location.href='login.html'">
+                    <i class="fa-solid fa-lock"></i> Login to Book
+                </button>
+            
+            <p style="font-size:0.8rem; color:#999; margin-top:15px;">
+                <i class="fa fa-shield-halved"></i> HelpNest Secure Payment
+            </p>
+        </div>
+    </div>
+
+    
+    <div id="reviews" style="padding:0 50px 50px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; padding-bottom:15px; border-bottom:1px solid #eee; flex-wrap:wrap; gap:8px;">
+            <h3 style="color:#5B4636; font-size:1.3rem; margin:0;">Client Reviews</h3>
+            <span style="color:#999; font-size:0.85rem;">0 reviews</span>
+        </div>
+
+                    <div style="text-align:center; padding:40px; color:#bbb;">
+                <i class="fa-regular fa-comment-dots" style="font-size:2.5rem; display:block; margin-bottom:10px;"></i>
+                <p>No reviews yet.</p>
+            </div>
+            </div>
+
+</div>
+<script>
+// ── Helper ka safe location (rounded — exact nahi) ──
+const helperLat = 24.9;
+const helperLng = 67.19;
+
+// ── Haversine distance ──
+function calcDistance(lat1, lng1, lat2, lng2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2)
+            + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180)
+            * Math.sin(dLng/2) * Math.sin(dLng/2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+// ── sessionStorage se saved location lo ──
+document.addEventListener('DOMContentLoaded', function() {
+    if (!helperLat || !helperLng) return;
+
+    const badge    = document.getElementById('distanceBadge');
+    const distText = document.getElementById('distanceText');
+
+    // Pehle sessionStorage check karo
+    const savedLat = parseFloat(sessionStorage.getItem('hn_lat'));
+    const savedLng = parseFloat(sessionStorage.getItem('hn_lng'));
+
+    if (savedLat && savedLng) {
+        const dist = calcDistance(savedLat, savedLng, helperLat, helperLng);
+        distText.textContent = dist.toFixed(1) + ' km from you';
+        badge.style.display  = 'inline-flex';
+        return;
+    }
+
+    // sessionStorage mein nahi — browser se lo (silently)
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(function(pos) {
+        const dist = calcDistance(pos.coords.latitude, pos.coords.longitude, helperLat, helperLng);
+        distText.textContent = dist.toFixed(1) + ' km from you';
+        badge.style.display  = 'inline-flex';
+        // Save karo future ke liye
+        sessionStorage.setItem('hn_lat', pos.coords.latitude);
+        sessionStorage.setItem('hn_lng', pos.coords.longitude);
+    }, function() {}, { timeout: 5000, maximumAge: 300000 });
+});
+</script>
+</body>
+</html>

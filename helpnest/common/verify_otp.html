@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="common/verify_otp.html";</script>
+<script src="../js/static-demo.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Verify OTP | HelpNest</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --brown: #5B4636; --green: #7C9473; --cream: #EDE6D6; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--cream);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .verify-box {
+            background: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(91,70,54,0.15);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        .icon-wrap {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--green), #5a7a52);
+            color: #fff;
+            font-size: 1.5rem;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--brown);
+            font-size: 1.6rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .subtitle {
+            color: #999;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 0.3rem;
+        }
+
+        .expire-note {
+            font-size: 0.75rem;
+            color: #bbb;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ✅ 6 OTP Boxes */
+        .otp-wrap {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 0.5rem 0 1.5rem;
+        }
+
+        .otp-box {
+            width: 50px;
+            height: 58px;
+            border: 1.5px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--brown);
+            background: #fdfaf5;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .otp-box:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(124,148,115,0.18);
+            background: #fff;
+        }
+
+        .otp-box.filled {
+            border-color: var(--green);
+            background: #f0f7ee;
+        }
+
+        .error {
+            background: #fde8e8;
+            color: #c0392b;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.83rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--green), #5a7a52);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(124,148,115,0.3);
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            color: #aaa;
+            text-decoration: none;
+        }
+
+        .back-link:hover { color: var(--brown); }
+    </style>
+</head>
+<body>
+<div class="verify-box">
+
+    <div class="icon-wrap">
+        <i class="fa-solid fa-envelope-open-text"></i>
+    </div>
+
+    <h2>Verify Your Email</h2>
+    <p class="subtitle">We've sent a 6-digit code to your email.<br>Enter it below to continue.</p>
+    <p class="expire-note"><i class="fa-solid fa-clock"></i> Expires in 2 minutes &nbsp;|&nbsp; Max 5 attempts</p>
+
+    
+    <form method="POST" id="otpForm">
+        
+        <input type="hidden" name="csrf_token" value="static-demo-token">
+        
+        <input type="hidden" name="otp" id="otpHidden">
+
+        
+        <div class="otp-wrap">
+            <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="d0" autocomplete="off">
+            <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="d1" autocomplete="off">
+            <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="d2" autocomplete="off">
+            <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="d3" autocomplete="off">
+            <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="d4" autocomplete="off">
+            <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="d5" autocomplete="one-time-code">
+        </div>
+
+        <button type="submit" class="submit-btn">
+            <i class="fa-solid fa-check-circle"></i> Verify OTP
+        </button>
+    </form>
+
+    <a href="login.html" class="back-link">← Back to Login</a>
+</div>
+
+<script>
+const boxes   = Array.from(document.querySelectorAll('.otp-box'));
+const hidden  = document.getElementById('otpHidden');
+const form    = document.getElementById('otpForm');
+
+function updateHidden() {
+    hidden.value = boxes.map(b => b.value).join('');
+}
+
+boxes.forEach((box, i) => {
+
+    // ✅ Sirf numbers allow karo, automatically next box par jao
+    box.addEventListener('input', e => {
+        const val = e.target.value.replace(/[^0-9]/g, '');
+        box.value = val.slice(-1);
+        box.classList.toggle('filled', box.value !== '');
+        updateHidden();
+        if (box.value && i < 5) boxes[i + 1].focus();
+    });
+
+    // ✅ Backspace — previous box par wapas jao
+    box.addEventListener('keydown', e => {
+        if (e.key === 'Backspace') {
+            if (box.value) {
+                box.value = '';
+                box.classList.remove('filled');
+                updateHidden();
+            } else if (i > 0) {
+                boxes[i - 1].focus();
+                boxes[i - 1].value = '';
+                boxes[i - 1].classList.remove('filled');
+                updateHidden();
+            }
+        }
+        // ✅ Arrow keys se navigate karo
+        if (e.key === 'ArrowLeft'  && i > 0) boxes[i - 1].focus();
+        if (e.key === 'ArrowRight' && i < 5) boxes[i + 1].focus();
+    });
+
+    // ✅ Gmail ya kisi bhi jagah se paste karo — sab boxes fill ho jayen
+    box.addEventListener('paste', e => {
+        e.preventDefault();
+        const pasted = e.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+        pasted.split('').forEach((ch, idx) => {
+            if (boxes[idx]) {
+                boxes[idx].value = ch;
+                boxes[idx].classList.add('filled');
+            }
+        });
+        const nextEmpty = Math.min(pasted.length, 5);
+        boxes[nextEmpty].focus();
+        updateHidden();
+    });
+});
+
+// ✅ Form submit se pehle check karo — 6 digits hain ya nahi
+form.addEventListener('submit', e => {
+    const otp = boxes.map(b => b.value).join('');
+    if (otp.length < 6) {
+        e.preventDefault();
+        alert('Please enter all 6 digits.');
+        boxes.find(b => !b.value)?.focus();
+        return;
+    }
+    updateHidden();
+});
+
+// ✅ Page load par pehla box focus
+boxes[0].focus();
+</script>
+</body>
+</html>

@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>window.HN_ROOT="../";window.HN_PAGE="common/register.html";</script>
+<script src="../js/static-demo.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpNest | Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --brown: #5B4636; --brown-dark: #3d2e22; --green: #7C9473; --green-light: #A8BFA1; --cream: #F5EFE0; --cream-dark: #EDE6D6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; min-height: 100vh; background: var(--cream); display: flex; align-items: center; justify-content: center; padding: 2rem; position: relative; overflow-x: hidden; }
+        body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(124,148,115,0.18), transparent 70%); pointer-events: none; }
+        body::after  { content: ''; position: fixed; bottom: -100px; left: -100px; width: 350px; height: 350px; border-radius: 50%; background: radial-gradient(circle, rgba(91,70,54,0.12), transparent 70%); pointer-events: none; }
+        .register-wrapper { display: flex; width: 100%; max-width: 1060px; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 80px rgba(91,70,54,0.18), 0 8px 24px rgba(0,0,0,0.08); position: relative; z-index: 1; animation: fadeUp 0.6s ease both; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .reg-left { flex: 0.85; background: linear-gradient(160deg, var(--brown-dark) 0%, var(--brown) 50%, #7a5c47 100%); padding: 3rem 2.5rem; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+        .reg-left::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%; border: 40px solid rgba(255,255,255,0.05); }
+        .reg-left::after  { content: ''; position: absolute; bottom: -80px; left: -80px; width: 280px; height: 280px; border-radius: 50%; border: 50px solid rgba(255,255,255,0.04); }
+        .brand { position: relative; z-index: 2; }
+        .brand-logo { font-family: 'Playfair Display', serif; font-size: 2rem; color: #fff; }
+        .brand-logo span { color: var(--green-light); }
+        .brand-tagline { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+        .left-middle { position: relative; z-index: 2; }
+        .left-middle h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #fff; margin-bottom: 0.8rem; line-height: 1.4; }
+        .left-middle p { color: rgba(255,255,255,0.55); font-size: 0.83rem; line-height: 1.8; margin-bottom: 1.5rem; }
+        .step-list { display: flex; flex-direction: column; gap: 14px; }
+        .step-item { display: flex; align-items: flex-start; gap: 12px; }
+        .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.12); color: var(--green-light); font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+        .step-text { font-size: 0.8rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
+        .step-text strong { color: rgba(255,255,255,0.9); display: block; }
+        .left-bottom { position: relative; z-index: 2; }
+        .left-bottom p { font-size: 0.75rem; color: rgba(255,255,255,0.3); }
+        .left-bottom a { color: var(--green-light); text-decoration: none; font-weight: 600; }
+        .reg-right { flex: 1; background: #fff; padding: 2.5rem 2.8rem; max-height: 92vh; overflow-y: auto; }
+        .reg-right::-webkit-scrollbar { width: 4px; }
+        .reg-right::-webkit-scrollbar-track { background: #f8f4ee; }
+        .reg-right::-webkit-scrollbar-thumb { background: var(--green-light); border-radius: 4px; }
+        .right-header { margin-bottom: 1.5rem; }
+        .right-header h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--brown); margin-bottom: 0.3rem; }
+        .right-header p { color: #999; font-size: 0.83rem; }
+        .role-toggle { display: flex; background: #f8f4ee; border-radius: 14px; padding: 5px; gap: 5px; margin-bottom: 1.5rem; }
+        .role-btn { flex: 1; padding: 10px 8px; border-radius: 10px; border: none; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 7px; background: transparent; color: #bbb; }
+        .role-btn.active { background: #fff; color: var(--brown); box-shadow: 0 2px 10px rgba(91,70,54,0.12); }
+        .role-btn:hover:not(.active) { color: var(--brown); }
+        .error-msg { background: #fde8e8; color: #c0392b; padding: 11px 14px; border-radius: 12px; font-size: 0.83rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 8px; animation: shake 0.4s ease; }
+        @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem 1rem; }
+        .form-grid .full { grid-column: 1 / -1; }
+        .form-group { margin-bottom: 0; }
+        .form-group label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--brown); margin-bottom: 5px; }
+        .input-wrap { position: relative; }
+        .input-wrap i.input-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: #ccc; font-size: 0.82rem; transition: color 0.2s; }
+        .input-wrap input, .input-wrap select, .input-wrap textarea { width: 100%; padding: 10px 12px 10px 36px; border: 1.5px solid #ede8e0; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.85rem; background: #fdfaf5; color: #333; transition: all 0.25s; }
+        .input-wrap textarea { padding-top: 10px; resize: none; }
+        .input-wrap select { cursor: pointer; }
+        .input-wrap input:focus, .input-wrap select:focus, .input-wrap textarea:focus { outline: none; border-color: var(--green); background: #fff; box-shadow: 0 0 0 3px rgba(124,148,115,0.12); }
+        .input-wrap:focus-within i.input-icon { color: var(--green); }
+        .file-input-wrap { position: relative; cursor: pointer; }
+        .file-input-wrap input[type="file"] { padding: 8px 12px 8px 36px; cursor: pointer; }
+        .file-input-wrap input[type="file"]::-webkit-file-upload-button { background: var(--green); color: #fff; border: none; padding: 4px 12px; border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 0.75rem; cursor: pointer; }
+        .phone-wrap { position: relative; }
+        .phone-prefix { position: absolute; left: 36px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: #999; font-weight: 600; pointer-events: none; }
+        .phone-wrap input { padding-left: 72px !important; }
+        .hk-section { display: none; background: #f8f4ee; border-radius: 14px; padding: 1.2rem; margin-top: 0.5rem; border: 1.5px dashed var(--green-light); }
+        .hk-section.show { display: block; animation: fadeUp 0.3s ease; }
+        .hk-section-title { font-size: 0.78rem; font-weight: 700; color: var(--brown); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 6px; }
+        .hk-section-title i { color: var(--green); }
+        .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+        .cat-checkbox-label { display: flex; align-items: center; gap: 8px; background: #fff; border: 1.5px solid #ede8e0; border-radius: 10px; padding: 8px 12px; cursor: pointer; font-size: 0.8rem; color: #555; font-weight: 500; transition: all 0.2s ease; user-select: none; }
+        .cat-checkbox-label:hover { border-color: var(--green-light); background: #f5fff3; }
+        .cat-checkbox-label input[type="checkbox"] { display: none; }
+        .cat-checkbox-label .cat-tick { width: 18px; height: 18px; border: 2px solid #ccc; border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; font-size: 0.65rem; color: #fff; }
+        .cat-checkbox-label input[type="checkbox"]:checked ~ .cat-tick { background: var(--green); border-color: var(--green); }
+        .cat-checkbox-label input[type="checkbox"]:checked ~ .cat-tick::after { content: '✓'; }
+        .cat-checkbox-label.checked { border-color: var(--green); background: #f0f7ee; color: var(--brown); font-weight: 600; }
+        .cat-checkbox-label.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+        .cat-limit-note { font-size: 0.73rem; color: #999; margin-top: 6px; }
+        .cat-limit-note span { font-weight: 700; color: var(--green); }
+        .days-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 4px; }
+        .day-label { display: flex; flex-direction: column; align-items: center; gap: 5px; background: #fff; border: 1.5px solid #ede8e0; border-radius: 10px; padding: 8px 6px; cursor: pointer; font-size: 0.75rem; color: #555; font-weight: 500; transition: all 0.2s ease; user-select: none; text-align: center; }
+        .day-label:hover { border-color: var(--green-light); background: #f5fff3; }
+        .day-label input[type="checkbox"] { display: none; }
+        .day-label .day-tick { width: 20px; height: 20px; border: 2px solid #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: #fff; transition: all 0.2s; }
+        .day-label input[type="checkbox"]:checked ~ .day-tick { background: var(--green); border-color: var(--green); }
+        .day-label input[type="checkbox"]:checked ~ .day-tick::after { content: '✓'; }
+        .day-label.checked { border-color: var(--green); background: #f0f7ee; color: var(--brown); font-weight: 600; }
+        .field-hint { font-size: 0.72rem; color: #aaa; margin-top: 4px; }
+        .pass-note { font-size: 0.72rem; margin-top: 4px; min-height: 16px; display: block; }
+        .pass-note.match   { color: var(--green); }
+        .pass-note.nomatch { color: #e74c3c; }
+        .pass-hint { font-size: 0.72rem; color: #aaa; margin-top: 4px; }
+        .submit-btn { width: 100%; padding: 13px; border: none; border-radius: 12px; background: linear-gradient(135deg, var(--green), #5a7a52); color: #fff; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.92rem; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 1.2rem; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(124,148,115,0.3); }
+        .submit-btn.hk-btn { background: linear-gradient(135deg, var(--brown), #7a5c47); }
+        .submit-btn.hk-btn:hover { box-shadow: 0 8px 20px rgba(91,70,54,0.25); }
+        .login-link { text-align: center; margin-top: 1rem; font-size: 0.82rem; color: #999; }
+        .login-link a { color: var(--green); text-decoration: none; font-weight: 600; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(6px); animation: fadeUp 0.3s ease; }
+        .modal-box { background: #fff; padding: 2.5rem; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+        .modal-icon { width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, var(--green), var(--green-light)); color: #fff; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+        .modal-box h2 { font-family: 'Playfair Display', serif; color: var(--brown); margin-bottom: 0.5rem; }
+        .modal-box p { color: #999; font-size: 0.85rem; margin-bottom: 1.5rem; }
+        .modal-btn { padding: 12px 32px; background: linear-gradient(135deg, var(--green), #5a7a52); color: #fff; border: none; border-radius: 12px; font-family: 'Poppins', sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: 0.25s; }
+        .modal-btn:hover { transform: translateY(-2px); }
+        @media (max-width: 750px) {
+            body { align-items: flex-start !important; padding: 1rem !important; overflow-y: auto !important; }
+            .register-wrapper { flex-direction: column !important; border-radius: 16px !important; max-height: none !important; overflow: visible !important; }
+            .reg-left { display: none !important; }
+            .reg-right { padding: 2rem 1.5rem !important; max-height: none !important; overflow-y: visible !important; border-radius: 16px !important; }
+            .form-grid { grid-template-columns: 1fr !important; }
+            .category-grid { grid-template-columns: 1fr 1fr !important; }
+            .days-grid { grid-template-columns: repeat(4, 1fr) !important; }
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="register-wrapper">
+    <div class="reg-left">
+        <div class="brand">
+            <div class="brand-logo">Help<span>Nest</span></div>
+            <div class="brand-tagline">Trusted Home Services</div>
+        </div>
+        <div class="left-middle">
+            <h2>Join HelpNest<br><em>in 3 Easy Steps</em></h2>
+            <p>Create your account and start your journey with Sialkot's most trusted home service platform.</p>
+            <div class="step-list">
+                <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Fill Your Details</strong>Basic info, role & contact details</div></div>
+                <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Verify Your Email</strong>Click the link we send to your inbox</div></div>
+                <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Start Using HelpNest</strong>Book services or accept requests!</div></div>
+            </div>
+        </div>
+        <div class="left-bottom">
+            <p>Already have an account? <a href="login.html">Sign in here</a></p>
+        </div>
+    </div>
+
+    <div class="reg-right">
+        <div class="right-header">
+            <h2>Create Account</h2>
+            <p>Fill in your details to get started</p>
+        </div>
+
+        <div class="role-toggle">
+            <button type="button" class="role-btn active" id="userRoleBtn" onclick="switchRole('user')">
+                <i class="fa-solid fa-user"></i> Customer
+            </button>
+            <button type="button" class="role-btn" id="hkRoleBtn" onclick="switchRole('housekeeper')">
+                <i class="fa-solid fa-broom"></i> Housekeeper
+            </button>
+        </div>
+
+        
+        <form action="register.html" method="POST" enctype="multipart/form-data" id="regForm">
+            <input type="hidden" name="csrf_token" value="static-demo-token">
+            <input type="hidden" name="role" id="roleInput" value="user">
+
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label>Full Name</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-user input-icon"></i>
+                        <input type="text" name="fullname" maxlength="100" placeholder="Enter your full name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input type="email" name="email" maxlength="254" placeholder="you@email.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <div class="input-wrap phone-wrap">
+                        <i class="fa-solid fa-phone input-icon"></i>
+                        <span class="phone-prefix">+92</span>
+                        <input type="tel" name="phone" placeholder="3XXXXXXXXX" required pattern="[3][0-9]{9}" maxlength="10">
+                    </div>
+                </div>
+                <div class="form-group full">
+                    <label id="addressLabel">Residential Address</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-location-dot input-icon"></i>
+                        <input type="text" name="address" id="regAddress" maxlength="300" placeholder="Area / Mohalla, City (e.g. Rangpura, Sialkot)" required>
+                        <input type="hidden" name="latitude"  id="regLat">
+                        <input type="hidden" name="longitude" id="regLng">
+                        <button type="button" onclick="captureGPS()" id="gpsBtn"
+                            style="margin-top:6px;display:inline-flex;align-items:center;gap:6px;padding:7px 15px;
+                                   border-radius:50px;border:1.5px solid #7C9473;background:#f0f7ee;
+                                   color:#5a7a52;font-family:'Poppins',sans-serif;font-size:0.76rem;font-weight:600;
+                                   cursor:pointer;transition:all 0.25s;">
+                            <i class="fa-solid fa-location-crosshairs"></i> Detect My Location
+                        </button>
+                        <div id="gpsStatus" style="font-size:0.74rem;margin-top:4px;display:none;
+                             padding:5px 10px;border-radius:7px;"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-venus-mars input-icon"></i>
+                        <select name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-calendar-days input-icon"></i>
+                        
+                        <input type="date" name="dob" id="dobInput" required>
+                    </div>
+                </div>
+                <div class="form-group full">
+                    <label>Profile Picture <small style="color:#aaa;">(JPG/PNG/WEBP, max 2MB)</small></label>
+                    <div class="input-wrap file-input-wrap">
+                        <i class="fa-solid fa-image input-icon"></i>
+                        <input type="file" name="profile_pic" accept="image/jpeg,image/png,image/webp" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" name="password" id="password" placeholder="Min 8 chars, 1 capital, 1 number" required minlength="8" maxlength="200">
+                    </div>
+                    <span class="pass-hint">Min 8 characters, 1 uppercase, 1 number</span>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" name="confirm_password" id="confirm_password" placeholder="Repeat password" required maxlength="200" onkeyup="validatePassword()">
+                    </div>
+                    <span class="pass-note" id="passNote"></span>
+                </div>
+            </div>
+
+            
+            
+            
+            <div class="hk-section" id="hkFields">
+
+                
+                <div class="hk-section-title"><i class="fa-solid fa-briefcase"></i> Service Information</div>
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label>Service Categories <span style="color:#999;font-weight:400;">(Select up to 3)</span></label>
+                        <div class="category-grid" id="categoryGrid">
+                                                        <label class="cat-checkbox-label" onclick="handleCatClick(this)">
+                                <input type="checkbox" name="service_category[]" value="Home Cleaning">
+                                <span class="cat-tick"></span>
+                                Home Cleaning                            </label>
+                                                        <label class="cat-checkbox-label" onclick="handleCatClick(this)">
+                                <input type="checkbox" name="service_category[]" value="Cooking">
+                                <span class="cat-tick"></span>
+                                Cooking                            </label>
+                                                        <label class="cat-checkbox-label" onclick="handleCatClick(this)">
+                                <input type="checkbox" name="service_category[]" value="Babysitting">
+                                <span class="cat-tick"></span>
+                                Babysitting                            </label>
+                                                        <label class="cat-checkbox-label" onclick="handleCatClick(this)">
+                                <input type="checkbox" name="service_category[]" value="Elder Care">
+                                <span class="cat-tick"></span>
+                                Elder Care                            </label>
+                                                        <label class="cat-checkbox-label" onclick="handleCatClick(this)">
+                                <input type="checkbox" name="service_category[]" value="Laundry &amp; Ironing">
+                                <span class="cat-tick"></span>
+                                Laundry &amp; Ironing                            </label>
+                                                        <label class="cat-checkbox-label" onclick="handleCatClick(this)">
+                                <input type="checkbox" name="service_category[]" value="Driver">
+                                <span class="cat-tick"></span>
+                                Driver                            </label>
+                                                        <label class="cat-checkbox-label" onclick="handleCatClick(this)">
+                                <input type="checkbox" name="service_category[]" value="Gardener">
+                                <span class="cat-tick"></span>
+                                Gardener                            </label>
+                                                        <label class="cat-checkbox-label" onclick="handleCatClick(this)">
+                                <input type="checkbox" name="service_category[]" value="Car Washer">
+                                <span class="cat-tick"></span>
+                                Car Washer                            </label>
+                                                        <label class="cat-checkbox-label" onclick="handleCatClick(this)">
+                                <input type="checkbox" name="service_category[]" value="Gatekeeper">
+                                <span class="cat-tick"></span>
+                                Gatekeeper                            </label>
+                                                        <label class="cat-checkbox-label" onclick="handleCatClick(this)">
+                                <input type="checkbox" name="service_category[]" value="Pet Sitter">
+                                <span class="cat-tick"></span>
+                                Pet Sitter                            </label>
+                                                        <label class="cat-checkbox-label" onclick="handleCatClick(this)">
+                                <input type="checkbox" name="service_category[]" value="Event Server">
+                                <span class="cat-tick"></span>
+                                Event Server                            </label>
+                                                    </div>
+                        <p class="cat-limit-note">Selected: <span id="catCount">0</span> / 3</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Experience (Years)</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-clock input-icon"></i>
+                            <input type="number" name="experience" min="0" max="40" placeholder="e.g. 3">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Price Per Hour (PKR)</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-money-bill input-icon"></i>
+                            <input type="number" name="price_per_hour" min="0" max="99999" placeholder="e.g. 800">
+                        </div>
+                    </div>
+                    <div class="form-group full">
+                        <label>Short Bio</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-pen input-icon"></i>
+                            <textarea name="bio" rows="2" maxlength="1000" placeholder="Tell clients about yourself..."></textarea>
+                        </div>
+                    </div>
+
+                    
+                    <div class="form-group full">
+                        <label>Availability <span style="color:#999;font-weight:400;">(Select working days)</span></label>
+                        <div class="days-grid">
+                                                        <label class="day-label" onclick="handleDayClick(this)">
+                                <input type="checkbox" name="availability[]" value="Monday">
+                                <span class="day-tick"></span>
+                                Mon                            </label>
+                                                        <label class="day-label" onclick="handleDayClick(this)">
+                                <input type="checkbox" name="availability[]" value="Tuesday">
+                                <span class="day-tick"></span>
+                                Tue                            </label>
+                                                        <label class="day-label" onclick="handleDayClick(this)">
+                                <input type="checkbox" name="availability[]" value="Wednesday">
+                                <span class="day-tick"></span>
+                                Wed                            </label>
+                                                        <label class="day-label" onclick="handleDayClick(this)">
+                                <input type="checkbox" name="availability[]" value="Thursday">
+                                <span class="day-tick"></span>
+                                Thu                            </label>
+                                                        <label class="day-label" onclick="handleDayClick(this)">
+                                <input type="checkbox" name="availability[]" value="Friday">
+                                <span class="day-tick"></span>
+                                Fri                            </label>
+                                                        <label class="day-label" onclick="handleDayClick(this)">
+                                <input type="checkbox" name="availability[]" value="Saturday">
+                                <span class="day-tick"></span>
+                                Sat                            </label>
+                                                        <label class="day-label" onclick="handleDayClick(this)">
+                                <input type="checkbox" name="availability[]" value="Sunday">
+                                <span class="day-tick"></span>
+                                Sun                            </label>
+                                                    </div>
+                    </div>
+
+                    
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-clock" style="color:var(--green);margin-right:5px;"></i>Available From</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-sun input-icon"></i>
+                            <input type="time" name="available_from" id="availFrom" value="09:00" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-clock" style="color:var(--green);margin-right:5px;"></i>Available Till</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-moon input-icon"></i>
+                            <input type="time" name="available_till" id="availTill" value="18:00" required>
+                        </div>
+                        <span class="field-hint" id="timeHint" style="color:#e74c3c;display:none;"><i class="fa-solid fa-triangle-exclamation"></i> "Till" time must be after "From" time</span>
+                    </div>
+                </div>
+
+                
+                <div class="hk-section-title" style="margin-top:1rem;"><i class="fa-solid fa-certificate"></i> Professional Certificates <span style="color:#999;font-weight:400;font-size:0.75rem;">(Required for selected categories)</span></div>
+                <div class="cert-notice" style="background:#fff8e8;border:1.5px solid #f0c040;border-radius:10px;padding:10px 14px;font-size:0.78rem;color:#856404;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Uploading certificates helps display a verified badge on your profile. Relevant fields will appear below based on your selected categories.
+                </div>
+                <div class="form-grid" id="certFields">
+
+                    
+                    <div class="form-group full cert-field" data-for="Babysitting" style="display:none;">
+                        <label>
+                            <i class="fa-solid fa-baby" style="color:#7C9473;margin-right:5px;"></i>Babysitting — Child Care / First Aid Certificate
+                            <span style="color:#e74c3c;"> *</span>
+                            <small style="color:#aaa;">(JPG/PNG, max 2MB)</small>
+                        </label>
+                        <div class="input-wrap file-input-wrap">
+                            <i class="fa-solid fa-file-medical input-icon"></i>
+                            <input type="file" name="cert_babysitting" accept="image/jpeg,image/png,image/webp">
+                        </div>
+                        <span class="field-hint">Upload a child care training or basic first aid certificate</span>
+                    </div>
+
+                    
+                    <div class="form-group full cert-field" data-for="Elder Care" style="display:none;">
+                        <label>
+                            <i class="fa-solid fa-person-cane" style="color:#7C9473;margin-right:5px;"></i>Elder Care — Caregiver Training Certificate
+                            <span style="color:#e74c3c;"> *</span>
+                            <small style="color:#aaa;">(JPG/PNG, max 2MB)</small>
+                        </label>
+                        <div class="input-wrap file-input-wrap">
+                            <i class="fa-solid fa-file-medical input-icon"></i>
+                            <input type="file" name="cert_elder_care" accept="image/jpeg,image/png,image/webp">
+                        </div>
+                        <span class="field-hint">Upload a caregiver or nursing assistant training certificate</span>
+                    </div>
+
+                    
+                    <div class="form-group full cert-field" data-for="Pet Sitter" style="display:none;">
+                        <label>
+                            <i class="fa-solid fa-paw" style="color:#7C9473;margin-right:5px;"></i>Pet Sitter — Vet Experience / Pet Care Certificate
+                            <span style="color:#e74c3c;"> *</span>
+                            <small style="color:#aaa;">(JPG/PNG, max 2MB)</small>
+                        </label>
+                        <div class="input-wrap file-input-wrap">
+                            <i class="fa-solid fa-paw input-icon"></i>
+                            <input type="file" name="cert_pet_sitter" accept="image/jpeg,image/png,image/webp">
+                        </div>
+                        <span class="field-hint">Upload a vet clinic experience letter or pet care course certificate</span>
+                    </div>
+
+                    
+                    <div class="form-group full cert-field" data-for="Driver" style="display:none;">
+                        <label>
+                            <i class="fa-solid fa-car" style="color:#7C9473;margin-right:5px;"></i>Driver — Valid Driving License
+                            <span style="color:#e74c3c;"> *</span>
+                            <small style="color:#aaa;">(JPG/PNG, max 2MB)</small>
+                        </label>
+                        <div class="input-wrap file-input-wrap">
+                            <i class="fa-solid fa-id-card input-icon"></i>
+                            <input type="file" name="cert_driver" accept="image/jpeg,image/png,image/webp">
+                        </div>
+                        <span class="field-hint">Upload the front side of your valid Pakistani driving license</span>
+                    </div>
+
+                    
+                    <div class="form-group full cert-field" data-for="Cooking" style="display:none;">
+                        <label>
+                            <i class="fa-solid fa-utensils" style="color:#7C9473;margin-right:5px;"></i>Cooking — Food Safety / Hygiene Certificate
+                            <span style="color:#aaa;font-weight:400;"> (Optional)</span>
+                            <small style="color:#aaa;">(JPG/PNG, max 2MB)</small>
+                        </label>
+                        <div class="input-wrap file-input-wrap">
+                            <i class="fa-solid fa-utensils input-icon"></i>
+                            <input type="file" name="cert_cooking" accept="image/jpeg,image/png,image/webp">
+                        </div>
+                        <span class="field-hint">Food hygiene or cooking course certificate (recommended)</span>
+                    </div>
+
+                    
+                    <div class="form-group full" id="noCertMsg" style="display:none;">
+                        <div style="background:#f0f9ee;border:1.5px solid #c5dac0;border-radius:10px;padding:10px 14px;font-size:0.8rem;color:#5a7a52;display:flex;align-items:center;gap:8px;">
+                            <i class="fa-solid fa-circle-check"></i>
+                            No certificate is required for your selected category/categories.
+                        </div>
+                    </div>
+
+                </div>
+
+                
+                <div class="hk-section-title" style="margin-top:1rem;"><i class="fa-solid fa-address-book"></i> Additional Contact</div>
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label>Guardian / Family Member Number <span style="color:#e74c3c;">*</span></label>
+                        <div class="input-wrap phone-wrap">
+                            <i class="fa-solid fa-phone-volume input-icon"></i>
+                            <span class="phone-prefix">+92</span>
+                            
+                            <input type="tel" name="guardian_phone" id="guardianPhone" placeholder="3XXXXXXXXX" pattern="[3][0-9]{9}" maxlength="10">
+                        </div>
+                        <span class="field-hint">Father, spouse, or sibling's phone number</span>
+                    </div>
+                </div>
+
+                
+                <div class="hk-section-title" style="margin-top:1rem;"><i class="fa-solid fa-id-card"></i> Verification Documents</div>
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label>CNIC Number <span style="color:#e74c3c;">*</span></label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-id-card input-icon"></i>
+                            <input type="text" name="cnic_number" id="cnicNumber" placeholder="3XXXX-XXXXXXX-X" maxlength="15"
+                                   oninput="formatCNIC(this)" pattern="\d{5}-\d{7}-\d{1}">
+                        </div>
+                        <span class="field-hint">Format: 3XXXX-XXXXXXX-X (exactly as printed on CNIC)</span>
+                    </div>
+                    <div class="form-group">
+                        <label>CNIC Front <small style="color:#aaa;">(JPG/PNG, max 2MB)</small></label>
+                        <div class="input-wrap file-input-wrap">
+                            <i class="fa-solid fa-id-card input-icon"></i>
+                            <input type="file" name="cnic_front" accept="image/jpeg,image/png,image/webp">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>CNIC Back <small style="color:#aaa;">(JPG/PNG, max 2MB)</small></label>
+                        <div class="input-wrap file-input-wrap">
+                            <i class="fa-solid fa-id-card input-icon"></i>
+                            <input type="file" name="cnic_back" accept="image/jpeg,image/png,image/webp">
+                        </div>
+                    </div>
+
+                    
+                    <div class="form-group full">
+                        <label>
+                            <i class="fa-solid fa-camera" style="color:#7C9473;margin-right:5px;"></i>Selfie Holding CNIC
+                            <span style="color:#e74c3c;">*</span>
+                            <small style="color:#aaa;">(JPG/PNG, max 2MB)</small>
+                        </label>
+                        <div class="input-wrap file-input-wrap">
+                            <i class="fa-solid fa-camera input-icon"></i>
+                            <input type="file" name="selfie_with_cnic" id="selfieInput"
+                                   accept="image/jpeg,image/png,image/webp">
+                        </div>
+                        <span class="field-hint">
+                            <i class="fa-solid fa-circle-info" style="color:#7C9473;"></i>
+                            Take a clear photo holding your CNIC — both your face and CNIC must be clearly visible. Admin will use this to verify your identity.
+                        </span>
+                        
+                        <div id="selfiePreview" style="display:none;margin-top:10px;">
+                            <img id="selfiePreviewImg"
+                                 style="max-width:220px;border-radius:12px;border:2px solid #7C9473;box-shadow:0 4px 12px rgba(124,148,115,0.2);"
+                                 alt="Selfie preview">
+                            <p style="font-size:0.72rem;color:#7C9473;margin-top:4px;">
+                                <i class="fa-solid fa-circle-check"></i> Preview — make sure face &amp; CNIC are clearly visible
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <i class="fa-solid fa-user-plus"></i>
+                <span id="submitBtnText">Create Customer Account</span>
+            </button>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a href="login.html">Sign in here</a>
+        </div>
+    </div>
+</div>
+
+<script>
+// ── DOB max/min — future block, aaj allowed ──
+(function () {
+    const dob = document.getElementById('dobInput');
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm   = String(today.getMonth() + 1).padStart(2, '0');
+    const dd   = String(today.getDate()).padStart(2, '0');
+
+    // Max = aaj (future dates block) — aaj paida hona allowed
+    dob.max = `${yyyy}-${mm}-${dd}`;
+
+    // Min = 60 saal pehle
+    dob.min = `${yyyy - 60}-${mm}-${dd}`;
+})();
+
+// ── FIX: switchRole — HK fields required dynamically control ──
+function switchRole(role) {
+    const isHK = role === 'housekeeper';
+    document.getElementById('roleInput').value = role;
+    document.getElementById('userRoleBtn').classList.toggle('active', !isHK);
+    document.getElementById('hkRoleBtn').classList.toggle('active',  isHK);
+    document.getElementById('hkFields').classList.toggle('show', isHK);
+    document.getElementById('addressLabel').textContent = isHK ? 'Your Area / Mohalla' : 'Residential Address';
+    document.getElementById('addrHint').style.display = isHK ? 'block' : 'none';
+
+    const btn = document.getElementById('submitBtn');
+    btn.className = 'submit-btn ' + (isHK ? 'hk-btn' : '');
+    document.getElementById('submitBtnText').textContent = isHK
+        ? 'Create Housekeeper Account'
+        : 'Create Customer Account';
+
+    // ── FIX: guardian_phone aur cnic_number sirf HK ke liye required ──
+    document.getElementById('guardianPhone').required = isHK;
+    document.getElementById('cnicNumber').required    = isHK;
+}
+
+function validatePassword() {
+    const pass    = document.getElementById('password').value;
+    const confirm = document.getElementById('confirm_password').value;
+    const note    = document.getElementById('passNote');
+    if (confirm.length > 0) {
+        if (pass === confirm) {
+            note.className = 'pass-note match';
+            note.innerHTML = '<i class="fa-solid fa-check"></i> Passwords match';
+        } else {
+            note.className = 'pass-note nomatch';
+            note.innerHTML = '<i class="fa-solid fa-xmark"></i> Passwords do not match';
+        }
+    } else {
+        note.innerHTML = '';
+    }
+}
+
+function handleCatClick(labelEl) {
+    const checkbox  = labelEl.querySelector('input[type="checkbox"]');
+    const allLabels = document.querySelectorAll('.cat-checkbox-label');
+    let checkedCount = document.querySelectorAll('.cat-checkbox-label input:checked').length;
+    if (!checkbox.checked && checkedCount >= 3) return;
+    checkbox.checked = !checkbox.checked;
+    labelEl.classList.toggle('checked', checkbox.checked);
+    checkedCount = document.querySelectorAll('.cat-checkbox-label input:checked').length;
+    document.getElementById('catCount').textContent = checkedCount;
+    allLabels.forEach(lbl => {
+        const cb = lbl.querySelector('input[type="checkbox"]');
+        if (!cb.checked) lbl.classList.toggle('disabled', checkedCount >= 3);
+    });
+    updateCertFields();
+}
+
+function handleDayClick(labelEl) {
+    const checkbox = labelEl.querySelector('input[type="checkbox"]');
+    checkbox.checked = !checkbox.checked;
+    labelEl.classList.toggle('checked', checkbox.checked);
+}
+
+// CNIC auto-format: 3XXXX-XXXXXXX-X
+function formatCNIC(input) {
+    let val = input.value.replace(/[^0-9]/g, '');
+    if (val.length > 5)  val = val.slice(0,5)  + '-' + val.slice(5);
+    if (val.length > 13) val = val.slice(0,13) + '-' + val.slice(13);
+    if (val.length > 15) val = val.slice(0,15);
+    input.value = val;
+}
+
+
+// ── Certificate fields — category ke hisaab se show/hide ──
+const CERT_CATEGORIES = ['Babysitting', 'Elder Care', 'Pet Sitter', 'Driver', 'Cooking'];
+
+function updateCertFields() {
+    const selected = Array.from(document.querySelectorAll('.cat-checkbox-label input:checked'))
+                          .map(cb => cb.value);
+
+    let anyCertShown = false;
+    document.querySelectorAll('.cert-field').forEach(field => {
+        const forCat = field.getAttribute('data-for');
+        const show   = selected.includes(forCat);
+        field.style.display = show ? 'block' : 'none';
+        // Required sirf jo cert mandatory hai
+        const fileInput = field.querySelector('input[type="file"]');
+        if (fileInput) {
+            const isOptional = field.querySelector('label span[style*="font-weight:400"]') !== null;
+            fileInput.required = show && !isOptional;
+        }
+        if (show) anyCertShown = true;
+    });
+
+    const noCertMsg = document.getElementById('noCertMsg');
+    if (noCertMsg) {
+        // Show "no cert needed" only if categories are selected but none need a cert
+        const hasCertCat = selected.some(s => CERT_CATEGORIES.includes(s));
+        noCertMsg.style.display = (selected.length > 0 && !hasCertCat) ? 'block' : 'none';
+    }
+}
+
+// ── Selfie preview ──
+document.addEventListener('DOMContentLoaded', function() {
+    const selfieInput = document.getElementById('selfieInput');
+    if (selfieInput) {
+        selfieInput.addEventListener('change', function() {
+            const preview    = document.getElementById('selfiePreview');
+            const previewImg = document.getElementById('selfiePreviewImg');
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src      = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+
+        // Selfie sirf housekeeper ke liye required hai
+        const roleInput = document.getElementById('roleInput');
+        function updateSelfieRequired() {
+            selfieInput.required = (roleInput && roleInput.value === 'housekeeper');
+        }
+        updateSelfieRequired();
+        document.getElementById('userRoleBtn').addEventListener('click', updateSelfieRequired);
+        document.getElementById('hkRoleBtn').addEventListener('click',   updateSelfieRequired);
+    }
+});
+
+
+function validateTimes() {
+    const from  = document.getElementById('availFrom');
+    const till  = document.getElementById('availTill');
+    const hint  = document.getElementById('timeHint');
+    if (!from || !till || !hint) return true;
+    if (from.value && till.value && from.value >= till.value) {
+        hint.style.display = 'block';
+        till.style.borderColor = '#e74c3c';
+        return false;
+    }
+    hint.style.display = 'none';
+    till.style.borderColor = '';
+    return true;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const af = document.getElementById('availFrom');
+    const at = document.getElementById('availTill');
+    if (af) af.addEventListener('change', validateTimes);
+    if (at) at.addEventListener('change', validateTimes);
+
+    // Form submit pe time validate karo
+    const form = document.getElementById('regForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            if (!validateTimes()) {
+                e.preventDefault();
+                document.getElementById('availTill').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    }
+});
+
+// ── GPS Capture for Housekeeper Registration ────────────────────────────
+function captureGPS() {
+    const btn    = document.getElementById('gpsBtn');
+    const status = document.getElementById('gpsStatus');
+
+    if (!navigator.geolocation) {
+        showGpsStatus('error', 'Geolocation is not supported by your browser.');
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting...';
+    showGpsStatus('loading', 'Location detect ho rahi hai...');
+
+    navigator.geolocation.getCurrentPosition(
+        function(pos) {
+            var lat = pos.coords.latitude;
+            var lng = pos.coords.longitude;
+            document.getElementById('regLat').value = lat;
+            document.getElementById('regLng').value = lng;
+
+            fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng + '&addressdetails=1',
+                  { headers: { 'Accept-Language': 'en' } })
+            .then(function(r){ return r.json(); })
+            .then(function(data) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Detect My Location';
+                if (data && data.address) {
+                    var a = data.address, parts = [];
+                    if (a.road || a.street)     parts.push(a.road || a.street);
+                    if (a.neighbourhood || a.suburb || a.residential) parts.push(a.neighbourhood || a.suburb || a.residential);
+                    if (a.village || a.town || a.city_district)       parts.push(a.village || a.town || a.city_district);
+                    if (a.city || a.county)     parts.push(a.city || a.county);
+                    if (a.state)                parts.push(a.state);
+                    var addrText  = parts.filter(Boolean).join(', ');
+                    var addrField = document.getElementById('regAddress');
+                    if (addrField && addrText) {
+                        addrField.value = addrText;
+                        addrField.style.borderColor = '#7C9473';
+                        setTimeout(function(){ addrField.style.borderColor = ''; }, 2500);
+                    }
+                    showGpsStatus('ok', '\u2713 Location captured + Address auto-filled!');
+                } else {
+                    showGpsStatus('ok', '\u2713 GPS saved. Please type your address manually.');
+                }
+            })
+            .catch(function() {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Detect My Location';
+                showGpsStatus('ok', '\u2713 GPS coordinates saved. Please type your address.');
+            });
+        },
+        function(err) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Detect My Location';
+            if (err.code === 1) {
+                showGpsStatus('error', 'Permission denied. Please allow location access in your browser settings.');
+            } else {
+                showGpsStatus('error', 'Could not get location. Please enter your address manually.');
+            }
+        },
+        { timeout: 8000, maximumAge: 0 }
+    );
+}
+
+function showGpsStatus(type, msg) {
+    var el = document.getElementById('gpsStatus');
+    if (!el) return;
+    var styles = { loading:'background:#fff8e8;color:#e67e22;', error:'background:#fff2f2;color:#c0392b;', ok:'background:#f0f9ee;color:#5a7a52;' };
+    el.style.cssText = 'font-size:0.74rem;margin-top:4px;display:flex;padding:5px 10px;border-radius:7px;align-items:center;gap:6px;' + (styles[type] || '');
+    el.innerHTML = msg;
+}
+
+</script>
+</body>
+</html>
